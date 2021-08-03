@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SmartSchool.Comum\SmartSchool.Comum.csproj" />
+    <ProjectReference Include="..\SmartSchool.Dto\SmartSchool.Dto.csproj" />
+  </ItemGroup>
+
+</Project>
