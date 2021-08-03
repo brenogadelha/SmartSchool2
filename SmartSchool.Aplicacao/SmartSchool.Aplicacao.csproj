@@ -5,11 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Professores\Interface\" />
-    <Folder Include="Professores\Servico\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SmartSchool.Comum\SmartSchool.Comum.csproj" />
     <ProjectReference Include="..\SmartSchool.Dados\SmartSchool.Dados.csproj" />
     <ProjectReference Include="..\SmartSchool.Dominio\SmartSchool.Dominio.csproj" />

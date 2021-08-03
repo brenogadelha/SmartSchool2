@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SmartSchool.Comum.Dominio;
-using SmartSchool.Dto.Dtos.Alunos;
+using SmartSchool.Dto.Alunos;
 using System;
 using System.Collections.Generic;
 using System.Linq;

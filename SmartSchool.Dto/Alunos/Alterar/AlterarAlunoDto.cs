@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace SmartSchool.Dto.Dtos.Alunos
+namespace SmartSchool.Dto.Alunos
 {
    public class AlterarAlunoDto : AlunoDto
     {

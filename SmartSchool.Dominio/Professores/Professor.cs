@@ -1,9 +1,6 @@
 ﻿using SmartSchool.Comum.Dominio;
-using SmartSchool.Dominio.Disciplinas;
+using SmartSchool.Dto.Dtos.Professores;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SmartSchool.Dominio.Professores
 {
@@ -12,13 +9,23 @@ namespace SmartSchool.Dominio.Professores
         public Guid ID { get; private set; }
         public int Matricula { get; private set; }
         public string Nome { get; private set; }
-        public IEnumerable<Disciplina> Disciplinas { get; private set; }
+        //public IEnumerable<Disciplina> Disciplinas { get; private set; }
 
         public Professor() { }
-        public Professor(Guid id, string nome) 
+
+        public static Professor Criar(ProfessorDto professorDto)
         {
-            this.ID = id;
-            this.Nome = nome;
+            var professor = new Professor()
+            {
+                ID = Guid.NewGuid(),
+                Nome = professorDto.Nome,
+                Matricula = professorDto.Matricula
+            };
+
+            return professor;
         }
+
+        public void AlterarNome(string nome) => this.Nome = nome;
+        public void AlterarMatricula(int matricula) => this.Matricula = matricula;
     }
 }

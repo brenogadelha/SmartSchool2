@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using SmartSchool.Dominio.Alunos;
-using SmartSchool.Dto.Dtos.Alunos.Obter;
+using SmartSchool.Dominio.Professores;
+using SmartSchool.Dto.Alunos.Obter;
+using SmartSchool.Dto.Dtos.Professores;
 
 namespace SmartSchool.Ioc.Modulos
 {
@@ -10,6 +12,9 @@ namespace SmartSchool.Ioc.Modulos
         {
             // Aluno
             this.CreateMap<Aluno, ObterAlunoDto>();
+
+            // Professor
+            this.CreateMap<Professor, ObterProfessorDto>();
         }
     }
 }

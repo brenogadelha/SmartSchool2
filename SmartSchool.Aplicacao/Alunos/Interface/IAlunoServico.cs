@@ -1,5 +1,5 @@
-﻿using SmartSchool.Dto.Dtos.Alunos;
-using SmartSchool.Dto.Dtos.Alunos.Obter;
+﻿using SmartSchool.Dto.Alunos;
+using SmartSchool.Dto.Alunos.Obter;
 using System;
 using System.Collections.Generic;
 using System.Text;

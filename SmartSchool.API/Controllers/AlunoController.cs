@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using SmartSchool.Aplicacao.Alunos.Interface;
 using SmartSchool.Dominio.Alunos;
-using SmartSchool.Dto.Dtos.Alunos;
-using SmartSchool.Dto.Dtos.Alunos.Obter;
+using SmartSchool.Dto.Alunos;
+using SmartSchool.Dto.Alunos.Obter;
 using SmartSchool.Dto.Dtos.TratamentoErros;
 using System;
 using System.Collections.Generic;
@@ -25,12 +25,11 @@ namespace SmartSchool.API.Controllers
         }
 
         /// <summary>
-		/// Obtem listagem de todos os Usuarios cadastrados
+		/// Obtem listagem de todos os Alunos cadastrados
 		/// </summary>
-		/// <returns>Lista de todos os Usuarios</returns>
-		/// <response code="200">Lista de Usuarios</response> 
-		/// <response code="500">Erro inesperado</response> 
-		[HttpGet]
+		/// <returns>Lista de todos os Alunos</returns>
+		/// <response code="200">Lista de Alunos</response> 
+		/// <response code="500">Erro inesperado</response>
         [ProducesResponseType(200, Type = typeof(IEnumerable<ObterAlunoDto>))]
         [ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
         [HttpGet]
@@ -71,7 +70,7 @@ namespace SmartSchool.API.Controllers
         //    return Ok(aluno);
         //}
         //// POST api/<AlunoController>
-  
+
 
         /// <summary>
         /// Cria um novo Aluno
@@ -84,7 +83,7 @@ namespace SmartSchool.API.Controllers
         [ProducesResponseType(201)]
         [ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
         [ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-        public StatusCodeResult Criar(AlunoDto aluno)
+        public StatusCodeResult Criar([FromBody]AlunoDto aluno)
         {
             this._alunoServico.CriarAluno(aluno);
 
@@ -104,7 +103,7 @@ namespace SmartSchool.API.Controllers
         [ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
         [ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
         [ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-        public StatusCodeResult Alterar(Guid id, AlterarAlunoDto alunoDto)
+        public StatusCodeResult Alterar(Guid id, [FromBody]AlterarAlunoDto alunoDto)
         {
             if (alunoDto == null)
                 throw new ArgumentNullException(null, "Objeto Usuário nulo (não foi informado).");
