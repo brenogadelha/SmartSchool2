@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SmartSchool.Dto.Professores
+namespace SmartSchool.Dto.Disciplinas
 {
-    public class ProfessorDto
+    public class DisciplinaDto
     {
-        public int Matricula { get; set; }
         public string Nome { get; set; }
     }
 }

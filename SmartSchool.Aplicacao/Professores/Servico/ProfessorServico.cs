@@ -1,12 +1,13 @@
 ﻿using SmartSchool.Aplicacao.Professores.Interface;
 using SmartSchool.Comum.Mapeador;
 using SmartSchool.Comum.Repositorio;
-using SmartSchool.Dominio.Alunos.Especificacao;
+using SmartSchool.Comum.TratamentoErros;
 using SmartSchool.Dominio.Professores;
+using SmartSchool.Dominio.Professores.Especificacao;
 using SmartSchool.Dto.Dtos.Professores;
+using SmartSchool.Dto.Professores;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SmartSchool.Aplicacao.Professores.Servico
 {
@@ -21,7 +22,7 @@ namespace SmartSchool.Aplicacao.Professores.Servico
 
         public IEnumerable<ObterProfessorDto> Obter()
         {
-            var professor = this._professorRepositorio.Procurar(new BuscaDeProfessorEspecificacao(true));
+            var professor = this._professorRepositorio.Procurar(new BuscaDeProfessorEspecificacao());
 
             return professor.MapearParaDto<ObterProfessorDto>();
         }
@@ -33,44 +34,37 @@ namespace SmartSchool.Aplicacao.Professores.Servico
             this._professorRepositorio.Adicionar(professor);
         }
 
-        //public void AlterarAluno(Guid idAluno, AlterarAlunoDto alunoDto)
-        //{
-        //    var aluno = this.ObterAlunoDominio(idAluno);
+        public void AlterarProfessor(Guid idProfessor, AlterarProfessorDto professorDto)
+        {
+            var professor = this.ObterProfessorDominio(idProfessor);
 
-        //    aluno.AlterarNome(alunoDto.Nome);
-        //    aluno.AlterarSobrenome(alunoDto.Sobrenome);
-        //    aluno.AlterarTelefone(alunoDto.Telefone);
-        //    aluno.AlterarAtivo(alunoDto.Ativo);
-        //    aluno.AlterarDataNascimento(alunoDto.DataNascimento);
-        //    aluno.AlterarDataInicio(alunoDto.DataInicio);
-        //    aluno.AlterarDataFim(alunoDto.DataFim);
+            professor.AlterarNome(professorDto.Nome);
+            professor.AlterarMatricula(professorDto.Matricula);
 
-        //    this._alunoRepositorio.Atualizar(aluno, true);
-        //}
+            this._professorRepositorio.Atualizar(professor, true);
+        }
 
-        //public ObterAlunoDto ObterPorId(Guid idAluno) => this.ObterAlunoDominio(idAluno).MapearParaDto<ObterAlunoDto>();
+        public ObterProfessorDto ObterPorId(Guid idProfessor) => this.ObterProfessorDominio(idProfessor).MapearParaDto<ObterProfessorDto>();
 
-        //public void Remover(Guid id)
-        //{
-        //    var alunoExistente = this.ObterAlunoDominio(id);
+        public void Remover(Guid id)
+        {
+            var professor = this.ObterProfessorDominio(id);
 
-        //    alunoExistente.AlterarAtivo(false);
+            this._professorRepositorio.Remover(professor);
+        }
 
-        //    this._alunoRepositorio.Atualizar(alunoExistente);
-        //}
-
-        //private Aluno ObterAlunoDominio(Guid idAluno)
-        //{
-        //    if (idAluno.Equals(Guid.Empty))
-        //        throw new ArgumentNullException(null, "Id nulo do Aluno (não foi informado).");
+        private Professor ObterProfessorDominio(Guid idProfessor)
+        {
+            if (idProfessor.Equals(Guid.Empty))
+                throw new ArgumentNullException(null, "Id nulo do Professor (não foi informado).");
 
 
-        //    var aluno = this._alunoRepositorio.Obter(new BuscaDeAlunoPorIdEspecificacao(idAluno));
+            var professor = this._professorRepositorio.Obter(new BuscaDeProfessorPorIdEspecificacao(idProfessor));
 
-        //    if (aluno == null)
-        //        throw new RecursoInexistenteException($"Aluno com ID '{idAluno}' não existe.");
+            if (professor == null)
+                throw new RecursoInexistenteException($"Professor com ID '{idProfessor}' não existe.");
 
-        //    return aluno;
-        //}
+            return professor;
+        }
     }
 }

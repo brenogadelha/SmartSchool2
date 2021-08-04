@@ -1,5 +1,6 @@
 ﻿using SmartSchool.Comum.Dominio;
 using SmartSchool.Dto.Dtos.Professores;
+using SmartSchool.Dto.Professores;
 using System;
 
 namespace SmartSchool.Dominio.Professores

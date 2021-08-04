@@ -71,9 +71,10 @@ namespace SmartSchool.Dados.Migrations
 
             modelBuilder.Entity("SmartSchool.Dominio.Disciplinas.Disciplina", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnName("DISC_ID_DISCIPLINA")
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -81,17 +82,7 @@ namespace SmartSchool.Dados.Migrations
                         .HasColumnType("nvarchar(32)")
                         .HasMaxLength(32);
 
-                    b.Property<Guid?>("ProfessorID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("ProfessorId")
-                        .HasColumnName("DISC_ID_PROFESSOR")
-                        .HasColumnType("int")
-                        .HasMaxLength(128);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProfessorID");
+                    b.HasKey("ID");
 
                     b.ToTable("DISCIPLINA");
                 });
@@ -115,13 +106,6 @@ namespace SmartSchool.Dados.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("PROFESSOR");
-                });
-
-            modelBuilder.Entity("SmartSchool.Dominio.Disciplinas.Disciplina", b =>
-                {
-                    b.HasOne("SmartSchool.Dominio.Professores.Professor", "Professor")
-                        .WithMany("Disciplinas")
-                        .HasForeignKey("ProfessorID");
                 });
 #pragma warning restore 612, 618
         }

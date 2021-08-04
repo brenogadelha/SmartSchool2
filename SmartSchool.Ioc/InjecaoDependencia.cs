@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SmartSchool.Aplicacao.Alunos.Interface;
 using SmartSchool.Aplicacao.Alunos.Servico;
+using SmartSchool.Aplicacao.Disciplinas.Interface;
+using SmartSchool.Aplicacao.Disciplinas.Servico;
 using SmartSchool.Aplicacao.Professores.Interface;
 using SmartSchool.Aplicacao.Professores.Servico;
 using SmartSchool.Comum.Infra;
@@ -13,8 +15,8 @@ using SmartSchool.Dados.Comum;
 using SmartSchool.Dados.Contextos;
 using SmartSchool.Dados.Modulos.Usuarios;
 using SmartSchool.Dominio.Alunos;
+using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dominio.Professores;
-using System.Collections.Generic;
 
 namespace SmartSchool.Ioc
 {
@@ -33,6 +35,7 @@ namespace SmartSchool.Ioc
             #region Repositorios
             services.AddScoped<IRepositorio<Aluno>, AlunoRepositorio>();
             services.AddScoped<IRepositorio<Professor>, ProfessorRepositorio>();
+            services.AddScoped<IRepositorio<Disciplina>, DisciplinaRepositorio>();
 
             #endregion
 
@@ -43,6 +46,7 @@ namespace SmartSchool.Ioc
             #region Aplicação
             services.AddScoped<IAlunoServico, AlunoServico>();
             services.AddScoped<IProfessorServico, ProfessorServico>();
+            services.AddScoped<IDisciplinaServico, DisciplinaServico>();
 
             #endregion
             #region Comum

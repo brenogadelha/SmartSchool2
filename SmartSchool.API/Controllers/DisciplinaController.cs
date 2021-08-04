@@ -1,49 +1,46 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SmartSchool.Aplicacao.Alunos.Interface;
-using SmartSchool.Dominio.Alunos;
-using SmartSchool.Dto.Alunos;
+using SmartSchool.Aplicacao.Disciplinas.Interface;
 using SmartSchool.Dto.Alunos.Obter;
+using SmartSchool.Dto.Disciplinas;
+using SmartSchool.Dto.Disciplinas.Alterar;
 using SmartSchool.Dto.Dtos.TratamentoErros;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace SmartSchool.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AlunoController : Controller
+    public class DisciplinaController : Controller
     {
-        private readonly IAlunoServico _alunoServico;
+        private readonly IDisciplinaServico _disciplinaServico;
 
-        public AlunoController(IAlunoServico alunoServico)
+        public DisciplinaController(IDisciplinaServico disciplinaServico)
         {
-            this._alunoServico = alunoServico;
+            this._disciplinaServico = disciplinaServico;
         }
 
         /// <summary>
-		/// Obtem listagem de todos os Alunos cadastrados
+		/// Obtem listagem de todos as Disciplinas cadastradas
 		/// </summary>
-		/// <returns>Lista de todos os Alunos</returns>
-		/// <response code="200">Lista de Alunos</response> 
+		/// <returns>Lista de todas as Disciplinas</returns>
+		/// <response code="200">Lista de Disciplinas</response> 
 		/// <response code="500">Erro inesperado</response>
         [ProducesResponseType(200, Type = typeof(IEnumerable<ObterAlunoDto>))]
         [ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
         [HttpGet]
         public OkObjectResult ObterTodos()
         {
-            return Ok(_alunoServico.Obter());
+            return Ok(_disciplinaServico.Obter());
         }
 
         /// <summary>
-		/// Obtém dados de um Aluno específico por ID
+		/// Obtém dados de Disciplina específica por ID
 		/// </summary>
-		/// <returns>Dados do Aluno solicitado</returns>
-		/// <response code="200">Obtem dados do Aluno solicitado</response>
-		/// <response code="404">Aluno inexistente</response>
+		/// <returns>Dados da Disciplina solicitada</returns>
+		/// <response code="200">Obtem dados da Disciplina solicitada</response>
+		/// <response code="404">Disciplina inexistente</response>
 		/// <response code="500">Erro inesperado</response>
         [ProducesResponseType(200, Type = typeof(ObterAlunoDto))]
         [ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
@@ -51,12 +48,12 @@ namespace SmartSchool.API.Controllers
         [HttpGet("{id}")]
         public OkObjectResult ObterPorId(Guid id)
         {
-            var aluno = this._alunoServico.ObterPorId(id);
+            var disciplina = this._disciplinaServico.ObterPorId(id);
 
-            if (aluno == null)
-                throw new Exception($"Não existe Aluno com o id {id} informado.");
+            if (disciplina == null)
+                throw new Exception($"Não existe Disciplina com o id {id} informado.");
 
-            return Ok(aluno);
+            return Ok(disciplina);
         }
 
         //[HttpGet("ByName")]
@@ -83,56 +80,56 @@ namespace SmartSchool.API.Controllers
         [ProducesResponseType(201)]
         [ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
         [ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-        public StatusCodeResult Criar([FromBody] AlunoDto aluno)
+        public StatusCodeResult Criar([FromBody] DisciplinaDto disciplinaDto)
         {
-            this._alunoServico.CriarAluno(aluno);
+            this._disciplinaServico.CriarDisciplina(disciplinaDto);
 
             return this.StatusCode((int)HttpStatusCode.Created);
         }
 
         /// <summary>
-		/// Efetua alteração de Aluno
+		/// Efetua alteração de Disciplina
 		/// </summary>
 		/// <returns>Http status 204(No Content)</returns>
-		/// <response code="204">Aluno alterado com Sucesso</response>
-		/// <response code="400">Dados para alteração de Aluno inconsistentes.</response>
-		/// <response code="404">Aluno inexistente</response>
+		/// <response code="204">Disciplina alterada com Sucesso</response>
+		/// <response code="400">Dados para alteração de Disciplina inconsistentes.</response>
+		/// <response code="404">Disciplina inexistente</response>
 		/// <response code="500">Erro inesperado</response> 
         [HttpPut("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
         [ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
         [ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-        public StatusCodeResult Alterar(Guid id, [FromBody] AlterarAlunoDto alunoDto)
+        public StatusCodeResult AlterarDisciplina(Guid id, [FromBody] AlterarDisciplinaDto disciplinaDto)
         {
-            if (alunoDto == null)
-                throw new ArgumentNullException(null, "Objeto Usuário nulo (não foi informado).");
+            if (disciplinaDto == null)
+                throw new ArgumentNullException(null, "Objeto Disciplina nulo (não foi informado).");
 
             if (id.Equals(Guid.Empty))
-                throw new ArgumentNullException(null, "Identificador do Usuário é inválido ou nulo");
+                throw new ArgumentNullException(null, "Identificador de Disciplina é inválido ou nulo");
 
-            alunoDto.ID = id;
+            disciplinaDto.ID = id;
 
-            this._alunoServico.AlterarAluno(id, alunoDto);
+            this._disciplinaServico.AlterarDisciplina(id, disciplinaDto);
 
             return this.StatusCode((int)HttpStatusCode.Created);
         }
 
         /// <summary>
-        /// Exclui um Aluno específico
+        /// Exclui uma Disciplina específica
         /// </summary>
-        /// <response code="204">Aluno excluído com Sucesso</response>
-        /// <response code="400">Dados para exclusão do Aluno inconsistentes.</response>
-        /// <response code="404">Aluno inexistente</response>
+        /// <response code="204">Disciplina excluída com Sucesso</response>
+        /// <response code="400">Dados para exclusão da Disciplina inconsistentes.</response>
+        /// <response code="404">Disciplina inexistente</response>
         /// <response code="500">Erro inesperado</response> 
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
         [ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
         [ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-        public StatusCodeResult ExcluirAluno(Guid id)
+        public StatusCodeResult ExcluirDisciplina(Guid id)
         {
-            this._alunoServico.Remover(id);
+            this._disciplinaServico.Remover(id);
             return this.StatusCode(204);
         }
     }

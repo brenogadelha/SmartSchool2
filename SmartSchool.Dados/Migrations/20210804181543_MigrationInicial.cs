@@ -31,6 +31,19 @@ namespace SmartSchool.Dados.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DISCIPLINA",
+                schema: "SmartSchool",
+                columns: table => new
+                {
+                    DISC_ID_DISCIPLINA = table.Column<Guid>(nullable: false),
+                    DISC_NM_NOME = table.Column<string>(maxLength: 32, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DISCIPLINA", x => x.DISC_ID_DISCIPLINA);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PROFESSOR",
                 schema: "SmartSchool",
                 columns: table => new
@@ -43,34 +56,6 @@ namespace SmartSchool.Dados.Migrations
                 {
                     table.PrimaryKey("PK_PROFESSOR", x => x.PROF_ID_PROFESSOR);
                 });
-
-            migrationBuilder.CreateTable(
-                name: "DISCIPLINA",
-                schema: "SmartSchool",
-                columns: table => new
-                {
-                    DISC_ID_DISCIPLINA = table.Column<int>(nullable: false),
-                    DISC_NM_NOME = table.Column<string>(maxLength: 32, nullable: false),
-                    DISC_ID_PROFESSOR = table.Column<int>(maxLength: 128, nullable: false),
-                    ProfessorID = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DISCIPLINA", x => x.DISC_ID_DISCIPLINA);
-                    table.ForeignKey(
-                        name: "FK_DISCIPLINA_PROFESSOR_ProfessorID",
-                        column: x => x.ProfessorID,
-                        principalSchema: "SmartSchool",
-                        principalTable: "PROFESSOR",
-                        principalColumn: "PROF_ID_PROFESSOR",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DISCIPLINA_ProfessorID",
-                schema: "SmartSchool",
-                table: "DISCIPLINA",
-                column: "ProfessorID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

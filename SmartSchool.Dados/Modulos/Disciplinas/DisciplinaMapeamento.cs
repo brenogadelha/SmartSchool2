@@ -11,19 +11,14 @@ namespace SmartSchool.Dados.Modulos.Usuarios
 		{
 			builder.ToTable("DISCIPLINA");
 
-			builder.Property(b => b.Id)
+			builder.Property(b => b.ID)
 					.HasColumnName("DISC_ID_DISCIPLINA")
-					.ValueGeneratedNever()
 					.IsRequired();
 
 			builder.Property(b => b.Nome)
 					.HasColumnName("DISC_NM_NOME")
 					.HasMaxLength(32)
 					.IsRequired();
-
-			builder.Property(b => b.ProfessorId)
-					.HasColumnName("DISC_ID_PROFESSOR")
-					.HasMaxLength(128);	   
 		}
 	}
 }
