@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartSchool.Dados.Contextos;
 
 namespace SmartSchool.Dados.Migrations
 {
     [DbContext(typeof(SmartContexto))]
-    partial class SmartContextoModelSnapshot : ModelSnapshot
+    [Migration("20211012163645_CriacaoAlunoDisciplina")]
+    partial class CriacaoAlunoDisciplina
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,23 +131,6 @@ namespace SmartSchool.Dados.Migrations
                     b.ToTable("PROFESSOR");
                 });
 
-            modelBuilder.Entity("SmartSchool.Dominio.Professores.ProfessorDisciplina", b =>
-                {
-                    b.Property<Guid>("ProfessorID")
-                        .HasColumnName("PRDI_ID_PROFESSOR")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("DisciplinaID")
-                        .HasColumnName("PRDI_ID_DISCIPLINA")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ProfessorID", "DisciplinaID");
-
-                    b.HasIndex("DisciplinaID");
-
-                    b.ToTable("PROFESSOR_DISCIPLINA");
-                });
-
             modelBuilder.Entity("SmartSchool.Dominio.Disciplinas.AlunoDisciplina", b =>
                 {
                     b.HasOne("SmartSchool.Dominio.Alunos.Aluno", "Aluno")
@@ -159,23 +144,6 @@ namespace SmartSchool.Dados.Migrations
                         .WithMany("Alunos")
                         .HasForeignKey("DisciplinaID")
                         .HasConstraintName("FK_DISC_ALUN")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SmartSchool.Dominio.Professores.ProfessorDisciplina", b =>
-                {
-                    b.HasOne("SmartSchool.Dominio.Disciplinas.Disciplina", "Disciplina")
-                        .WithMany("Professores")
-                        .HasForeignKey("DisciplinaID")
-                        .HasConstraintName("FK_DISC_PROF")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SmartSchool.Dominio.Professores.Professor", "Professor")
-                        .WithMany("Disciplinas")
-                        .HasForeignKey("ProfessorID")
-                        .HasConstraintName("FK_PROF_DISC")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

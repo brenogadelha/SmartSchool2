@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SmartSchool.Dados.Modulos.Alunos;
+using SmartSchool.Dados.Modulos.Professores;
 using SmartSchool.Dados.Modulos.Usuarios;
 using SmartSchool.Dominio.Alunos;
 using SmartSchool.Dominio.Disciplinas;
@@ -25,7 +27,8 @@ namespace SmartSchool.Dados.Contextos
             modelBuilder.ApplyConfiguration(new AlunoMapeamento());
             modelBuilder.ApplyConfiguration(new ProfessorMapeamento());
             modelBuilder.ApplyConfiguration(new DisciplinaMapeamento());
-            //modelBuilder.ApplyConfiguration(new SistemaMapeamento());
+            modelBuilder.ApplyConfiguration(new AlunoDisciplinaMapeamento());
+            modelBuilder.ApplyConfiguration(new ProfessorDisciplinaMapeamento());
 
             //modelBuilder.Entity<AlunoDisciplina>().HasKey(Ad => new { Ad.AlunoId, Ad.DisciplinaId });
 

@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SmartSchool.Dados.Modulos.Usuarios
+namespace SmartSchool.Dados.Modulos.Alunos
 {
 	public class AlunoRepositorio : IRepositorio<Aluno>
 	{

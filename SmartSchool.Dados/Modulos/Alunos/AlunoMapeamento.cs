@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SmartSchool.Dominio.Alunos;
 
-namespace SmartSchool.Dados.Modulos.Usuarios
+namespace SmartSchool.Dados.Modulos.Alunos
 {
 	public class AlunoMapeamento : IEntityTypeConfiguration<Aluno>
 	{

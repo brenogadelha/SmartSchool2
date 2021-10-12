@@ -14,5 +14,6 @@ namespace SmartSchool.Dto.Alunos
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
         public bool Ativo { get; set; }
+        public List<Guid> Disciplinas { get; set; }
     }
 }

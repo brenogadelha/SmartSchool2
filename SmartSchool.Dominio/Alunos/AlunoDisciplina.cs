@@ -1,23 +1,25 @@
-﻿//using SmartSchool.Dominio.Disciplinas;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
+﻿using SmartSchool.Dominio.Alunos;
+using System;
 
-//namespace SmartSchool.Dominio.Alunos
-//{
-//    public class AlunoDisciplina
-//    {
-//        public int AlunoId { get; set; }
-//        public int DisciplinaId { get; set; }
-//        public Aluno Aluno { get; set; }
-//        public Disciplina Disciplina { get; set; }
+namespace SmartSchool.Dominio.Disciplinas
+{
+    public class AlunoDisciplina
+    {
+        private AlunoDisciplina() { }
 
-//        public AlunoDisciplina() { }
-//        public AlunoDisciplina(int alunoId, int disciplinaId)
-//        {
-//            this.AlunoId = alunoId;
-//            this.DisciplinaId = disciplinaId;
-//        }
-//    }
-//}
+        public Guid AlunoID { get; private set; }
+        public Aluno Aluno { get; private set; }
+
+        public Guid DisciplinaID { get; private set; }
+        public Disciplina Disciplina { get; private set; }
+
+        public StatusDisciplinaEnum StatusDisciplina { get; private set; }
+
+        public static AlunoDisciplina Criar(Guid alunoId, Guid disciplinaId, StatusDisciplinaEnum statusDisciplina) => new AlunoDisciplina()
+        {
+            AlunoID = alunoId,
+            DisciplinaID = disciplinaId,
+            StatusDisciplina = statusDisciplina
+        };
+    }
+}

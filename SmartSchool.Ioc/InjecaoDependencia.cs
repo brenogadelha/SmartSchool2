@@ -13,6 +13,7 @@ using SmartSchool.Comum.Infra;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Dados.Comum;
 using SmartSchool.Dados.Contextos;
+using SmartSchool.Dados.Modulos.Alunos;
 using SmartSchool.Dados.Modulos.Usuarios;
 using SmartSchool.Dominio.Alunos;
 using SmartSchool.Dominio.Disciplinas;
