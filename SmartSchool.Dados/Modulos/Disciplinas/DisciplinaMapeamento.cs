@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SmartSchool.Dominio.Alunos;
 using SmartSchool.Dominio.Disciplinas;
 
 namespace SmartSchool.Dados.Modulos.Usuarios
@@ -18,6 +17,10 @@ namespace SmartSchool.Dados.Modulos.Usuarios
 			builder.Property(b => b.Nome)
 					.HasColumnName("DISC_NM_NOME")
 					.HasMaxLength(32)
+					.IsRequired();
+
+			builder.Property(b => b.Periodo)
+					.HasColumnName("DISC_ID_PERIODO")
 					.IsRequired();
 		}
 	}

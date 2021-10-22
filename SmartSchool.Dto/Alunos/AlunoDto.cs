@@ -4,16 +4,17 @@ using System.Text;
 
 namespace SmartSchool.Dto.Alunos
 {
-   public class AlunoDto
-    {
-        public int Matricula { get; set; }
-        public string Nome { get; set; }
-        public string Sobrenome { get; set; }
-        public string Telefone { get; set; }
-        public DateTime DataNascimento { get; set; }
-        public DateTime DataInicio { get; set; }
-        public DateTime DataFim { get; set; }
-        public bool Ativo { get; set; }
-        public List<Guid> Disciplinas { get; set; }
-    }
+	public class AlunoDto
+	{
+		public int Matricula { get; set; }
+		public string Nome { get; set; }
+		public string Sobrenome { get; set; }
+		public string Telefone { get; set; }
+		public DateTime DataNascimento { get; set; }
+		public DateTime DataInicio { get; set; }
+		public DateTime DataFim { get; set; }
+		public bool Ativo { get; set; }
+		public List<AlunoDisciplinaDto> AlunosDisciplinas { get; set; }
+		public Guid CursoId { get; set; }
+	}
 }

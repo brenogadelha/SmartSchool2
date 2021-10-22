@@ -14,6 +14,10 @@ namespace SmartSchool.Dados.Modulos.Alunos
 					.HasColumnName("ALUN_ID_ALUNO")
 					.IsRequired();
 
+			builder.Property(b => b.CursoId)
+					.HasColumnName("ALUN_ID_CURSO")
+					.IsRequired();
+
 			builder.Property(b => b.Matricula)
 					.HasColumnName("ALUN_COD_ALUNO")
 					.ValueGeneratedNever()
@@ -46,7 +50,13 @@ namespace SmartSchool.Dados.Modulos.Alunos
 
 			builder.Property(b => b.Telefone)
 					.HasColumnName("ALUN_NR_TELEFONE")
-					.HasMaxLength(16);		   
+					.HasMaxLength(16);
+
+			builder.HasOne(b => b.Curso)
+					.WithMany(p => p.Alunos)
+					.HasForeignKey(b => b.CursoId)
+					.HasConstraintName("FK_ALUN_CURSO")
+					.OnDelete(DeleteBehavior.Restrict);
 		}
 	}
 }

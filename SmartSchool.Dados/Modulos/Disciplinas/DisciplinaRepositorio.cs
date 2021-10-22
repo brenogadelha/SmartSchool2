@@ -37,7 +37,7 @@ namespace SmartSchool.Dados.Modulos.Usuarios
 		public IEnumerable<Disciplina> Procurar(IEspecificavel<Disciplina> especificacao) =>
 			this._contexto.SmartContexto.ObterPorEspecificacao(especificacao);
 
-		public void Remover(Disciplina entidade, bool finalizarTransacao = true) => throw new NotImplementedException();
+		public void Remover(Disciplina entidade, bool finalizarTransacao = true) => this._contexto.SmartContexto.Disciplinas.Remove(entidade);
 
 	}
 }
