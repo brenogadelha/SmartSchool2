@@ -10,6 +10,15 @@ namespace SmartSchool.Dominio.Alunos.Especificacao
 
 		public BuscaDeAlunoPorIdEspecificacao(Guid id) => this._id = id;
 
+		public BuscaDeAlunoPorIdEspecificacao IncluiInformacoesDeHistorico()
+		{
+			this.ObjetosInclusaoTipo.Add(x => x.SemestresDisciplinas);
+			//this.ObjetosInclusaoStrings.Add("SemestresDisciplinas");
+			this.ObjetosInclusaoStrings.Add("SemestresDisciplinas.AlunoDisciplina.Disciplina");
+
+			return this;
+		}
+
 		public override Expression<Func<Aluno, bool>> ExpressaoEspecificacao => x => x.ID == this._id;
 	}
 }

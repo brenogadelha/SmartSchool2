@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SmartSchool.Aplicacao.Alunos.Interface;
-using SmartSchool.Dominio.Alunos;
 using SmartSchool.Dto.Alunos;
 using SmartSchool.Dto.Alunos.Obter;
 using SmartSchool.Dto.Dtos.TratamentoErros;
@@ -56,17 +54,31 @@ namespace SmartSchool.API.Controllers
 			return Ok(aluno);
 		}
 
-		//[HttpGet("ByName")]
-		//public IActionResult ObterPorNome(string nome, string sobrenome)
-		//{
-		//    var aluno = _alunoServico.ObterTodosAlunos().FirstOrDefault(a => a.Nome.Contains(nome) && a.Sobrenome.Contains(sobrenome));
+		/// <summary>
+		/// Obtem listagem de todos os Alunos por parte do Nome ou Sobrenome
+		/// </summary>
+		/// <returns>Lista de todos os Alunos encontrados</returns>
+		/// <response code="200">Lista de Alunos encontrados</response> 
+		/// <response code="500">Erro inesperado</response> 
+		[HttpGet("{parte-identificador}/nome-a-definir")]
+		[ProducesResponseType(200, Type = typeof(IEnumerable<ObterAlunoDto>))]
+		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
+		[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+		public OkObjectResult ObterPorNomeLoginParcial([FromRoute(Name = "parte-identificador")] string busca) => this.Ok(this._alunoServico.ObterPorNomeSobrenomeParcial(busca));
 
-		//    if (aluno == null)
-		//        throw new Exception($"Não existe aluno com o nome {nome} informado.");
-
-		//    return Ok(aluno);
-		//}
-		//// POST api/<AlunoController>
+		/// <summary>
+		/// Obtém dados do Histórico de um Aluno específico por ID
+		/// </summary>
+		/// <returns>Dados do Histórico do Aluno solicitadoa</returns>
+		/// <response code="200">Obtem dados do Histórico do Aluno solicitado</response>
+		/// <response code="404">Aluno inexistente</response>
+		/// <response code="500">Erro inesperado</response> 
+		[HttpGet("{aluno-id}/historico")]
+		[ProducesResponseType(200, Type = typeof(ObterHistoricoAlunoDto))]
+		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
+		[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+		public OkObjectResult ObterHistoricoPorIdProjeto([FromRoute(Name = "aluno-id")] Guid id) => this.Ok(this._alunoServico.ObterHistoricoPorIdAluno(id));
 
 
 		/// <summary>
@@ -100,7 +112,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult Alterar(Guid id, [FromBody] AlterarAlunoDto alunoDto)
+		public StatusCodeResult Alterar(Guid id, [FromBody] AlterarAlunoDto alunoDto, [FromQuery(Name = "atualizarDisciplinas")] bool? atualizarDisciplinas = null)
 		{
 			if (alunoDto == null)
 				throw new ArgumentNullException(null, "Objeto Usuário nulo (não foi informado).");
@@ -110,7 +122,7 @@ namespace SmartSchool.API.Controllers
 
 			alunoDto.ID = id;
 
-			this._alunoServico.AlterarAluno(id, alunoDto);
+			this._alunoServico.AlterarAluno(id, alunoDto, atualizarDisciplinas);
 
 			return this.StatusCode((int)HttpStatusCode.Created);
 		}
