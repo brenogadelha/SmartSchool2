@@ -10,8 +10,10 @@ namespace SmartSchool.Aplicacao.Alunos.Interface
     {
         IEnumerable<ObterAlunoDto> Obter();
         void CriarAluno(AlunoDto alunoDto);
-        void AlterarAluno(Guid idAluno, AlterarAlunoDto alunoDto);
+        void AlterarAluno(Guid idAluno, AlterarAlunoDto alunoDto, bool? atualizarDisciplinas = null);
         ObterAlunoDto ObterPorId(Guid idAluno);
         void Remover(Guid id);
+        IEnumerable<ObterAlunoDto> ObterPorNomeSobrenomeParcial(string busca);
+        IEnumerable<ObterHistoricoAlunoDto> ObterHistoricoPorIdAluno(Guid idAluno);
     }
 }

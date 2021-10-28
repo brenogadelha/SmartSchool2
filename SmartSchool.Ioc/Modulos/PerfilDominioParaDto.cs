@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SmartSchool.Comum.Enums;
 using SmartSchool.Dominio.Alunos;
 using SmartSchool.Dominio.Cursos;
 using SmartSchool.Dominio.Disciplinas;
@@ -18,6 +19,9 @@ namespace SmartSchool.Ioc.Modulos
 		{
 			// Aluno
 			this.CreateMap<Aluno, ObterAlunoDto>();
+			this.CreateMap<SemestreAlunoDisciplina, ObterHistoricoAlunoDto>()
+				.ForMember(destino => destino.StatusDisciplinaDescricao, opt => opt.MapFrom(origem => origem.StatusDisciplina.Descricao()))
+				.ForMember(destino => destino.NomeDisciplina, opt => opt.MapFrom(origem => origem.AlunoDisciplina.Disciplina.Nome));
 
 			// Professor
 			this.CreateMap<Professor, ObterProfessorDto>();

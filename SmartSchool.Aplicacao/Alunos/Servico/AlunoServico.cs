@@ -50,9 +50,18 @@ namespace SmartSchool.Aplicacao.Alunos.Servico
 			this.GerarAssociacoes(aluno, alunoDto);
 		}
 
-		public void AlterarAluno(Guid idAluno, AlterarAlunoDto alunoDto)
+		public void AlterarAluno(Guid idAluno, AlterarAlunoDto alunoDto, bool? atualizarDisciplinas = null)
 		{
 			var aluno = this.ObterAlunoDominio(idAluno);
+
+			if (atualizarDisciplinas.HasValue)
+			{
+				aluno.AtualizarDisciplinas(alunoDto.AlunosDisciplinas.Select(ad => ad.DisciplinaId).ToList());
+
+				this.GerarAssociacoes(aluno, alunoDto);
+
+				return;
+			}
 
 			aluno.AlterarNome(alunoDto.Nome);
 			aluno.AlterarSobrenome(alunoDto.Sobrenome);
@@ -63,6 +72,8 @@ namespace SmartSchool.Aplicacao.Alunos.Servico
 			aluno.AlterarDataFim(alunoDto.DataFim);
 
 			aluno.AtualizarDisciplinas(alunoDto.AlunosDisciplinas.Select(ad => ad.DisciplinaId).ToList());
+
+			// Pensar em uma forma melhor de atualizar Aluno-Semestre-Disciplina ao alterar infos do Aluno. Caso: alterar somente o status da disciplina já existente, sem apagar tudo e mandar nova lista
 			this.GerarAssociacoes(aluno, alunoDto);
 
 			this._alunoRepositorio.Atualizar(aluno, true);
@@ -77,6 +88,23 @@ namespace SmartSchool.Aplicacao.Alunos.Servico
 			alunoExistente.AlterarAtivo(false);
 
 			this._alunoRepositorio.Atualizar(alunoExistente);
+		}
+
+		public IEnumerable<ObterAlunoDto> ObterPorNomeSobrenomeParcial(string busca)
+		{
+			var alunos = this._alunoRepositorio.Procurar(new BuscaDeAlunoPorNomeParcialEspecificacao(busca));
+
+			if (alunos.ToList().Count == 0)
+				throw new RecursoInexistenteException($"Não foi encontrado nenhum usuário com o parametro '{busca}' informado.");
+
+			return alunos.MapearParaDto<ObterAlunoDto>();
+		}
+
+		public IEnumerable<ObterHistoricoAlunoDto> ObterHistoricoPorIdAluno(Guid idAluno)
+		{
+			var aluno = this.ObterAlunoDominio(idAluno);
+
+			return aluno.SemestresDisciplinas.MapearParaDto<ObterHistoricoAlunoDto>().OrderByDescending(historico => historico.Periodo);
 		}
 
 		private void GerarAssociacoes(Aluno aluno, AlunoDto dto)
@@ -102,7 +130,7 @@ namespace SmartSchool.Aplicacao.Alunos.Servico
 				throw new ArgumentNullException(null, "Id nulo do Aluno (não foi informado).");
 
 
-			var aluno = this._alunoRepositorio.Obter(new BuscaDeAlunoPorIdEspecificacao(idAluno));
+			var aluno = this._alunoRepositorio.Obter(new BuscaDeAlunoPorIdEspecificacao(idAluno).IncluiInformacoesDeHistorico());
 
 			if (aluno == null)
 				throw new RecursoInexistenteException($"Aluno com ID '{idAluno}' não existe.");

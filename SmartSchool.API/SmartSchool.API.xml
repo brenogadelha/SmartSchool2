@@ -21,6 +21,23 @@
             <response code="404">Aluno inexistente</response>
             <response code="500">Erro inesperado</response>
         </member>
+        <member name="M:SmartSchool.API.Controllers.AlunoController.ObterPorNomeLoginParcial(System.String)">
+            <summary>
+            Obtem listagem de todos os Alunos por parte do Nome ou Sobrenome
+            </summary>
+            <returns>Lista de todos os Alunos encontrados</returns>
+            <response code="200">Lista de Alunos encontrados</response> 
+            <response code="500">Erro inesperado</response> 
+        </member>
+        <member name="M:SmartSchool.API.Controllers.AlunoController.ObterHistoricoPorIdProjeto(System.Guid)">
+            <summary>
+            Obtém dados do Histórico de um Aluno específico por ID
+            </summary>
+            <returns>Dados do Histórico do Aluno solicitadoa</returns>
+            <response code="200">Obtem dados do Histórico do Aluno solicitado</response>
+            <response code="404">Aluno inexistente</response>
+            <response code="500">Erro inesperado</response> 
+        </member>
         <member name="M:SmartSchool.API.Controllers.AlunoController.Criar(SmartSchool.Dto.Alunos.AlunoDto)">
             <summary>
             Cria um novo Aluno
@@ -30,7 +47,7 @@
             <response code="400">Dados inconsistentes para criação do Aluno</response>
             <response code="500">Erro inesperado</response> 
         </member>
-        <member name="M:SmartSchool.API.Controllers.AlunoController.Alterar(System.Guid,SmartSchool.Dto.Alunos.AlterarAlunoDto)">
+        <member name="M:SmartSchool.API.Controllers.AlunoController.Alterar(System.Guid,SmartSchool.Dto.Alunos.AlterarAlunoDto,System.Nullable{System.Boolean})">
             <summary>
             Efetua alteração de Aluno
             </summary>
