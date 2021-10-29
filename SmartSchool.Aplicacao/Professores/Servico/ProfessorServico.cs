@@ -40,6 +40,7 @@ namespace SmartSchool.Aplicacao.Professores.Servico
 
             professor.AlterarNome(professorDto.Nome);
             professor.AlterarMatricula(professorDto.Matricula);
+            professor.AtualizarDisciplinas(professorDto.Disciplinas);
 
             this._professorRepositorio.Atualizar(professor, true);
         }

@@ -75,8 +75,6 @@ namespace SmartSchool.Aplicacao.Alunos.Servico
 
 			// Pensar em uma forma melhor de atualizar Aluno-Semestre-Disciplina ao alterar infos do Aluno. Caso: alterar somente o status da disciplina já existente, sem apagar tudo e mandar nova lista
 			this.GerarAssociacoes(aluno, alunoDto);
-
-			this._alunoRepositorio.Atualizar(aluno, true);
 		}
 
 		public ObterAlunoDto ObterPorId(Guid idAluno) => this.ObterAlunoDominio(idAluno).MapearParaDto<ObterAlunoDto>();
@@ -95,16 +93,19 @@ namespace SmartSchool.Aplicacao.Alunos.Servico
 			var alunos = this._alunoRepositorio.Procurar(new BuscaDeAlunoPorNomeParcialEspecificacao(busca));
 
 			if (alunos.ToList().Count == 0)
-				throw new RecursoInexistenteException($"Não foi encontrado nenhum usuário com o parametro '{busca}' informado.");
+				throw new RecursoInexistenteException($"Não foi encontrado nenhum aluno com o parametro '{busca}' informado.");
 
 			return alunos.MapearParaDto<ObterAlunoDto>();
 		}
 
-		public IEnumerable<ObterHistoricoAlunoDto> ObterHistoricoPorIdAluno(Guid idAluno)
+		public IEnumerable<ObterHistoricoAlunoDto> ObterHistoricoPorIdAluno(Guid idAluno, int? periodo = null)
 		{
 			var aluno = this.ObterAlunoDominio(idAluno);
 
-			return aluno.SemestresDisciplinas.MapearParaDto<ObterHistoricoAlunoDto>().OrderByDescending(historico => historico.Periodo);
+			if (periodo.HasValue)
+				return aluno.SemestresDisciplinas.MapearParaDto<ObterHistoricoAlunoDto>().OrderByDescending(historico => historico.Periodo).Where(s => s.Periodo == periodo);
+
+			else return aluno.SemestresDisciplinas.MapearParaDto<ObterHistoricoAlunoDto>().OrderByDescending(historico => historico.Periodo);
 		}
 
 		private void GerarAssociacoes(Aluno aluno, AlunoDto dto)
@@ -130,7 +131,7 @@ namespace SmartSchool.Aplicacao.Alunos.Servico
 				throw new ArgumentNullException(null, "Id nulo do Aluno (não foi informado).");
 
 
-			var aluno = this._alunoRepositorio.Obter(new BuscaDeAlunoPorIdEspecificacao(idAluno).IncluiInformacoesDeHistorico());
+			var aluno = this._alunoRepositorio.Obter(new BuscaDeAlunoPorIdEspecificacao(idAluno).IncluiInformacoesDeHistorico().IncluiInformacoesDeDisciplina());
 
 			if (aluno == null)
 				throw new RecursoInexistenteException($"Aluno com ID '{idAluno}' não existe.");
