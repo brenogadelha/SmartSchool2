@@ -1,7 +1,10 @@
 ﻿using SmartSchool.Comum.Dominio;
+using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dto.Professores;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace SmartSchool.Dominio.Professores
@@ -13,9 +16,15 @@ namespace SmartSchool.Dominio.Professores
         public string Nome { get; private set; }
 
         [JsonIgnore]
-        public List<ProfessorDisciplina> Disciplinas { get; private set; } = new List<ProfessorDisciplina>();
+        public List<ProfessorDisciplina> ProfessoresDisciplinas { get; private set; } = new List<ProfessorDisciplina>();
 
-        public Professor() { }
+		[NotMapped]
+		public List<Disciplina> Disciplinas
+		{
+			get => this.ProfessoresDisciplinas.Select(u => u.Disciplina).ToList();
+		}
+
+		public Professor() { }
 
         public static Professor Criar(ProfessorDto professorDto)
         {
@@ -26,39 +35,43 @@ namespace SmartSchool.Dominio.Professores
                 Matricula = professorDto.Matricula
             };
 
-            return professor;
+			professor.AtualizarDisciplinas(professorDto.Disciplinas);
+
+			return professor;
         }
 
         public void AlterarNome(string nome) => this.Nome = nome;
         public void AlterarMatricula(int matricula) => this.Matricula = matricula;
-    }
+		public void AtualizarDisciplinas(List<Guid> novasDisciplinas)
+		{
+			// Verifica se foram incluídas novas Disciplinas. Caso não, são removidas as atuais.
+			if (novasDisciplinas == null || !novasDisciplinas.Any())
+			{
+				this.ProfessoresDisciplinas.Clear();
+				return;
+			}
 
-    // CRIAR MÉTODO PARA ATUALIZAR DISCIPLINAS DO PROFESSOR
+			// Excluir do Curso as Disciplinas que não estão presentes na nova lista
+			if (this.Disciplinas != null && this.Disciplinas.Any())
+				for (int i = this.Disciplinas.Count - 1; i > -1; i--)
+				{
+					if (!novasDisciplinas.Any(idNovo => idNovo == this.Disciplinas[i].ID))
+					{
+						this.ProfessoresDisciplinas.Remove(this.ProfessoresDisciplinas.FirstOrDefault(p => p.DisciplinaID == this.Disciplinas[i].ID));
+					}
+				}
 
-    //private void AtualizarListaUsuarios(List<Guid> novosIdUsuario, List<Usuario> usuariosAtuais, TipoUsuarioProjetoEnum tipoUsuario)
-    //{
-    //    // Verifica se foram incluídos novos usuários. Caso não, são removidos os atuais.
-    //    if (novosIdUsuario == null || !novosIdUsuario.Any())
-    //    {
-    //        this.Usuarios.Clear();
-    //        return;
-    //    }
+			List<ProfessorDisciplina> listaTemp = new List<ProfessorDisciplina>();
 
-    //    // Excluir do Projeto os usuários que não estão presentes na nova lista
-    //    if (usuariosAtuais != null && usuariosAtuais.Any())
-    //        for (int i = usuariosAtuais.Count - 1; i > -1; i--)
-    //        {
-    //            if (!novosIdUsuario.Any(idNovo => idNovo == usuariosAtuais[i].ID))
-    //            {
-    //                this.Usuarios.Remove(this.Usuarios.FirstOrDefault(p => p.UsuarioID == usuariosAtuais[i].ID));
-    //            }
-    //        }
+			// Adicionar ao Professor as Disciplinas da lista que são diferentes das atuais
+			foreach (Guid id in novasDisciplinas)
+				if (!this.Disciplinas.Any(l => l.ID == id))
+				{
+					listaTemp.Add(ProfessorDisciplina.Criar(this.ID, id));
+				}
 
-    //    // Adicionar ao Projeto os usuários da lista que são diferentes dos atuais
-    //    foreach (Guid guid in novosIdUsuario)
-    //        if (!usuariosAtuais.Any(usuario => usuario.ID == guid))
-    //        {
-    //            this.Usuarios.Add(ProjetoUsuario.Criar(this.ID, guid, tipoUsuario));
-    //        }
-    //}
+			this.ProfessoresDisciplinas.AddRange(listaTemp);
+		}
+	}	
 }
+

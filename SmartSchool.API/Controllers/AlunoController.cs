@@ -78,7 +78,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-		public OkObjectResult ObterHistoricoPorIdProjeto([FromRoute(Name = "aluno-id")] Guid id) => this.Ok(this._alunoServico.ObterHistoricoPorIdAluno(id));
+		public OkObjectResult ObterHistoricoPorIdProjeto([FromRoute(Name = "aluno-id")] Guid id, [FromQuery(Name = "periodo")] int? periodo = null) => this.Ok(this._alunoServico.ObterHistoricoPorIdAluno(id, periodo));
 
 
 		/// <summary>

@@ -91,7 +91,7 @@ namespace SmartSchool.Dominio.Alunos
 
 			List<AlunoDisciplina> listaTemp = new List<AlunoDisciplina>();
 
-			// Adicionar ao Curso as Disciplinas da lista que são diferentes das atuais
+			// Adicionar ao Aluno as Disciplinas da lista que são diferentes das atuais
 			foreach (Guid id in novasDisciplinas)
 				if (!this.Disciplinas.Any(l => l.ID == id))
 				{
@@ -100,30 +100,6 @@ namespace SmartSchool.Dominio.Alunos
 
 			this.AlunosDisciplinas.AddRange(listaTemp);
 		}
-
-		// CRIAR MÉTODO PARA ATUALIZAR DISCIPLINAS DO ALUNO
-
-		//private void AtualizarListaSemestresDisciplinas(List<Guid> novosIdUsuario, List<Usuario> usuariosAtuais, TipoUsuarioProjetoEnum tipoUsuario)
-		//{
-		//    //this.SemestresDisciplinas.Add(SemestreAlunoDisciplina.Criar());
-
-		//    // Excluir do Aluno os Semestres e Disciplinas que não estão presentes na nova lista
-		//    if (usuariosAtuais != null && usuariosAtuais.Any())
-		//        for (int i = usuariosAtuais.Count - 1; i > -1; i--)
-		//        {
-		//            if (!novosIdUsuario.Any(idNovo => idNovo == usuariosAtuais[i].ID))
-		//            {
-		//                this.Usuarios.Remove(this.Usuarios.FirstOrDefault(p => p.UsuarioID == usuariosAtuais[i].ID));
-		//            }
-		//        }
-
-		//    // Adicionar ao Projeto os usuários da lista que são diferentes dos atuais
-		//    foreach (Guid guid in novosIdUsuario)
-		//        if (!usuariosAtuais.Any(usuario => usuario.ID == guid))
-		//        {
-		//            this.Usuarios.Add(ProjetoUsuario.Criar(this.ID, guid, tipoUsuario));
-		//        }
-		//}
 	}
 }
 

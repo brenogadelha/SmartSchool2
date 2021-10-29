@@ -29,7 +29,7 @@
             <response code="200">Lista de Alunos encontrados</response> 
             <response code="500">Erro inesperado</response> 
         </member>
-        <member name="M:SmartSchool.API.Controllers.AlunoController.ObterHistoricoPorIdProjeto(System.Guid)">
+        <member name="M:SmartSchool.API.Controllers.AlunoController.ObterHistoricoPorIdProjeto(System.Guid,System.Nullable{System.Int32})">
             <summary>
             Obtém dados do Histórico de um Aluno específico por ID
             </summary>

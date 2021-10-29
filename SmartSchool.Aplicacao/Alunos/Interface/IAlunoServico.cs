@@ -14,6 +14,6 @@ namespace SmartSchool.Aplicacao.Alunos.Interface
         ObterAlunoDto ObterPorId(Guid idAluno);
         void Remover(Guid id);
         IEnumerable<ObterAlunoDto> ObterPorNomeSobrenomeParcial(string busca);
-        IEnumerable<ObterHistoricoAlunoDto> ObterHistoricoPorIdAluno(Guid idAluno);
+        IEnumerable<ObterHistoricoAlunoDto> ObterHistoricoPorIdAluno(Guid idAluno, int? periodo = null);
     }
 }

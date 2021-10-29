@@ -1,8 +1,6 @@
 ﻿using SmartSchool.Comum.Dominio;
 using SmartSchool.Dominio.Alunos;
-using SmartSchool.Dominio.Cursos;
 using SmartSchool.Dominio.Professores;
-using SmartSchool.Dominio.Semestres;
 using SmartSchool.Dto.Disciplinas;
 using System;
 using System.Collections.Generic;

@@ -12,6 +12,14 @@ namespace SmartSchool.Dominio.Professores.Especificacao
 
 		public BuscaDeDisciplinaPorIdEspecificacao(Guid id) => this._id = id;
 
+		public BuscaDeDisciplinaPorIdEspecificacao IncluiInformacoesDeDisciplina()
+		{
+			this.ObjetosInclusaoTipo.Add(x => x.Professores);
+			this.ObjetosInclusaoStrings.Add("Professores.Professor");
+
+			return this;
+		}
+
 		public override Expression<Func<Disciplina, bool>> ExpressaoEspecificacao => x => x.ID == this._id;
 	}
 }
