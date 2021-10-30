@@ -9,5 +9,6 @@ namespace SmartSchool.Dto.Dtos.Professores
         public Guid ID { get; set; }
         public int Matricula { get; set; }
         public string Nome { get; set; }
-    }
+		public List<string> Disciplinas { get; set; }
+	}
 }

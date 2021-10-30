@@ -128,6 +128,14 @@
             <response code="404">Disciplina inexistente</response>
             <response code="500">Erro inesperado</response>
         </member>
+        <member name="M:SmartSchool.API.Controllers.DisciplinaController.ObterTodosProfessoresDisciplina(System.Guid)">
+            <summary>
+            Obtem listagem de todos os Professores de uma Disciplina
+            </summary>
+            <returns>Lista de todos os Professores</returns>
+            <response code="200">Lista de Professores</response> 
+            <response code="500">Erro inesperado</response>
+        </member>
         <member name="M:SmartSchool.API.Controllers.DisciplinaController.Criar(SmartSchool.Dto.Disciplinas.DisciplinaDto)">
             <summary>
             Cria uma nova Disciplina
@@ -166,10 +174,10 @@
         </member>
         <member name="M:SmartSchool.API.Controllers.ProfessorController.ObterPorId(System.Guid)">
             <summary>
-            Obtém dados de um Aluno específico por ID
+            Obtém dados de um Professor específico por ID
             </summary>
-            <returns>Dados do Aluno solicitado</returns>
-            <response code="200">Obtem dados do Aluno solicitado</response>
+            <returns>Dados do Professor solicitado</returns>
+            <response code="200">Obtem dados do Professor solicitado</response>
             <response code="404">Aluno inexistente</response>
             <response code="500">Erro inesperado</response>
         </member>

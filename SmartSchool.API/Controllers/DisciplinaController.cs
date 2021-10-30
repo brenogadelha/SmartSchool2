@@ -3,6 +3,8 @@ using SmartSchool.Aplicacao.Disciplinas.Interface;
 using SmartSchool.Dto.Alunos.Obter;
 using SmartSchool.Dto.Disciplinas;
 using SmartSchool.Dto.Disciplinas.Alterar;
+using SmartSchool.Dto.Disciplinas.Obter;
+using SmartSchool.Dto.Dtos.Professores;
 using SmartSchool.Dto.Dtos.TratamentoErros;
 using System;
 using System.Collections.Generic;
@@ -27,7 +29,7 @@ namespace SmartSchool.API.Controllers
 		/// <returns>Lista de todas as Disciplinas</returns>
 		/// <response code="200">Lista de Disciplinas</response> 
 		/// <response code="500">Erro inesperado</response>
-		[ProducesResponseType(200, Type = typeof(IEnumerable<ObterAlunoDto>))]
+		[ProducesResponseType(200, Type = typeof(IEnumerable<ObterDisciplinaDto>))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[HttpGet]
 		public OkObjectResult ObterTodos() => Ok(_disciplinaServico.Obter());
@@ -39,32 +41,26 @@ namespace SmartSchool.API.Controllers
 		/// <response code="200">Obtem dados da Disciplina solicitada</response>
 		/// <response code="404">Disciplina inexistente</response>
 		/// <response code="500">Erro inesperado</response>
-		[ProducesResponseType(200, Type = typeof(ObterAlunoDto))]
+		[ProducesResponseType(200, Type = typeof(ObterDisciplinaDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[HttpGet("{id}")]
-		public OkObjectResult ObterPorId(Guid id)
+		public OkObjectResult ObterPorId(Guid id) => Ok(this._disciplinaServico.ObterPorId(id));
+
+
+		/// <summary>
+		/// Obtem listagem de todos os Professores de uma Disciplina
+		/// </summary>
+		/// <returns>Lista de todos os Professores</returns>
+		/// <response code="200">Lista de Professores</response> 
+		/// <response code="500">Erro inesperado</response>
+		[ProducesResponseType(200, Type = typeof(IEnumerable<ObterProfessorDto>))]
+		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
+		[HttpGet("{disciplina-id}/professores")]
+		public OkObjectResult ObterTodosProfessoresDisciplina([FromRoute(Name = "disciplina-id")] Guid id)
 		{
-			var disciplina = this._disciplinaServico.ObterPorId(id);
-
-			if (disciplina == null)
-				throw new Exception($"Não existe Disciplina com o id {id} informado.");
-
-			return Ok(disciplina);
+			return Ok(this._disciplinaServico.ObterProfessores(id));
 		}
-
-		//[HttpGet("ByName")]
-		//public IActionResult ObterPorNome(string nome, string sobrenome)
-		//{
-		//    var aluno = _alunoServico.ObterTodosAlunos().FirstOrDefault(a => a.Nome.Contains(nome) && a.Sobrenome.Contains(sobrenome));
-
-		//    if (aluno == null)
-		//        throw new Exception($"Não existe aluno com o nome {nome} informado.");
-
-		//    return Ok(aluno);
-		//}
-		//// POST api/<AlunoController>
-
 
 		/// <summary>
 		/// Cria uma nova Disciplina

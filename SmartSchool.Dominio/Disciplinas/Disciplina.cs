@@ -4,6 +4,8 @@ using SmartSchool.Dominio.Professores;
 using SmartSchool.Dto.Disciplinas;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace SmartSchool.Dominio.Disciplinas
@@ -18,7 +20,13 @@ namespace SmartSchool.Dominio.Disciplinas
 		public List<AlunoDisciplina> Alunos { get; private set; } = new List<AlunoDisciplina>();
 
 		[JsonIgnore]
-		public List<ProfessorDisciplina> Professores { get; private set; } = new List<ProfessorDisciplina>();
+		public List<ProfessorDisciplina> ProfessoresDisciplinas { get; private set; } = new List<ProfessorDisciplina>();
+
+		[NotMapped]
+		public List<Professor> Professores
+		{
+			get => this.ProfessoresDisciplinas.Select(u => u.Professor).ToList();
+		}
 
 		[JsonIgnore]
 		public List<CursoDisciplina> Cursos { get; private set; } = new List<CursoDisciplina>();
