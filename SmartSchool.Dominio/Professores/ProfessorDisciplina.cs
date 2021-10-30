@@ -1,9 +1,10 @@
-﻿using SmartSchool.Dominio.Disciplinas;
+﻿using SmartSchool.Comum.Dominio;
+using SmartSchool.Dominio.Disciplinas;
 using System;
 
 namespace SmartSchool.Dominio.Professores
 {
-    public class ProfessorDisciplina
+    public class ProfessorDisciplina : IEntidade
     {
         private ProfessorDisciplina() { }
 

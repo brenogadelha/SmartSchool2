@@ -25,7 +25,7 @@ namespace SmartSchool.Dados.Modulos.Professores
 				   .OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasOne(dp => dp.Disciplina)
-				   .WithMany(p => p.Professores)
+				   .WithMany(p => p.ProfessoresDisciplinas)
 				   .HasForeignKey(dp => dp.DisciplinaID)
 				   .HasConstraintName("FK_DISC_PROF")
 				   .OnDelete(DeleteBehavior.Cascade);

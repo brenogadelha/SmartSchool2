@@ -10,6 +10,7 @@ using SmartSchool.Dto.Curso;
 using SmartSchool.Dto.Disciplinas.Obter;
 using SmartSchool.Dto.Dtos.Professores;
 using SmartSchool.Dto.Semestres;
+using System.Linq;
 
 namespace SmartSchool.Ioc.Modulos
 {
@@ -24,10 +25,12 @@ namespace SmartSchool.Ioc.Modulos
 				.ForMember(destino => destino.NomeDisciplina, opt => opt.MapFrom(origem => origem.AlunoDisciplina.Disciplina.Nome));
 
 			// Professor
-			this.CreateMap<Professor, ObterProfessorDto>();
+			this.CreateMap<Professor, ObterProfessorDto>()
+				.ForMember(destino => destino.Disciplinas, opt => opt.MapFrom(origem => origem.Disciplinas.Select(d => d.Nome).ToList()));
 
 			// Disciplina
-			this.CreateMap<Disciplina, ObterDisciplinaDto>();
+			this.CreateMap<Disciplina, ObterDisciplinaDto>()
+				.ForMember(destino => destino.Professores, opt => opt.MapFrom(origem => origem.Professores.Select(d => d.Nome).ToList()));
 
 			// Curso
 			this.CreateMap<Curso, CursoDto>();

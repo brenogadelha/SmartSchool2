@@ -72,8 +72,7 @@ namespace SmartSchool.Aplicacao.Alunos.Servico
 			aluno.AlterarDataFim(alunoDto.DataFim);
 
 			aluno.AtualizarDisciplinas(alunoDto.AlunosDisciplinas.Select(ad => ad.DisciplinaId).ToList());
-
-			// Pensar em uma forma melhor de atualizar Aluno-Semestre-Disciplina ao alterar infos do Aluno. Caso: alterar somente o status da disciplina já existente, sem apagar tudo e mandar nova lista
+						
 			this.GerarAssociacoes(aluno, alunoDto);
 		}
 

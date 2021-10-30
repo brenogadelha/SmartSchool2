@@ -16,5 +16,6 @@ namespace SmartSchool.Aplicacao.Disciplinas.Interface
         void AlterarDisciplina(Guid idDisciplina, AlterarDisciplinaDto disciplinaDto);
         ObterDisciplinaDto ObterPorId(Guid idDisciplina);
         void Remover(Guid id);
+        IEnumerable<ObterProfessorDto> ObterProfessores(Guid idDisciplina);
     }
 }

@@ -8,6 +8,7 @@ using SmartSchool.Dominio.Professores.Especificacao;
 using SmartSchool.Dto.Disciplinas;
 using SmartSchool.Dto.Disciplinas.Alterar;
 using SmartSchool.Dto.Disciplinas.Obter;
+using SmartSchool.Dto.Dtos.Professores;
 using System;
 using System.Collections.Generic;
 
@@ -24,7 +25,7 @@ namespace SmartSchool.Aplicacao.Disciplinas.Servico
 
         public IEnumerable<ObterDisciplinaDto> Obter()
         {
-            var disciplina = this._disciplinaRepositorio.Procurar(new BuscaDeDisciplinaEspecificacao());
+            var disciplina = this._disciplinaRepositorio.Procurar(new BuscaDeDisciplinaEspecificacao().IncluiInformacoesDeProfessor());
 
             return disciplina.MapearParaDto<ObterDisciplinaDto>();
         }
@@ -47,6 +48,13 @@ namespace SmartSchool.Aplicacao.Disciplinas.Servico
 
         public ObterDisciplinaDto ObterPorId(Guid idDisciplina) => this.ObterDisciplinaDominio(idDisciplina).MapearParaDto<ObterDisciplinaDto>();
 
+        public IEnumerable<ObterProfessorDto> ObterProfessores(Guid idDisciplina)
+        {
+            var disciplina = this.ObterDisciplinaDominio(idDisciplina);
+
+            return disciplina.Professores.MapearParaDto<ObterProfessorDto>();
+        }
+
         public void Remover(Guid id)
         {
             var disciplina = this.ObterDisciplinaDominio(id);
@@ -60,7 +68,7 @@ namespace SmartSchool.Aplicacao.Disciplinas.Servico
                 throw new ArgumentNullException(null, "Id nulo da Disciplina (não foi informado).");
 
 
-            var disciplina = this._disciplinaRepositorio.Obter(new BuscaDeDisciplinaPorIdEspecificacao(idDisciplina));
+            var disciplina = this._disciplinaRepositorio.Obter(new BuscaDeDisciplinaPorIdEspecificacao(idDisciplina).IncluiInformacoesDeProfessor());
 
             if (disciplina == null)
                 throw new RecursoInexistenteException($"Disciplina com ID '{idDisciplina}' não existe.");

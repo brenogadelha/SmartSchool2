@@ -22,7 +22,7 @@ namespace SmartSchool.Aplicacao.Professores.Servico
 
         public IEnumerable<ObterProfessorDto> Obter()
         {
-            var professor = this._professorRepositorio.Procurar(new BuscaDeProfessorEspecificacao());
+            var professor = this._professorRepositorio.Procurar(new BuscaDeProfessorEspecificacao().IncluiInformacoesDeDisciplina());
 
             return professor.MapearParaDto<ObterProfessorDto>();
         }
@@ -60,7 +60,7 @@ namespace SmartSchool.Aplicacao.Professores.Servico
                 throw new ArgumentNullException(null, "Id nulo do Professor (não foi informado).");
 
 
-            var professor = this._professorRepositorio.Obter(new BuscaDeProfessorPorIdEspecificacao(idProfessor));
+            var professor = this._professorRepositorio.Obter(new BuscaDeProfessorPorIdEspecificacao(idProfessor).IncluiInformacoesDeDisciplina());
 
             if (professor == null)
                 throw new RecursoInexistenteException($"Professor com ID '{idProfessor}' não existe.");
