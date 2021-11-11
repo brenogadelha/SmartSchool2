@@ -3,97 +3,94 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartSchool.Dados.Contextos;
 
 namespace SmartSchool.Dados.Migrations
 {
     [DbContext(typeof(SmartContexto))]
-    partial class SmartContextoModelSnapshot : ModelSnapshot
+    [Migration("20211107032744_AlteracaoAluno")]
+    partial class AlteracaoAluno
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("SmartSchool")
+                .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("SmartSchool.Dominio.Alunos.Aluno", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("ALUN_ID_ALUNO");
+                        .HasColumnName("ALUN_ID_ALUNO")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Ativo")
-                        .HasColumnType("bit")
-                        .HasColumnName("ALUN_IN_ATIVO");
+                        .HasColumnName("ALUN_IN_ATIVO")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Celular")
-                        .HasMaxLength(16)
+                        .HasColumnName("ALUN_NR_CELULAR")
                         .HasColumnType("nvarchar(16)")
-                        .HasColumnName("ALUN_NR_CELULAR");
+                        .HasMaxLength(16);
 
                     b.Property<string>("Cidade")
-                        .HasMaxLength(32)
+                        .HasColumnName("ALUN_TXT_CIDADE")
                         .HasColumnType("nvarchar(32)")
-                        .HasColumnName("ALUN_TXT_CIDADE");
+                        .HasMaxLength(32);
 
                     b.Property<string>("Cpf")
                         .IsRequired()
-                        .HasMaxLength(16)
+                        .HasColumnName("ALUN_NR_CPF")
                         .HasColumnType("nvarchar(16)")
-                        .HasColumnName("ALUN_NR_CPF");
+                        .HasMaxLength(16);
 
                     b.Property<Guid>("CursoId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("ALUN_ID_CURSO");
+                        .HasColumnName("ALUN_ID_CURSO")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataFim")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("ALUN_DT_FIM");
+                        .HasColumnName("ALUN_DT_FIM")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DataInicio")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("ALUN_DT_INICIO");
+                        .HasColumnName("ALUN_DT_INICIO")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DataNascimento")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("ALUN_DT_NASCIMENTO");
+                        .HasColumnName("ALUN_DT_NASCIMENTO")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(256)
+                        .HasColumnName("ALUN_TXT_EMAIL")
                         .HasColumnType("nvarchar(256)")
-                        .HasColumnName("ALUN_TXT_EMAIL");
-
-                    b.Property<string>("Endereco")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("ALUN_TXT_ENDERECO");
+                        .HasMaxLength(256);
 
                     b.Property<int>("Matricula")
-                        .HasColumnType("int")
-                        .HasColumnName("ALUN_COD_ALUNO");
+                        .HasColumnName("ALUN_COD_ALUNO")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(32)
+                        .HasColumnName("ALUN_NM_NOME")
                         .HasColumnType("nvarchar(32)")
-                        .HasColumnName("ALUN_NM_NOME");
+                        .HasMaxLength(32);
 
                     b.Property<string>("Sobrenome")
                         .IsRequired()
-                        .HasMaxLength(128)
+                        .HasColumnName("ALUN_NM_SOBRENOME")
                         .HasColumnType("nvarchar(128)")
-                        .HasColumnName("ALUN_NM_SOBRENOME");
+                        .HasMaxLength(128);
 
                     b.Property<string>("Telefone")
-                        .HasMaxLength(16)
+                        .HasColumnName("ALUN_NR_TELEFONE")
                         .HasColumnType("nvarchar(16)")
-                        .HasColumnName("ALUN_NR_TELEFONE");
+                        .HasMaxLength(16);
 
                     b.HasKey("ID");
 
@@ -105,12 +102,12 @@ namespace SmartSchool.Dados.Migrations
             modelBuilder.Entity("SmartSchool.Dominio.Alunos.AlunoDisciplina", b =>
                 {
                     b.Property<Guid>("AlunoID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("ALDI_ID_ALUNO");
+                        .HasColumnName("ALDI_ID_ALUNO")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("DisciplinaID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("ALDI_ID_DISCIPLINA");
+                        .HasColumnName("ALDI_ID_DISCIPLINA")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("AlunoID", "DisciplinaID");
 
@@ -123,14 +120,14 @@ namespace SmartSchool.Dados.Migrations
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("CURS_ID_CURSO");
+                        .HasColumnName("CURS_ID_CURSO")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(32)
+                        .HasColumnName("CURS_NM_CURSO")
                         .HasColumnType("nvarchar(32)")
-                        .HasColumnName("CURS_NM_CURSO");
+                        .HasMaxLength(32);
 
                     b.HasKey("ID");
 
@@ -140,12 +137,12 @@ namespace SmartSchool.Dados.Migrations
             modelBuilder.Entity("SmartSchool.Dominio.Disciplinas.CursoDisciplina", b =>
                 {
                     b.Property<Guid>("CursoID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("CUDI_ID_CURSO");
+                        .HasColumnName("CUDI_ID_CURSO")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("DisciplinaID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("CUDI_ID_DISCIPLINA");
+                        .HasColumnName("CUDI_ID_DISCIPLINA")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("CursoID", "DisciplinaID");
 
@@ -158,18 +155,18 @@ namespace SmartSchool.Dados.Migrations
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("DISC_ID_DISCIPLINA");
+                        .HasColumnName("DISC_ID_DISCIPLINA")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(32)
+                        .HasColumnName("DISC_NM_NOME")
                         .HasColumnType("nvarchar(32)")
-                        .HasColumnName("DISC_NM_NOME");
+                        .HasMaxLength(32);
 
                     b.Property<int>("Periodo")
-                        .HasColumnType("int")
-                        .HasColumnName("DISC_ID_PERIODO");
+                        .HasColumnName("DISC_ID_PERIODO")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -179,18 +176,18 @@ namespace SmartSchool.Dados.Migrations
             modelBuilder.Entity("SmartSchool.Dominio.Professores.Professor", b =>
                 {
                     b.Property<Guid>("ID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("PROF_ID_PROFESSOR");
+                        .HasColumnName("PROF_ID_PROFESSOR")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Matricula")
-                        .HasColumnType("int")
-                        .HasColumnName("PROF_COD_PROFESSOR");
+                        .HasColumnName("PROF_COD_PROFESSOR")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(32)
+                        .HasColumnName("PROF_NM_NOME")
                         .HasColumnType("nvarchar(32)")
-                        .HasColumnName("PROF_NM_NOME");
+                        .HasMaxLength(32);
 
                     b.HasKey("ID");
 
@@ -200,12 +197,12 @@ namespace SmartSchool.Dados.Migrations
             modelBuilder.Entity("SmartSchool.Dominio.Professores.ProfessorDisciplina", b =>
                 {
                     b.Property<Guid>("ProfessorID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("PRDI_ID_PROFESSOR");
+                        .HasColumnName("PRDI_ID_PROFESSOR")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("DisciplinaID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("PRDI_ID_DISCIPLINA");
+                        .HasColumnName("PRDI_ID_DISCIPLINA")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ProfessorID", "DisciplinaID");
 
@@ -218,16 +215,16 @@ namespace SmartSchool.Dados.Migrations
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("SEME_ID_SEMESTRE");
+                        .HasColumnName("SEME_ID_SEMESTRE")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataFim")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("SEME_DT_FIM");
+                        .HasColumnName("SEME_DT_FIM")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DataInicio")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("SEME_DT_INICIO");
+                        .HasColumnName("SEME_DT_INICIO")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("ID");
 
@@ -237,24 +234,24 @@ namespace SmartSchool.Dados.Migrations
             modelBuilder.Entity("SmartSchool.Dominio.Semestres.SemestreAlunoDisciplina", b =>
                 {
                     b.Property<Guid>("SemestreID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("SEAD_ID_SEMESTRE");
+                        .HasColumnName("SEAD_ID_SEMESTRE")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("AlunoID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("SEAD_ID_ALUNO");
+                        .HasColumnName("SEAD_ID_ALUNO")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("DisciplinaID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("SEAD_ID_DISCIPLINA");
+                        .HasColumnName("SEAD_ID_DISCIPLINA")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Periodo")
-                        .HasColumnType("int")
-                        .HasColumnName("SEAD_ID_PERIODO");
+                        .HasColumnName("SEAD_ID_PERIODO")
+                        .HasColumnType("int");
 
                     b.Property<int>("StatusDisciplina")
-                        .HasColumnType("int")
-                        .HasColumnName("SEAD_ID_STATUS_DISCIPLINA");
+                        .HasColumnName("SEAD_ID_STATUS_DISCIPLINA")
+                        .HasColumnType("int");
 
                     b.HasKey("SemestreID", "AlunoID", "DisciplinaID");
 
@@ -271,8 +268,6 @@ namespace SmartSchool.Dados.Migrations
                         .HasConstraintName("FK_ALUN_CURSO")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Curso");
                 });
 
             modelBuilder.Entity("SmartSchool.Dominio.Alunos.AlunoDisciplina", b =>
@@ -290,10 +285,6 @@ namespace SmartSchool.Dados.Migrations
                         .HasConstraintName("FK_DISC_ALUN")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Aluno");
-
-                    b.Navigation("Disciplina");
                 });
 
             modelBuilder.Entity("SmartSchool.Dominio.Disciplinas.CursoDisciplina", b =>
@@ -311,10 +302,6 @@ namespace SmartSchool.Dados.Migrations
                         .HasConstraintName("FK_DISC_CURS")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Curso");
-
-                    b.Navigation("Disciplina");
                 });
 
             modelBuilder.Entity("SmartSchool.Dominio.Professores.ProfessorDisciplina", b =>
@@ -332,10 +319,6 @@ namespace SmartSchool.Dados.Migrations
                         .HasConstraintName("FK_PROF_DISC")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Disciplina");
-
-                    b.Navigation("Professor");
                 });
 
             modelBuilder.Entity("SmartSchool.Dominio.Semestres.SemestreAlunoDisciplina", b =>
@@ -359,48 +342,6 @@ namespace SmartSchool.Dados.Migrations
                         .HasConstraintName("FK_ALDI_SEME")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("AlunoDisciplina");
-
-                    b.Navigation("Semestre");
-                });
-
-            modelBuilder.Entity("SmartSchool.Dominio.Alunos.Aluno", b =>
-                {
-                    b.Navigation("AlunosDisciplinas");
-
-                    b.Navigation("SemestresDisciplinas");
-                });
-
-            modelBuilder.Entity("SmartSchool.Dominio.Alunos.AlunoDisciplina", b =>
-                {
-                    b.Navigation("Semestres");
-                });
-
-            modelBuilder.Entity("SmartSchool.Dominio.Cursos.Curso", b =>
-                {
-                    b.Navigation("Alunos");
-
-                    b.Navigation("CursosDisciplinas");
-                });
-
-            modelBuilder.Entity("SmartSchool.Dominio.Disciplinas.Disciplina", b =>
-                {
-                    b.Navigation("Alunos");
-
-                    b.Navigation("Cursos");
-
-                    b.Navigation("ProfessoresDisciplinas");
-                });
-
-            modelBuilder.Entity("SmartSchool.Dominio.Professores.Professor", b =>
-                {
-                    b.Navigation("ProfessoresDisciplinas");
-                });
-
-            modelBuilder.Entity("SmartSchool.Dominio.Semestres.Semestre", b =>
-                {
-                    b.Navigation("AlunosDisciplinas");
                 });
 #pragma warning restore 612, 618
         }

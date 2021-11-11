@@ -37,6 +37,20 @@ namespace SmartSchool.Dados.Modulos.Alunos
 					.HasMaxLength(128)
 					.IsRequired();
 
+			builder.Property(b => b.Cpf)
+					.HasColumnName("ALUN_NR_CPF")
+					.HasMaxLength(16)
+					.IsRequired();
+
+			builder.Property(b => b.Email)
+					.HasColumnName("ALUN_TXT_EMAIL")
+					.HasMaxLength(256)
+					.IsRequired();
+
+			builder.Property(b => b.Cidade)
+					.HasColumnName("ALUN_TXT_CIDADE")
+					.HasMaxLength(32);
+
 			builder.Property(b => b.DataNascimento)
 					.HasColumnName("ALUN_DT_NASCIMENTO")
 					.IsRequired();
@@ -50,6 +64,14 @@ namespace SmartSchool.Dados.Modulos.Alunos
 
 			builder.Property(b => b.Telefone)
 					.HasColumnName("ALUN_NR_TELEFONE")
+					.HasMaxLength(16);
+
+			builder.Property(b => b.Endereco)
+					.HasColumnName("ALUN_TXT_ENDERECO")
+					.HasMaxLength(128);
+
+			builder.Property(b => b.Celular)
+					.HasColumnName("ALUN_NR_CELULAR")
 					.HasMaxLength(16);
 
 			builder.HasOne(b => b.Curso)
