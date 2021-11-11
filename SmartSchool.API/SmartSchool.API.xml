@@ -21,7 +21,16 @@
             <response code="404">Aluno inexistente</response>
             <response code="500">Erro inesperado</response>
         </member>
-        <member name="M:SmartSchool.API.Controllers.AlunoController.ObterPorNomeLoginParcial(System.String)">
+        <member name="M:SmartSchool.API.Controllers.AlunoController.ObterPorMatricula(System.Int32)">
+            <summary>
+            Obtém dados de um Aluno específico por Matrícula
+            </summary>
+            <returns>Dados do Aluno solicitado</returns>
+            <response code="200">Obtem dados do Aluno solicitado</response>
+            <response code="404">Aluno inexistente</response>
+            <response code="500">Erro inesperado</response>
+        </member>
+        <member name="M:SmartSchool.API.Controllers.AlunoController.ObterPorNomeSobrenomeParcial(System.String)">
             <summary>
             Obtem listagem de todos os Alunos por parte do Nome ou Sobrenome
             </summary>
@@ -38,7 +47,7 @@
             <response code="404">Aluno inexistente</response>
             <response code="500">Erro inesperado</response> 
         </member>
-        <member name="M:SmartSchool.API.Controllers.AlunoController.Criar(SmartSchool.Dto.Alunos.AlunoDto)">
+        <member name="M:SmartSchool.API.Controllers.AlunoController.CriarAluno(SmartSchool.Dto.Alunos.AlunoDto)">
             <summary>
             Cria um novo Aluno
             </summary>
@@ -47,7 +56,7 @@
             <response code="400">Dados inconsistentes para criação do Aluno</response>
             <response code="500">Erro inesperado</response> 
         </member>
-        <member name="M:SmartSchool.API.Controllers.AlunoController.Alterar(System.Guid,SmartSchool.Dto.Alunos.AlterarAlunoDto,System.Nullable{System.Boolean})">
+        <member name="M:SmartSchool.API.Controllers.AlunoController.AlterarAluno(System.Guid,SmartSchool.Dto.Alunos.AlterarAlunoDto,System.Nullable{System.Boolean})">
             <summary>
             Efetua alteração de Aluno
             </summary>
@@ -57,7 +66,7 @@
             <response code="404">Aluno inexistente</response>
             <response code="500">Erro inesperado</response> 
         </member>
-        <member name="M:SmartSchool.API.Controllers.AlunoController.ExcluirAluno(System.Guid)">
+        <member name="M:SmartSchool.API.Controllers.AlunoController.RemoverAluno(System.Guid)">
             <summary>
             Exclui um Aluno específico
             </summary>

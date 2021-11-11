@@ -19,7 +19,8 @@ namespace SmartSchool.Ioc.Modulos
 		public PerfilDominioParaDto()
 		{
 			// Aluno
-			this.CreateMap<Aluno, ObterAlunoDto>();
+			this.CreateMap<Aluno, ObterAlunoDto>()
+				.ForMember(destino => destino.Curso, opt => opt.MapFrom(origem => origem.Curso.Nome));
 			this.CreateMap<SemestreAlunoDisciplina, ObterHistoricoAlunoDto>()
 				.ForMember(destino => destino.StatusDisciplinaDescricao, opt => opt.MapFrom(origem => origem.StatusDisciplina.Descricao()))
 				.ForMember(destino => destino.NomeDisciplina, opt => opt.MapFrom(origem => origem.AlunoDisciplina.Disciplina.Nome));

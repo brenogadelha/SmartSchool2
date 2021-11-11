@@ -12,7 +12,7 @@ namespace SmartSchool.Dominio.Alunos.Especificacao
 
 		public override Expression<Func<Aluno, bool>> ExpressaoEspecificacao => x =>
 			   (x.Nome.ToLower().Contains(_busca.ToLower()) ||
-			   x.Sobrenome.ToLower().Contains(_busca.ToLower())) &&
+			   x.Sobrenome.ToLower().Contains(_busca.ToLower())) || (x.Nome.ToLower() +" "+ x.Sobrenome.ToLower()).Contains(_busca.ToLower()) &&
 			   x.Ativo == true;
 	}
 }

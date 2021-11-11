@@ -47,10 +47,23 @@ namespace SmartSchool.API.Controllers
 		public OkObjectResult ObterPorId(Guid id)
 		{
 			var aluno = this._alunoServico.ObterPorId(id);
+			return Ok(aluno);
+		}
 
-			if (aluno == null)
-				throw new Exception($"Não existe Aluno com o id {id} informado.");
-
+		/// <summary>
+		/// Obtém dados de um Aluno específico por Matrícula
+		/// </summary>
+		/// <returns>Dados do Aluno solicitado</returns>
+		/// <response code="200">Obtem dados do Aluno solicitado</response>
+		/// <response code="404">Aluno inexistente</response>
+		/// <response code="500">Erro inesperado</response>
+		[ProducesResponseType(200, Type = typeof(ObterAlunoDto))]
+		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
+		[HttpGet("{matricula}/id")]
+		public OkObjectResult ObterPorMatricula(int matricula)
+		{
+			var aluno = this._alunoServico.ObterPorMatricula(matricula);
 			return Ok(aluno);
 		}
 
@@ -64,7 +77,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(200, Type = typeof(IEnumerable<ObterAlunoDto>))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-		public OkObjectResult ObterPorNomeLoginParcial([FromRoute(Name = "parte-identificador")] string busca) => this.Ok(this._alunoServico.ObterPorNomeSobrenomeParcial(busca));
+		public OkObjectResult ObterPorNomeSobrenomeParcial([FromRoute(Name = "parte-identificador")] string busca) => this.Ok(this._alunoServico.ObterPorNomeSobrenomeParcial(busca));
 
 		/// <summary>
 		/// Obtém dados do Histórico de um Aluno específico por ID
@@ -92,7 +105,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(201)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult Criar([FromBody] AlunoDto aluno)
+		public StatusCodeResult CriarAluno([FromBody] AlunoDto aluno)
 		{
 			this._alunoServico.CriarAluno(aluno);
 
@@ -112,7 +125,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult Alterar(Guid id, [FromBody] AlterarAlunoDto alunoDto, [FromQuery(Name = "atualizarDisciplinas")] bool? atualizarDisciplinas = null)
+		public StatusCodeResult AlterarAluno(Guid id, [FromBody] AlterarAlunoDto alunoDto, [FromQuery(Name = "atualizarDisciplinas")] bool? atualizarDisciplinas = null)
 		{
 			if (alunoDto == null)
 				throw new ArgumentNullException(null, "Objeto Usuário nulo (não foi informado).");
@@ -139,7 +152,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult ExcluirAluno(Guid id)
+		public StatusCodeResult RemoverAluno(Guid id)
 		{
 			this._alunoServico.Remover(id);
 			return this.StatusCode(204);

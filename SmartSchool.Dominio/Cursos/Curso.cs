@@ -26,7 +26,7 @@ namespace SmartSchool.Dominio.Cursos
 		}
 
 		[JsonIgnore]
-		public List<Aluno> Alunos { get; private set; }
+		public List<Aluno> Alunos { get; private set; } = new List<Aluno>();
 
 		public static Curso Criar(CursoDto cursoDto)
 		{

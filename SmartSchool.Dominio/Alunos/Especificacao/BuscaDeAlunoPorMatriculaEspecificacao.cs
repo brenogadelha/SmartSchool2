@@ -4,13 +4,13 @@ using System.Linq.Expressions;
 
 namespace SmartSchool.Dominio.Alunos.Especificacao
 {
-	public class BuscaDeAlunoPorIdEspecificacao : Especificacao<Aluno>
+	public class BuscaDeAlunoPorMatriculaEspecificacao : Especificacao<Aluno>
 	{
-		private readonly Guid _id;
+		private readonly int _matricula;
 
-		public BuscaDeAlunoPorIdEspecificacao(Guid id) => this._id = id;
+		public BuscaDeAlunoPorMatriculaEspecificacao(int matricula) => this._matricula = matricula;
 
-		public BuscaDeAlunoPorIdEspecificacao IncluiInformacoesDeHistorico()
+		public BuscaDeAlunoPorMatriculaEspecificacao IncluiInformacoesDeHistorico()
 		{
 			this.ObjetosInclusaoTipo.Add(x => x.SemestresDisciplinas);
 			this.ObjetosInclusaoStrings.Add("SemestresDisciplinas");
@@ -19,7 +19,7 @@ namespace SmartSchool.Dominio.Alunos.Especificacao
 			return this;
 		}
 
-		public BuscaDeAlunoPorIdEspecificacao IncluiInformacoesDeDisciplina()
+		public BuscaDeAlunoPorMatriculaEspecificacao IncluiInformacoesDeDisciplina()
 		{
 			this.ObjetosInclusaoTipo.Add(x => x.AlunosDisciplinas);
 			this.ObjetosInclusaoStrings.Add("AlunosDisciplinas.Disciplina");
@@ -27,13 +27,13 @@ namespace SmartSchool.Dominio.Alunos.Especificacao
 			return this;
 		}
 
-		public BuscaDeAlunoPorIdEspecificacao IncluiInformacoesDeCurso()
+		public BuscaDeAlunoPorMatriculaEspecificacao IncluiInformacoesDeCurso()
 		{
 			this.ObjetosInclusaoTipo.Add(x => x.Curso);
 
 			return this;
 		}
 
-		public override Expression<Func<Aluno, bool>> ExpressaoEspecificacao => x => x.ID == this._id;
+		public override Expression<Func<Aluno, bool>> ExpressaoEspecificacao => x => x.Matricula == this._matricula;
 	}
 }

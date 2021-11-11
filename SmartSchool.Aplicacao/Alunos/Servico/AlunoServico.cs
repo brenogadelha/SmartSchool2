@@ -42,16 +42,23 @@ namespace SmartSchool.Aplicacao.Alunos.Servico
 
 		public void CriarAluno(AlunoDto alunoDto)
 		{
+			this.VerificarExisteAlunoComMesmoCpfCnpj(alunoDto.Cpf, null);
+			this.VerificarExisteAlunoComMesmoEmail(alunoDto.Email, null);
+
 			var aluno = Aluno.Criar(alunoDto);
 
 			this.ObterCursoDominio(alunoDto.CursoId);
 			this._alunoRepositorio.Adicionar(aluno);
 
-			this.GerarAssociacoes(aluno, alunoDto);
+			if (alunoDto.AlunosDisciplinas != null)
+			{
+				this.GerarAssociacoes(aluno, alunoDto);
+				return;
+			}
 		}
 
 		public void AlterarAluno(Guid idAluno, AlterarAlunoDto alunoDto, bool? atualizarDisciplinas = null)
-		{
+		{			
 			var aluno = this.ObterAlunoDominio(idAluno);
 
 			if (atualizarDisciplinas.HasValue)
@@ -63,20 +70,36 @@ namespace SmartSchool.Aplicacao.Alunos.Servico
 				return;
 			}
 
+			this.VerificarExisteAlunoComMesmoCpfCnpj(alunoDto.Cpf, alunoDto.ID);
+			this.VerificarExisteAlunoComMesmoEmail(alunoDto.Email, alunoDto.ID);
+
 			aluno.AlterarNome(alunoDto.Nome);
 			aluno.AlterarSobrenome(alunoDto.Sobrenome);
+			aluno.AlterarCelular(alunoDto.Celular);
+			aluno.AlterarCidade(alunoDto.Cidade);
+			aluno.AlterarEndereco(alunoDto.Endereco);
+			aluno.AlterarCpf(alunoDto.Cpf);
+			aluno.AlterarEmail(alunoDto.Email);
 			aluno.AlterarTelefone(alunoDto.Telefone);
 			aluno.AlterarAtivo(alunoDto.Ativo);
 			aluno.AlterarDataNascimento(alunoDto.DataNascimento);
 			aluno.AlterarDataInicio(alunoDto.DataInicio);
 			aluno.AlterarDataFim(alunoDto.DataFim);
 
-			aluno.AtualizarDisciplinas(alunoDto.AlunosDisciplinas.Select(ad => ad.DisciplinaId).ToList());
-						
-			this.GerarAssociacoes(aluno, alunoDto);
+			if (alunoDto.AlunosDisciplinas != null)
+			{
+				aluno.AtualizarDisciplinas(alunoDto.AlunosDisciplinas.Select(ad => ad.DisciplinaId).ToList());
+
+				this.GerarAssociacoes(aluno, alunoDto);
+
+				return;
+			}
+
+			this._alunoRepositorio.Atualizar(aluno);
 		}
 
 		public ObterAlunoDto ObterPorId(Guid idAluno) => this.ObterAlunoDominio(idAluno).MapearParaDto<ObterAlunoDto>();
+		public ObterAlunoDto ObterPorMatricula(int matricula) => this.ObterAlunoDominioMatricula(matricula).MapearParaDto<ObterAlunoDto>();
 
 		public void Remover(Guid id)
 		{
@@ -130,10 +153,24 @@ namespace SmartSchool.Aplicacao.Alunos.Servico
 				throw new ArgumentNullException(null, "Id nulo do Aluno (não foi informado).");
 
 
-			var aluno = this._alunoRepositorio.Obter(new BuscaDeAlunoPorIdEspecificacao(idAluno).IncluiInformacoesDeHistorico().IncluiInformacoesDeDisciplina());
+			var aluno = this._alunoRepositorio.Obter(new BuscaDeAlunoPorIdEspecificacao(idAluno).IncluiInformacoesDeHistorico().IncluiInformacoesDeDisciplina().IncluiInformacoesDeCurso());
 
 			if (aluno == null)
 				throw new RecursoInexistenteException($"Aluno com ID '{idAluno}' não existe.");
+
+			return aluno;
+		}
+
+		private Aluno ObterAlunoDominioMatricula(int matricula)
+		{
+			if (matricula < 0)
+				throw new ArgumentNullException(null, "Matricula do Aluno (não foi informado).");
+
+
+			var aluno = this._alunoRepositorio.Obter(new BuscaDeAlunoPorMatriculaEspecificacao(matricula).IncluiInformacoesDeHistorico().IncluiInformacoesDeDisciplina().IncluiInformacoesDeCurso());
+
+			if (aluno == null)
+				throw new RecursoInexistenteException($"Aluno com matrícula '{matricula}' não existe.");
 
 			return aluno;
 		}
@@ -178,6 +215,19 @@ namespace SmartSchool.Aplicacao.Alunos.Servico
 				throw new RecursoInexistenteException($"Curso com ID '{idCurso}' não existe.");
 
 			return curso;
+		}
+		private void VerificarExisteAlunoComMesmoCpfCnpj(string cpfCnpj, Guid? idAtual)
+		{
+			var alunoComMesmoCpfCnpj = this._alunoRepositorio.Obter(new BuscaDeAlunoPorCpfCnpjEspecificacao(cpfCnpj));
+			if (alunoComMesmoCpfCnpj != null && (!idAtual.HasValue || idAtual.HasValue && alunoComMesmoCpfCnpj.ID != idAtual))
+				throw new ErroNegocioException($"Já existe um Aluno com o mesmo CPF '{cpfCnpj}'.");
+		}
+
+		private void VerificarExisteAlunoComMesmoEmail(string email, Guid? idAtual)
+		{
+			var alunoComMesmoEmail = this._alunoRepositorio.Obter(new BuscaDeAlunoPorEmailEspecificacao(email));
+			if (alunoComMesmoEmail != null && (!idAtual.HasValue || idAtual.HasValue && alunoComMesmoEmail.ID != idAtual))
+				throw new ErroNegocioException($"Já existe um Aluno com o mesmo email '{email}'.");
 		}
 	}
 }
