@@ -46,7 +46,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		}
 
 		[Fact(DisplayName = "Erro Ao Alterar Professor - Id nulo ou inválido")]
-		public void ErroAoAlterarUsuario_IdProfessorNuloInvalido()
+		public void ErroAoAlterarProfessor_IdProfessorNuloInvalido()
 		{
 			var professorDto = new AlterarProfessorDto() { Matricula = 2017100150, Nome = "Paulo Roberto", Disciplinas = new List<Guid>() { _disciplina1.ID, _disciplina2.ID, _disciplina3.ID } };
 
@@ -57,7 +57,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		}
 
 		[Fact(DisplayName = "Erro Ao Alterar Professor - Professor não existe")]
-		public void ErroAoAlterarUsuario_ProfessorNaoExiste()
+		public void ErroAoAlterarProfessor_ProfessorNaoExiste()
 		{
 			var professorId = Guid.NewGuid();
 			var professorDto = new AlterarProfessorDto() { Matricula = 2017100150, Nome = "Paulo Roberto", Disciplinas = new List<Guid>() { _disciplina1.ID, _disciplina2.ID, _disciplina3.ID } };
@@ -78,7 +78,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		}
 
 		[Fact(DisplayName = "Erro Ao Remover Professor - Professor não existe")]
-		public void ErroAoExcluirUsuario_ProfessorNaoExiste()
+		public void ErroAoExcluirProfessor_ProfessorNaoExiste()
 		{
 			Guid guid = Guid.NewGuid();
 			var exception = Assert.Throws<RecursoInexistenteException>(() => this._professorServico.Remover(guid));
@@ -88,7 +88,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		}
 
 		[Fact(DisplayName = "Erro Ao Obter Professor - Por ID - Professor não existe")]
-		public void ErroAoObterUsuario_PorID_ProfessorNaoExiste()
+		public void ErroAoObterProfessor_PorID_ProfessorNaoExiste()
 		{
 			Guid guid = Guid.NewGuid();
 			var exception = Assert.Throws<RecursoInexistenteException>(() => this._professorServico.ObterPorId(guid));

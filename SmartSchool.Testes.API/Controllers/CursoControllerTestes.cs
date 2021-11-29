@@ -105,7 +105,7 @@ namespace SmartSchool.Testes.API.Controllers
 		}
 
 		[Fact(DisplayName = "Obtém a lista de Cursos com sucesso")]
-		public void DeveListarTodasDisciplinas()
+		public void DeveListarTodosCursos()
 		{
 			var disciplinas = new List<Guid>() { _disciplina1.ID, _disciplina2.ID, _disciplina3.ID };
 			var disciplinas2 = new List<Guid>() { _disciplina2.ID, _disciplina3.ID };

@@ -35,7 +35,7 @@ namespace SmartSchool.Testes.API.Controllers
 		}
 
 		[Fact(DisplayName = "Inclui Professor, obtém de volta (Por ID), Altera, exclui e verifica exclusão")]
-		public void DeveCriarUsuarioObterExcluirVerificar()
+		public void DeveCriarProfessorObterExcluirVerificar()
 		{
 			// Criação de Disciplinas
 			var disciplinaDto1 = new DisciplinaDto() { Nome = "Linguagens Formais e Automatoss", Periodo = 1 };
@@ -90,7 +90,7 @@ namespace SmartSchool.Testes.API.Controllers
 		}
 
 		[Fact(DisplayName = "Obtém a lista de Professores com sucesso")]
-		public void DeveListarTodosUsuarios()
+		public void DeveListarTodosProfessores()
 		{
 			// Criação de Disciplinas
 			var disciplinaDto1 = new DisciplinaDto() { Nome = "Cálculo I", Periodo = 1 };

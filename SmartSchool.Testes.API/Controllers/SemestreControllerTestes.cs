@@ -31,7 +31,7 @@ namespace SmartSchool.Testes.API.Controllers
 		}
 
 		[Fact(DisplayName = "Inclui Semestre, obtém de volta (Por ID), Altera, exclui e verifica exclusão")]
-		public void DeveCriarCursoObterExcluirVerificar()
+		public void DeveCriarSemestreObterExcluirVerificar()
 		{
 			var semestreDto = new SemestreDto() { DataInicio = DateTime.Now, DataFim = DateTime.Now.AddMonths(4) };
 
@@ -73,7 +73,7 @@ namespace SmartSchool.Testes.API.Controllers
 		}
 
 		[Fact(DisplayName = "Obtém a lista de Semestres com sucesso")]
-		public void DeveListarTodasDisciplinas()
+		public void DeveListarTodosSemestres()
 		{
 			var semestreDto = new SemestreDto() { DataInicio = DateTime.Now, DataFim = DateTime.Now.AddMonths(4) };
 			var semestreDto2 = new SemestreDto() { DataInicio = DateTime.Now.AddDays(10), DataFim = DateTime.Now.AddMonths(2) };

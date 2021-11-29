@@ -106,7 +106,7 @@ namespace SmartSchool.Testes.Integracao.Aplicacao
 		}
 
 		[Fact(DisplayName = "Inclui Aluno, obtém de volta (Por ID e Matrícula), Altera, Obtem Historico, exclui e verifica exclusão")]
-		public void DeveCriarUsuarioObterExcluirVerificar()
+		public void DeveCriarAlunoObterExcluirVerificar()
 		{
 			var alunoDto = this._alunoDtoBuilder.Instanciar();
 			this._alunoServico.CriarAluno(alunoDto);
@@ -235,7 +235,7 @@ namespace SmartSchool.Testes.Integracao.Aplicacao
 		}
 
 		[Fact(DisplayName = "Obtém a lista de Alunos com sucesso")]
-		public void DeveListarTodosUsuarios()
+		public void DeveListarTodosAlunos()
 		{			
 			var aluno0Dto = this._alunoDtoBuilder.Instanciar();
 
@@ -309,7 +309,7 @@ namespace SmartSchool.Testes.Integracao.Aplicacao
 		}
 
 		[Fact(DisplayName = "Obtém a lista de Alunos por parte do Nome com sucesso")]
-		public void DeveBuscarUsuariosPorNomeLoginParcial()
+		public void DeveBuscarAlunosPorNomeLoginParcial()
 		{
 			var aluno0Dto = this._alunoDtoBuilder.Instanciar();
 

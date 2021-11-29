@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartSchool.Aplicacao.Disciplinas.Interface;
-using SmartSchool.Dto.Alunos.Obter;
 using SmartSchool.Dto.Disciplinas;
 using SmartSchool.Dto.Disciplinas.Alterar;
 using SmartSchool.Dto.Disciplinas.Obter;

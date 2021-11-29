@@ -91,7 +91,7 @@ namespace SmartSchool.Testes.Integracao.Aplicacao
 			cursoDtoAlteradoVindoDoBanco.Disciplinas.Where(x => x == _disciplina2.Nome).Count().Should().Be(1);
 			cursoDtoAlteradoVindoDoBanco.Disciplinas.Where(x => x == _disciplina3.Nome).Count().Should().Be(1);
 
-			//Deleta Disciplina
+			//Deleta Curso
 			this._cursoServico.Remover(cursoDtoAlteradoVindoDoBanco.ID);
 
 			//obtém novamente e verifica exclusão
@@ -101,7 +101,7 @@ namespace SmartSchool.Testes.Integracao.Aplicacao
 		}
 
 		[Fact(DisplayName = "Obtém a lista de Cursos com sucesso")]
-		public void DeveListarTodasDisciplinas()
+		public void DeveListarTodosCursos()
 		{
 			var disciplinas = new List<Guid>() { _disciplina1.ID, _disciplina2.ID, _disciplina3.ID };
 			var disciplinas2 = new List<Guid>() { _disciplina2.ID, _disciplina3.ID };
