@@ -34,6 +34,7 @@ namespace SmartSchool.Testes.Unidade.Dominio
 				.ComAlunosDisciplinas(alunosDisciplinas)
 				.ComDataNascimento(DateTime.Now.AddDays(-5000))
 				.ComDataInicio(DateTime.Now)
+				.ComDataFim(DateTime.Now.AddYears(4))
 				.ComEmail("estevao.pulante@unicarioca.com.br")
 				.ComNome("Estevão")
 				.ComSobrenome("Pulante")
@@ -92,22 +93,25 @@ namespace SmartSchool.Testes.Unidade.Dominio
 		public static IEnumerable<object[]> DadosPraTestesException =>
 		new List<object[]>
 		{
-			new object[] { "Estevao", "Pulante", "110752520911", "estevao.pulante@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), "CPF de Aluno é inválido." },
-			new object[] { "Estevao", "Pulante", "110752520911321", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), "CPF de Aluno é inválido." },
-			new object[] { "Estevao", "Pulante", "", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), "CPF de Aluno é inválido." },
-			new object[] { "Estevao", "Pulante", null, "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), "CPF de Aluno é inválido." },
-			new object[] { "Estevao", "Pulante", "11075252091", "estevao.pulanterussao%&unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), "Email de Aluno é inválido." },
-			new object[] { "Estevao", "Pulante", "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(1), "Data de Nascimento deve ser anterior a hoje." },
-			new object[] { "Estevao", "Pulante", "11075252091", null, "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), "Email de Aluno deve ser informado." },
-			new object[] { "", "Pulante", "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), "Nome de Aluno deve ser informado." },
-			new object[] { "Estevao", null, "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), "Sobrenome de Aluno deve ser informado." },
-			new object[] { "Estevao", "Pulante", "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", null, "Data de Nascimento deve ser informada." }
+			new object[] { "Estevao", "Pulante", "110752520911", "estevao.pulante@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), DateTime.Now, DateTime.Now.AddYears(4), "CPF de Aluno é inválido." },
+			new object[] { "Estevao", "Pulante", "110752520911321", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), DateTime.Now, DateTime.Now.AddYears(4), "CPF de Aluno é inválido." },
+			new object[] { "Estevao", "Pulante", "", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), DateTime.Now, DateTime.Now.AddYears(4), "CPF de Aluno é inválido." },
+			new object[] { "Estevao", "Pulante", null, "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), DateTime.Now, DateTime.Now.AddYears(4), "CPF de Aluno é inválido." },
+			new object[] { "Estevao", "Pulante", "11075252091", "estevao.pulanterussao%&unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), DateTime.Now, DateTime.Now.AddYears(4), "Email de Aluno é inválido." },
+			new object[] { "Estevao", "Pulante", "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(1), DateTime.Now, DateTime.Now.AddYears(4), "Data de Nascimento deve ser anterior a hoje." },
+			new object[] { "Estevao", "Pulante", "11075252091", null, "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), DateTime.Now, DateTime.Now.AddYears(4), "Email de Aluno deve ser informado." },
+			new object[] { "", "Pulante", "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), DateTime.Now, DateTime.Now.AddYears(4), "Nome de Aluno deve ser informado." },
+			new object[] { "Estevao", null, "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403",  DateTime.Now.AddDays(-5000), DateTime.Now, DateTime.Now.AddYears(4), "Sobrenome de Aluno deve ser informado." },
+			new object[] { "Estevao", "Pulante", "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", null, DateTime.Now, DateTime.Now.AddYears(4), "Data de Nascimento deve ser informada." },
+			new object[] { "Estevao com o nome maior que 32 caracteres para teste de validação", "Pulante", "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), DateTime.Now, DateTime.Now.AddYears(4), "Nome do Aluno não pode passar de 32 caracteres." },
+			new object[] { "Estevao", "Estevão Pulante com o sobrenome maior que 128 caracteres para teste de validação de máximo permitido pelo banco de dados para teste de criação", "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), DateTime.Now, DateTime.Now.AddYears(4), "Sobrenome do Aluno não pode passar de 128 caracteres." },
+			new object[] { "Estevao", "Pulante", "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), DateTime.Now.AddDays(10), DateTime.Now, "Data de início do Aluno deve ser anterior à Data de Fim do curso prevista." }
 
 		};
 
 		[Theory(DisplayName = "Obtém Exception ao Criar Usuario com valores Errados, Nulos ou Vazios")]
 		[MemberData(nameof(DadosPraTestesException))]
-		public void ObterExceptionAoCriarUsuarioComValoresNulosOuVazios(string nome, string sobrenome, string cpfCnpj, string email, string cidade, string telefone, string celular, DateTime dataNascimento, string erro)
+		public void ObterExceptionAoCriarUsuarioComValoresNulosOuVazios(string nome, string sobrenome, string cpfCnpj, string email, string cidade, string telefone, string celular, DateTime dataNascimento, DateTime dataInicio, DateTime dataFim, string erro)
 		{
 			var alunoDisciplinaDto = new AlunoDisciplinaDto()
 			{
@@ -129,7 +133,9 @@ namespace SmartSchool.Testes.Unidade.Dominio
 				.ComNome(nome)
 				.ComSobrenome(sobrenome)
 				.ComTelefone(telefone)
-				.ComAlunosDisciplinas(alunosDisciplinas);
+				.ComAlunosDisciplinas(alunosDisciplinas)
+				.ComDataInicio(dataInicio)
+				.ComDataFim(dataFim);
 
 			var exception = Assert.Throws<ErroNegocioException>(() => Aluno.Criar(usuarioDto.Instanciar()));
 			Assert.Equal(erro, exception.Message);

@@ -63,7 +63,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(201)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult Criar([FromBody] ProfessorDto professorDto)
+		public StatusCodeResult CriarProfessor([FromBody] ProfessorDto professorDto)
 		{
 			this._professorServico.CriarProfessor(professorDto);
 
@@ -86,10 +86,10 @@ namespace SmartSchool.API.Controllers
 		public StatusCodeResult AlterarProfessor(Guid id, AlterarProfessorDto professorDto)
 		{
 			if (professorDto == null)
-				throw new ArgumentNullException(null, "Objeto Usuário nulo (não foi informado).");
+				throw new ArgumentNullException(null, "Objeto Professor nulo (não foi informado).");
 
 			if (id.Equals(Guid.Empty))
-				throw new ArgumentNullException(null, "Identificador do Usuário é inválido ou nulo");
+				throw new ArgumentNullException(null, "Identificador do Professor é inválido ou nulo");
 
 			professorDto.ID = id;
 

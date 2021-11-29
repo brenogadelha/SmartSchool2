@@ -1,5 +1,7 @@
 ﻿using SmartSchool.Comum.Dominio;
+using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Alunos;
+using SmartSchool.Dominio.Disciplinas.Validacao;
 using SmartSchool.Dominio.Professores;
 using SmartSchool.Dto.Disciplinas;
 using System;
@@ -34,6 +36,8 @@ namespace SmartSchool.Dominio.Disciplinas
 		public Disciplina() { }
 		public static Disciplina Criar(DisciplinaDto disciplinaDto)
 		{
+			ValidacaoFabrica.Validar(disciplinaDto, new DisciplinaValidacao());
+
 			var disciplina = new Disciplina()
 			{
 				ID = Guid.NewGuid(),
@@ -45,5 +49,6 @@ namespace SmartSchool.Dominio.Disciplinas
 		}
 
 		public void AlterarNome(string nome) => this.Nome = nome;
+		public void AlterarPeriodo(int periodo) => this.Periodo = (PeriodoDisciplinaEnum)periodo;
 	}
 }

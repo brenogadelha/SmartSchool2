@@ -7,10 +7,10 @@ namespace SmartSchool.Aplicacao.Cursos.Interface
 {
 	public interface ICursoServico
 	{
-		IEnumerable<CursoDto> Obter();
+		IEnumerable<ObterCursoDto> Obter();
 		void CriarCurso(CursoDto cursoDto);
 		void AlterarCurso(Guid idCurso, AlterarCursoDto cursoDto);
-		CursoDto ObterPorId(Guid idCurso);
+		ObterCursoDto ObterPorId(Guid idCurso);
 		void Remover(Guid id);
 	}
 }

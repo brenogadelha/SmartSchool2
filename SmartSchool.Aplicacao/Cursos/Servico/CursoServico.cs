@@ -2,8 +2,10 @@
 using SmartSchool.Comum.Mapeador;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
+using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Cursos;
 using SmartSchool.Dominio.Cursos.Especificacao;
+using SmartSchool.Dominio.Cursos.Validacao;
 using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dominio.Professores.Especificacao;
 using SmartSchool.Dto.Curso;
@@ -22,11 +24,11 @@ namespace SmartSchool.Aplicacao.Cursos.Servico
 			this._disciplinaRepositorio = disciplinaRepositorio;
 		}
 
-		public IEnumerable<CursoDto> Obter()
+		public IEnumerable<ObterCursoDto> Obter()
 		{
 			var cursos = this._cursoRepositorio.Obter();
 
-			return cursos.MapearParaDto<CursoDto>();
+			return cursos.MapearParaDto<ObterCursoDto>();
 		}
 
 		public void CriarCurso(CursoDto cursoDto)
@@ -41,6 +43,8 @@ namespace SmartSchool.Aplicacao.Cursos.Servico
 
 		public void AlterarCurso(Guid idCurso, AlterarCursoDto cursoDto)
 		{
+			ValidacaoFabrica.Validar(cursoDto, new CursoValidacao());
+
 			var curso = this.ObterCursoDominio(idCurso);
 
 			foreach (var disciplinaId in cursoDto.DisciplinasId)
@@ -52,7 +56,7 @@ namespace SmartSchool.Aplicacao.Cursos.Servico
 			this._cursoRepositorio.Atualizar(curso, true);
 		}
 
-		public CursoDto ObterPorId(Guid idCurso) => this.ObterCursoDominio(idCurso).MapearParaDto<CursoDto>();
+		public ObterCursoDto ObterPorId(Guid idCurso) => this.ObterCursoDominio(idCurso).MapearParaDto<ObterCursoDto>();
 
 		public void Remover(Guid id)
 		{
@@ -67,7 +71,7 @@ namespace SmartSchool.Aplicacao.Cursos.Servico
 				throw new ArgumentNullException(null, "Id nulo do Curso (não foi informado).");
 
 
-			var curso = this._cursoRepositorio.Obter(new BuscaDeCursoPorIdEspecificacao(idCurso));
+			var curso = this._cursoRepositorio.Obter(new BuscaDeCursoPorIdEspecificacao(idCurso).IncluiInformacoesDeDisciplina());
 
 			if (curso == null)
 				throw new RecursoInexistenteException($"Curso com ID '{idCurso}' não existe.");

@@ -1,5 +1,7 @@
 ﻿using SmartSchool.Comum.Dominio;
+using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Disciplinas;
+using SmartSchool.Dominio.Professores.Validacao;
 using SmartSchool.Dto.Professores;
 using System;
 using System.Collections.Generic;
@@ -28,7 +30,9 @@ namespace SmartSchool.Dominio.Professores
 
         public static Professor Criar(ProfessorDto professorDto)
         {
-            var professor = new Professor()
+			ValidacaoFabrica.Validar(professorDto, new ProfessorValidacao());
+
+			var professor = new Professor()
             {
                 ID = Guid.NewGuid(),
                 Nome = professorDto.Nome,

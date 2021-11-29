@@ -7,10 +7,10 @@ namespace SmartSchool.Aplicacao.Semestres.Interface
 {
 	public interface ISemestreServico
 	{
-		IEnumerable<SemestreDto> Obter();
+		IEnumerable<AlterarObterSemestreDto> Obter();
 		void CriarSemestre(SemestreDto semestreDto);
-		void AlterarSemestre(Guid idSemestre, AlterarSemestreDto semestreDto);
-		SemestreDto ObterPorId(Guid idSemestre);
+		void AlterarSemestre(Guid idSemestre, AlterarObterSemestreDto semestreDto);
+		AlterarObterSemestreDto ObterPorId(Guid idSemestre);
 		void Remover(Guid id);
 	}
 }

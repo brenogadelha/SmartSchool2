@@ -38,7 +38,7 @@
             <response code="200">Lista de Alunos encontrados</response> 
             <response code="500">Erro inesperado</response> 
         </member>
-        <member name="M:SmartSchool.API.Controllers.AlunoController.ObterHistoricoPorIdProjeto(System.Guid,System.Nullable{System.Int32})">
+        <member name="M:SmartSchool.API.Controllers.AlunoController.ObterHistoricoPorIdAluno(System.Guid,System.Nullable{System.Int32})">
             <summary>
             Obtém dados do Histórico de um Aluno específico por ID
             </summary>
@@ -92,7 +92,7 @@
             <response code="404">Curso inexistente</response>
             <response code="500">Erro inesperado</response>
         </member>
-        <member name="M:SmartSchool.API.Controllers.CursoController.Criar(SmartSchool.Dto.Curso.CursoDto)">
+        <member name="M:SmartSchool.API.Controllers.CursoController.CriarCurso(SmartSchool.Dto.Curso.CursoDto)">
             <summary>
             Cria um novo Curso
             </summary>
@@ -101,7 +101,7 @@
             <response code="400">Dados inconsistentes para criação do Curso</response>
             <response code="500">Erro inesperado</response> 
         </member>
-        <member name="M:SmartSchool.API.Controllers.CursoController.AlterarDisciplina(System.Guid,SmartSchool.Dto.Curso.AlterarCursoDto)">
+        <member name="M:SmartSchool.API.Controllers.CursoController.AlterarCurso(System.Guid,SmartSchool.Dto.Curso.AlterarCursoDto)">
             <summary>
             Efetua alteração de Curso
             </summary>
@@ -111,7 +111,7 @@
             <response code="404">Curso inexistente</response>
             <response code="500">Erro inesperado</response> 
         </member>
-        <member name="M:SmartSchool.API.Controllers.CursoController.ExcluirDisciplina(System.Guid)">
+        <member name="M:SmartSchool.API.Controllers.CursoController.ExcluirCurso(System.Guid)">
             <summary>
             Exclui um Curso específico
             </summary>
@@ -145,7 +145,7 @@
             <response code="200">Lista de Professores</response> 
             <response code="500">Erro inesperado</response>
         </member>
-        <member name="M:SmartSchool.API.Controllers.DisciplinaController.Criar(SmartSchool.Dto.Disciplinas.DisciplinaDto)">
+        <member name="M:SmartSchool.API.Controllers.DisciplinaController.CriarDisciplina(SmartSchool.Dto.Disciplinas.DisciplinaDto)">
             <summary>
             Cria uma nova Disciplina
             </summary>
@@ -190,7 +190,7 @@
             <response code="404">Aluno inexistente</response>
             <response code="500">Erro inesperado</response>
         </member>
-        <member name="M:SmartSchool.API.Controllers.ProfessorController.Criar(SmartSchool.Dto.Professores.ProfessorDto)">
+        <member name="M:SmartSchool.API.Controllers.ProfessorController.CriarProfessor(SmartSchool.Dto.Professores.ProfessorDto)">
             <summary>
             Cria um novo Professor
             </summary>
@@ -235,7 +235,7 @@
             <response code="404">Semestre inexistente</response>
             <response code="500">Erro inesperado</response>
         </member>
-        <member name="M:SmartSchool.API.Controllers.SemestreController.Criar(SmartSchool.Dto.Semestres.SemestreDto)">
+        <member name="M:SmartSchool.API.Controllers.SemestreController.CriarSemestre(SmartSchool.Dto.Semestres.SemestreDto)">
             <summary>
             Cria um novo Semestre
             </summary>
@@ -244,7 +244,7 @@
             <response code="400">Dados inconsistentes para criação do Semestre</response>
             <response code="500">Erro inesperado</response> 
         </member>
-        <member name="M:SmartSchool.API.Controllers.SemestreController.AlterarSemestre(System.Guid,SmartSchool.Dto.Semestres.AlterarSemestreDto)">
+        <member name="M:SmartSchool.API.Controllers.SemestreController.AlterarSemestre(System.Guid,SmartSchool.Dto.Semestres.AlterarObterSemestreDto)">
             <summary>
             Efetua alteração de Semestre
             </summary>

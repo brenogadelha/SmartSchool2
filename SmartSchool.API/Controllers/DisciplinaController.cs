@@ -73,7 +73,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(201)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult Criar([FromBody] DisciplinaDto disciplinaDto)
+		public StatusCodeResult CriarDisciplina([FromBody] DisciplinaDto disciplinaDto)
 		{
 			this._disciplinaServico.CriarDisciplina(disciplinaDto);
 

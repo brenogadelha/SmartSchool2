@@ -35,9 +35,12 @@ namespace SmartSchool.Ioc.Modulos
 
 			// Curso
 			this.CreateMap<Curso, CursoDto>();
+			this.CreateMap<Curso, ObterCursoDto>()
+				.ForMember(destino => destino.Disciplinas, opt => opt.MapFrom(origem => origem.Disciplinas.Select(d => d.Nome).ToList())); ;
 
 			// Semestre
 			this.CreateMap<Semestre, SemestreDto>();
+			this.CreateMap<Semestre, AlterarObterSemestreDto>();
 		}
 	}
 }

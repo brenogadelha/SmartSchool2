@@ -38,6 +38,12 @@ namespace SmartSchool.Dados.Modulos.Cursos
 		public IEnumerable<Curso> Procurar(IEspecificavel<Curso> especificacao) =>
 			this._contexto.SmartContexto.ObterPorEspecificacao(especificacao);
 
-		public void Remover(Curso entidade, bool finalizarTransacao = true) => this._contexto.SmartContexto.Cursos.Remove(entidade);
+		public void Remover(Curso entidade, bool finalizarTransacao = true)
+		{
+			this._contexto.SmartContexto.Cursos.Remove(entidade);
+
+			if (finalizarTransacao)
+				this._contexto.SmartContexto.SaveChanges();
+		}
 	}
 }

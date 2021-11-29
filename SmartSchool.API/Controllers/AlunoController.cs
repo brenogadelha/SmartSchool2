@@ -5,9 +5,7 @@ using SmartSchool.Dto.Alunos.Obter;
 using SmartSchool.Dto.Dtos.TratamentoErros;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace SmartSchool.API.Controllers
 {
@@ -91,7 +89,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-		public OkObjectResult ObterHistoricoPorIdProjeto([FromRoute(Name = "aluno-id")] Guid id, [FromQuery(Name = "periodo")] int? periodo = null) => this.Ok(this._alunoServico.ObterHistoricoPorIdAluno(id, periodo));
+		public OkObjectResult ObterHistoricoPorIdAluno([FromRoute(Name = "aluno-id")] Guid id, [FromQuery(Name = "periodo")] int? periodo = null) => this.Ok(this._alunoServico.ObterHistoricoPorIdAluno(id, periodo));
 
 
 		/// <summary>
@@ -128,10 +126,10 @@ namespace SmartSchool.API.Controllers
 		public StatusCodeResult AlterarAluno(Guid id, [FromBody] AlterarAlunoDto alunoDto, [FromQuery(Name = "atualizarDisciplinas")] bool? atualizarDisciplinas = null)
 		{
 			if (alunoDto == null)
-				throw new ArgumentNullException(null, "Objeto Usuário nulo (não foi informado).");
+				throw new ArgumentNullException(null, "Objeto Aluno nulo (não foi informado).");
 
 			if (id.Equals(Guid.Empty))
-				throw new ArgumentNullException(null, "Identificador do Usuário é inválido ou nulo");
+				throw new ArgumentNullException(null, "Identificador do Aluno é inválido ou nulo");
 
 			alunoDto.ID = id;
 

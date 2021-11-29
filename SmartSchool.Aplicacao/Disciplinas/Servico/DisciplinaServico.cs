@@ -2,8 +2,10 @@
 using SmartSchool.Comum.Mapeador;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
+using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dominio.Disciplinas.Especificacao;
+using SmartSchool.Dominio.Disciplinas.Validacao;
 using SmartSchool.Dominio.Professores.Especificacao;
 using SmartSchool.Dto.Disciplinas;
 using SmartSchool.Dto.Disciplinas.Alterar;
@@ -39,9 +41,12 @@ namespace SmartSchool.Aplicacao.Disciplinas.Servico
 
         public void AlterarDisciplina(Guid idDisciplina, AlterarDisciplinaDto disciplinaDto)
         {
+            ValidacaoFabrica.Validar(disciplinaDto, new DisciplinaValidacao());
+
             var disciplina = this.ObterDisciplinaDominio(idDisciplina);
 
             disciplina.AlterarNome(disciplinaDto.Nome);
+            disciplina.AlterarPeriodo(disciplinaDto.Periodo);
 
             this._disciplinaRepositorio.Atualizar(disciplina, true);
         }

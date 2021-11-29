@@ -26,7 +26,7 @@ namespace SmartSchool.API.Controllers
 		/// <returns>Lista de todos os Semestre</returns>
 		/// <response code="200">Lista de Semestre</response> 
 		/// <response code="500">Erro inesperado</response>
-		[ProducesResponseType(200, Type = typeof(IEnumerable<CursoDto>))]
+		[ProducesResponseType(200, Type = typeof(IEnumerable<AlterarObterSemestreDto>))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[HttpGet]
 		public OkObjectResult ObterTodos() => Ok(_semestreServico.Obter());
@@ -55,7 +55,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(201)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult Criar([FromBody] SemestreDto semestreDto)
+		public StatusCodeResult CriarSemestre([FromBody] SemestreDto semestreDto)
 		{
 			this._semestreServico.CriarSemestre(semestreDto);
 
@@ -75,7 +75,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult AlterarSemestre(Guid id, [FromBody] AlterarSemestreDto semestreDto)
+		public StatusCodeResult AlterarSemestre(Guid id, [FromBody] AlterarObterSemestreDto semestreDto)
 		{
 			if (semestreDto == null)
 				throw new ArgumentNullException(null, "Objeto Semestre nulo (não foi informado).");

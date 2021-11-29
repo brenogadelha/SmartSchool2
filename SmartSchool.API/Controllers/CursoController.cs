@@ -67,7 +67,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(201)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult Criar([FromBody] CursoDto cursoDto)
+		public StatusCodeResult CriarCurso([FromBody] CursoDto cursoDto)
 		{
 			this._cursoServico.CriarCurso(cursoDto);
 
@@ -87,7 +87,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult AlterarDisciplina(Guid id, [FromBody] AlterarCursoDto cursoDto)
+		public StatusCodeResult AlterarCurso(Guid id, [FromBody] AlterarCursoDto cursoDto)
 		{
 			if (cursoDto == null)
 				throw new ArgumentNullException(null, "Objeto Curso nulo (não foi informado).");
@@ -114,7 +114,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult ExcluirDisciplina(Guid id)
+		public StatusCodeResult ExcluirCurso(Guid id)
 		{
 			this._cursoServico.Remover(id);
 			return this.StatusCode(204);

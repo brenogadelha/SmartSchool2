@@ -2,7 +2,7 @@
 
 namespace SmartSchool.Dto.Semestres
 {
-	public class AlterarSemestreDto : SemestreDto
+	public class AlterarObterSemestreDto : SemestreDto
 	{
 		public Guid ID { get; set; }
 	}

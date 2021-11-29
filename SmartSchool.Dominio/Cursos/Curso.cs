@@ -1,5 +1,7 @@
 ﻿using SmartSchool.Comum.Dominio;
+using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Alunos;
+using SmartSchool.Dominio.Cursos.Validacao;
 using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dto.Curso;
 using System;
@@ -30,7 +32,7 @@ namespace SmartSchool.Dominio.Cursos
 
 		public static Curso Criar(CursoDto cursoDto)
 		{
-			//ValidacaoFabrica.Validar(cursoDto, new CursoValidacao());
+			ValidacaoFabrica.Validar(cursoDto, new CursoValidacao());
 
 			var curso = new Curso()
 			{
