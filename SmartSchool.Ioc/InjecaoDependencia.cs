@@ -62,10 +62,6 @@ namespace SmartSchool.Ioc
 			services.AddScoped<ISemestreServico, SemestreServico>();
 
 			#endregion
-			#region Comum
-			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-			services.AddSingleton<IMemoryCache, MemoryCache>();
-			#endregion
 		}
 	}
 }
