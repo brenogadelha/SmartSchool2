@@ -63,7 +63,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		}
 				
 		[Fact(DisplayName = "Erro Ao Criar Aluno - Já Existe Aluno com este Cpf")]
-		public void ErroAoCriarUsuario_JaExisteMesmoCpfCnpj()
+		public void ErroAoCriarAluno_JaExisteMesmoCpfCnpj()
 		{
 			var aluno = this._alunoDtoBuilder.Instanciar();
 
@@ -76,7 +76,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		}
 
 		[Fact(DisplayName = "Erro Ao Criar Aluno - Já Existe Aluno com este Email")]
-		public void ErroAoCriarUsuario_JaExisteMesmoEmail()
+		public void ErroAoCriarAluno_JaExisteMesmoEmail()
 		{
 			var aluno = this._alunoDtoBuilder.Instanciar();
 
@@ -89,7 +89,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		}
 
 		[Fact(DisplayName = "Erro Ao Alterar Aluno - Id nulo ou inválido")]
-		public void ErroAoAlterarUsuario_IdUsuarioNuloInvalido()
+		public void ErroAoAlterarAluno_IdUsuarioNuloInvalido()
 		{
 			var usuario = this._alunoDtoBuilder.ComId(Guid.Empty).InstanciarAlteracao();
 
@@ -100,7 +100,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		}
 
 		[Fact(DisplayName = "Erro Ao Alterar Aluno - Aluno não existe")]
-		public void ErroAoAlterarUsuario_UsuarioNaoExiste()
+		public void ErroAoAlterarAluno_UsuarioNaoExiste()
 		{
 			var usuario = this._alunoDtoBuilder.ComId(Guid.NewGuid()).InstanciarAlteracao();
 
@@ -111,7 +111,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		}
 
 		[Fact(DisplayName = "Erro Ao Remover Aluno - Id Nulo")]
-		public void ErroAoExcluirUsuario_IdNulo()
+		public void ErroAoExcluirAluno_IdNulo()
 		{
 			var exception = Assert.Throws<ArgumentNullException>(() => this._alunoServico.Remover(Guid.Empty));
 			Assert.Equal("Id nulo do Aluno (não foi informado).", exception.Message);
@@ -120,7 +120,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		}
 
 		[Fact(DisplayName = "Erro Ao Remover Aluno - Aluno não existe")]
-		public void ErroAoExcluirUsuario_UsuarioNaoExiste()
+		public void ErroAoExcluirAluno_UsuarioNaoExiste()
 		{
 			Guid guid = Guid.NewGuid();
 			var exception = Assert.Throws<RecursoInexistenteException>(() => this._alunoServico.Remover(guid));
@@ -130,7 +130,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		}
 
 		[Fact(DisplayName = "Erro Ao Obter Aluno - Por ID - Aluno não existe")]
-		public void ErroAoObterUsuario_PorID_UsuarioNaoExiste()
+		public void ErroAoObterAluno_PorID_NaoExiste()
 		{
 			Guid guid = Guid.NewGuid();
 			var exception = Assert.Throws<RecursoInexistenteException>(() => this._alunoServico.ObterPorId(guid));
@@ -140,7 +140,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		}
 
 		[Fact(DisplayName = "Erro Ao Obter Aluno - Id Nulo")]
-		public void ErroAoObterUsuario_IdNulo()
+		public void ErroAoObterAluno_IdNulo()
 		{
 			var exception = Assert.Throws<ArgumentNullException>(() => this._alunoServico.ObterPorId(Guid.Empty));
 			Assert.Equal("Id nulo do Aluno (não foi informado).", exception.Message);

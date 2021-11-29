@@ -31,9 +31,9 @@ namespace SmartSchool.Testes.Integracao.Aplicacao
 		}
 
 		[Fact(DisplayName = "Inclui Professor, obtém de volta (Por ID), Altera, exclui e verifica exclusão")]
-		public void DeveCriarUsuarioObterExcluirVerificar()
+		public void DeveCriarProfessorObterExcluirVerificar()
 		{
-			// Criação de Disciplinas
+			// Criação de Professores
 			var disciplinaDto1 = new DisciplinaDto() { Nome = "Linguagens Formais e Automatos", Periodo = 1 };
 			var disciplinaDto2 = new DisciplinaDto() { Nome = "Teoria em Grafos", Periodo = 2 };
 			var disciplinaDto3 = new DisciplinaDto() { Nome = "Projeto Integrador", Periodo = 3 };
@@ -86,7 +86,7 @@ namespace SmartSchool.Testes.Integracao.Aplicacao
 		}
 
 		[Fact(DisplayName = "Obtém a lista de Professores com sucesso")]
-		public void DeveListarTodosUsuarios()
+		public void DeveListarTodosProfessores()
 		{
 			// Criação de Disciplinas
 			var disciplinaDto1 = new DisciplinaDto() { Nome = "Cálculo I", Periodo = 1 };

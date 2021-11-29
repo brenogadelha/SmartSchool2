@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartSchool.Aplicacao.Semestres.Interface;
-using SmartSchool.Dto.Curso;
 using SmartSchool.Dto.Dtos.TratamentoErros;
 using SmartSchool.Dto.Semestres;
 using System;
