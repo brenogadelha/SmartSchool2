@@ -72,6 +72,7 @@ namespace SmartSchool.Dominio.Alunos
 				Endereco = alunoDto.Endereco
 			};
 
+			if(alunoDto.AlunosDisciplinas != null)
 			aluno.AtualizarDisciplinas(alunoDto.AlunosDisciplinas.Select(ad => ad.DisciplinaId).ToList());
 
 			return aluno;

@@ -10,6 +10,14 @@ namespace SmartSchool.Dominio.Cursos.Especificacao
 
 		public BuscaDeCursoPorIdEspecificacao(Guid id) => this._id = id;
 
+		public BuscaDeCursoPorIdEspecificacao IncluiInformacoesDeDisciplina()
+		{
+			this.ObjetosInclusaoTipo.Add(x => x.CursosDisciplinas);
+			this.ObjetosInclusaoStrings.Add("CursosDisciplinas.Disciplina");
+
+			return this;
+		}
+
 		public override Expression<Func<Curso, bool>> ExpressaoEspecificacao => x => x.ID == this._id;
 	}
 }

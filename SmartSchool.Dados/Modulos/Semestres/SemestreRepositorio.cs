@@ -37,7 +37,13 @@ namespace SmartSchool.Dados.Modulos.Semestres
 		public IEnumerable<Semestre> Procurar(IEspecificavel<Semestre> especificacao) =>
 			this._contexto.SmartContexto.ObterPorEspecificacao(especificacao);
 
-		public void Remover(Semestre entidade, bool finalizarTransacao = true) => this._contexto.SmartContexto.Semestres.Remove(entidade);
+		public void Remover(Semestre entidade, bool finalizarTransacao = true)
+		{
+			this._contexto.SmartContexto.Semestres.Remove(entidade);
+
+			if (finalizarTransacao)
+				this._contexto.SmartContexto.SaveChanges();
+		}
 
 	}
 }

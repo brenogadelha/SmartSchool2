@@ -32,6 +32,17 @@ namespace SmartSchool.Testes.API.Controllers
 		private readonly AlunoDtoBuilder _alunoDtoBuilder;
 		private readonly AlunoController _alunoController;
 
+		private readonly DisciplinaDto _disciplinaDto1;
+		private readonly DisciplinaDto _disciplinaDto2;
+		private readonly DisciplinaDto _disciplinaDto3;
+
+		private readonly Disciplina _disciplina1;
+		private readonly Disciplina _disciplina2;
+		private readonly Disciplina _disciplina3;
+
+		private readonly SemestreDto _semestreDto;
+		private readonly Semestre _semestre;
+
 		public AlunoControllerTestes()
 		{
 			this._contextos = ContextoFactory.Criar();
@@ -43,36 +54,38 @@ namespace SmartSchool.Testes.API.Controllers
 
 			this._alunoServico = new AlunoServico(alunoRepositorio, disciplinaRepositorio, semestreRepositorio, cursoRepositorio);
 			this._alunoController = new AlunoController(this._alunoServico);
+						
+			// Criação de Disciplinas
+			this._disciplinaDto1 = new DisciplinaDto() { Nome = "Cálculo I", Periodo = 1 };
+			this._disciplinaDto2 = new DisciplinaDto() { Nome = "Cálculo II", Periodo = 2 };
+			this._disciplinaDto3 = new DisciplinaDto() { Nome = "Cálculo III", Periodo = 3 };
+
+			this._disciplina1 = Disciplina.Criar(_disciplinaDto1);
+			this._disciplina2 = Disciplina.Criar(_disciplinaDto2);
+			this._disciplina3 = Disciplina.Criar(_disciplinaDto3);
+
+			var disciplinasIds = new List<Guid>() { this._disciplina1.ID, this._disciplina2.ID };
 
 			// Criação de Curso
-			var cursoDto = new CursoDto() { Nome = "Engenharia da Computação" };
+			var cursoDto = new CursoDto() { Nome = "Engenharia da Computação", DisciplinasId = disciplinasIds };
 			var curso = Curso.Criar(cursoDto);
 
-			// Criação de Disciplinas
-			var disciplinaDto1 = new DisciplinaDto() { Nome = "Cálculo I", Periodo = 1 };
-			var disciplinaDto2 = new DisciplinaDto() { Nome = "Cálculo II", Periodo = 2 };
-			var disciplinaDto3 = new DisciplinaDto() { Nome = "Cálculo III", Periodo = 3 };
-
-			var disciplina1 = Disciplina.Criar(disciplinaDto1);
-			var disciplina2 = Disciplina.Criar(disciplinaDto2);
-			var disciplina3 = Disciplina.Criar(disciplinaDto3);
-
 			// Criação de Semestre
-			var semestreDto = new SemestreDto() { DataInicio = DateTime.Now.AddDays(-20), DataFim = DateTime.Now.AddYears(4) };
-			var semestre = Semestre.Criar(semestreDto);
+			this._semestreDto = new SemestreDto() { DataInicio = DateTime.Now.AddDays(-20), DataFim = DateTime.Now.AddYears(4) };
+			this._semestre = Semestre.Criar(_semestreDto);
 
 			this._contextos.SmartContexto.Cursos.Add(curso);
-			this._contextos.SmartContexto.Disciplinas.Add(disciplina1);
-			this._contextos.SmartContexto.Disciplinas.Add(disciplina2);
-			this._contextos.SmartContexto.Disciplinas.Add(disciplina3);
-			this._contextos.SmartContexto.Semestres.Add(semestre);
+			this._contextos.SmartContexto.Disciplinas.Add(_disciplina1);
+			this._contextos.SmartContexto.Disciplinas.Add(_disciplina2);
+			this._contextos.SmartContexto.Disciplinas.Add(_disciplina3);
+			this._contextos.SmartContexto.Semestres.Add(_semestre);
 			this._contextos.SmartContexto.SaveChanges();
 
 			var alunoDisciplinaDto = new AlunoDisciplinaDto()
 			{
-				DisciplinaId = disciplina1.ID,
+				DisciplinaId = _disciplina1.ID,
 				Periodo = 1,
-				SemestreId = semestre.ID,
+				SemestreId = _semestre.ID,
 				StatusDisciplina = StatusDisciplinaEnum.Cursando
 			};
 
@@ -132,15 +145,45 @@ namespace SmartSchool.Testes.API.Controllers
 			alunoObtidoPorMatricula.ID.Should().NotBe(Guid.Empty);
 			alunoObtidoPorMatricula.Nome.Should().Be(alunoDto.Nome);
 
-			// instancia alteração	
+			// instancia alteração com novas disciplinas
 			var dataNascimentoNova = DateTime.Now.AddYears(-50);
 			var dataInicioNova = DateTime.Now.AddDays(-50);
 			var dataFimNova = DateTime.Now.AddYears(5);
+
+			var alunoDisciplinaDto = new AlunoDisciplinaDto()
+			{
+				DisciplinaId = this._disciplina1.ID,
+				Periodo = 1,
+				SemestreId = this._semestre.ID,
+				StatusDisciplina = StatusDisciplinaEnum.Cursando
+			};
+
+			var alunoDisciplinaDto1 = new AlunoDisciplinaDto()
+			{
+				DisciplinaId = this._disciplina2.ID,
+				Periodo = 2,
+				SemestreId = this._semestre.ID,
+				StatusDisciplina = StatusDisciplinaEnum.Cursando
+			};
+
+			var alunoDisciplinaDto2 = new AlunoDisciplinaDto()
+			{
+				DisciplinaId = this._disciplina3.ID,
+				Periodo = 2,
+				SemestreId = this._semestre.ID,
+				StatusDisciplina = StatusDisciplinaEnum.Cursando
+			};
+
+			List<AlunoDisciplinaDto> alunosDisciplinas = new List<AlunoDisciplinaDto>();
+			alunosDisciplinas.Add(alunoDisciplinaDto);
+			alunosDisciplinas.Add(alunoDisciplinaDto1);
+			alunosDisciplinas.Add(alunoDisciplinaDto2);
 
 			var alunoDtoAlteracao = AlunoDtoBuilder.Novo
 				.ComCelular("21912345999")
 				.ComAtivo(true)
 				.ComEndereco("Rua joazeiro norte 459, Rio Comprido")
+				.ComAlunosDisciplinas(alunosDisciplinas)
 				.ComCidade("São Paulo")
 				.ComCpfCnpj("85444471043")
 				.ComDataNascimento(dataNascimentoNova)
@@ -154,7 +197,7 @@ namespace SmartSchool.Testes.API.Controllers
 
 			this._alunoController.AlterarAluno(alunoObtidoPorId.ID, alunoDtoAlteracao);
 
-			//obtém o Usuário alterado do banco de dados
+			//obtém o Aluno alterado do banco de dados
 			var alunoDtoAlteradoVindoDoBanco = this._alunoController.ObterPorId(alunoObtidoPorNome.ID).Value as ObterAlunoDto;
 
 			alunoDtoAlteradoVindoDoBanco.ID.Should().Be(alunoObtidoPorId.ID);
@@ -171,7 +214,22 @@ namespace SmartSchool.Testes.API.Controllers
 			alunoDtoAlteradoVindoDoBanco.DataInicio.ToString().Should().Contain(dataInicioNova.ToString("dd/MM/yyyy"));
 			alunoDtoAlteradoVindoDoBanco.DataFim.ToString().Should().Contain(dataFimNova.ToString("dd/MM/yyyy"));
 
-			//Deleta Usuário
+			// Obtem Todo o Historico do Aluno
+			var historicoAluno = this._alunoController.ObterHistoricoPorIdAluno(alunoDtoAlteradoVindoDoBanco.ID).Value as IEnumerable<ObterHistoricoAlunoDto>;
+
+			historicoAluno.Count().Should().Be(3);
+			historicoAluno.Where(ha => ha.NomeDisciplina == this._disciplina1.Nome).Count().Should().Be(1);
+			historicoAluno.Where(ha => ha.NomeDisciplina == this._disciplina2.Nome).Count().Should().Be(1);
+			historicoAluno.Where(ha => ha.NomeDisciplina == this._disciplina3.Nome).Count().Should().Be(1);
+
+			// Obtem Historico por Periodo (2)
+			var historicoAlunoPorPeriodo = this._alunoController.ObterHistoricoPorIdAluno(alunoDtoAlteradoVindoDoBanco.ID, 2).Value as IEnumerable<ObterHistoricoAlunoDto>;
+
+			historicoAlunoPorPeriodo.Count().Should().Be(2);
+			historicoAlunoPorPeriodo.Where(ha => ha.NomeDisciplina == this._disciplina2.Nome).Count().Should().Be(1);
+			historicoAlunoPorPeriodo.Where(ha => ha.NomeDisciplina == this._disciplina3.Nome).Count().Should().Be(1);
+
+			//Deleta Aluno
 			this._alunoController.RemoverAluno(alunoDtoAlteradoVindoDoBanco.ID);
 
 			//obtém novamente e verifica exclusão
@@ -305,6 +363,8 @@ namespace SmartSchool.Testes.API.Controllers
 				.ComCidade("Minas Gerais")
 				.ComCpfCnpj("84012584057")
 				.ComDataNascimento(DateTime.Now.AddYears(-40))
+				.ComDataInicio(DateTime.Now.AddDays(-10))
+				.ComDataFim(DateTime.Now.AddYears(2))
 				.ComEmail("jordania.mineiro@unicarioca.com.br")
 				.ComNome("Jordania")
 				.ComSobrenome("Mineiro")

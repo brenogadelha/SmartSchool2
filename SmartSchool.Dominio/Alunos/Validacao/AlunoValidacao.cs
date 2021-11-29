@@ -21,6 +21,12 @@ namespace SmartSchool.Dominio.Alunos.Validacao
 			this.RuleFor(x => x.Nome).NotEmpty()
 				.WithMessage("Nome de Aluno deve ser informado.");
 
+			this.RuleFor(p => p.Nome)
+				.MaximumLength(32).WithMessage("Nome do Aluno não pode passar de 32 caracteres.");
+
+			this.RuleFor(p => p.Sobrenome)
+				.MaximumLength(128).WithMessage("Sobrenome do Aluno não pode passar de 128 caracteres.");
+
 			this.RuleFor(x => x.Sobrenome).NotEmpty()
 				.WithMessage("Sobrenome de Aluno deve ser informado.");			
 
@@ -29,6 +35,9 @@ namespace SmartSchool.Dominio.Alunos.Validacao
 
 			this.RuleFor(x => x.DataNascimento).NotEmpty()
 				.WithMessage("Data de Nascimento deve ser informada.");
+
+			this.RuleFor(p => p.DataInicio).LessThan(p => p.DataFim)
+				.WithMessage("Data de início do Aluno deve ser anterior à Data de Fim do curso prevista.");
 		}
 	}
 }

@@ -38,7 +38,13 @@ namespace SmartSchool.Dados.Modulos.Usuarios
 		public IEnumerable<Professor> Procurar(IEspecificavel<Professor> especificacao) =>
 			this._contexto.SmartContexto.ObterPorEspecificacao(especificacao);
 
-		public void Remover(Professor entidade, bool finalizarTransacao = true) => this._contexto.SmartContexto.Professores.Remove(entidade);
+		public void Remover(Professor entidade, bool finalizarTransacao = true)
+		{
+			this._contexto.SmartContexto.Professores.Remove(entidade);
+
+			if (finalizarTransacao)
+				this._contexto.SmartContexto.SaveChanges();
+		}
 
 	}
 }

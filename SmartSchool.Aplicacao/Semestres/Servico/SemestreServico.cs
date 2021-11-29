@@ -2,8 +2,10 @@
 using SmartSchool.Comum.Mapeador;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
+using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Semestres;
 using SmartSchool.Dominio.Semestres.Especificacao;
+using SmartSchool.Dominio.Semestres.Validacao;
 using SmartSchool.Dto.Semestres;
 using System;
 using System.Collections.Generic;
@@ -18,11 +20,11 @@ namespace SmartSchool.Aplicacao.Semestres.Servico
 			this._semestreRepositorio = semestreRepositorio;
 		}
 
-		public IEnumerable<SemestreDto> Obter()
+		public IEnumerable<AlterarObterSemestreDto> Obter()
 		{
 			var semestres = this._semestreRepositorio.Obter();
 
-			return semestres.MapearParaDto<SemestreDto>();
+			return semestres.MapearParaDto<AlterarObterSemestreDto>();
 		}
 
 		public void CriarSemestre(SemestreDto semestreDto)
@@ -32,8 +34,10 @@ namespace SmartSchool.Aplicacao.Semestres.Servico
 			this._semestreRepositorio.Adicionar(semestre);
 		}
 
-		public void AlterarSemestre(Guid idSemestre, AlterarSemestreDto semestreDto)
+		public void AlterarSemestre(Guid idSemestre, AlterarObterSemestreDto semestreDto)
 		{
+			ValidacaoFabrica.Validar(semestreDto, new SemestreValidacao());
+
 			var semestre = this.ObterSemestreDominio(idSemestre);
 
 			semestre.AlterarDataInicio(semestreDto.DataInicio);
@@ -42,7 +46,7 @@ namespace SmartSchool.Aplicacao.Semestres.Servico
 			this._semestreRepositorio.Atualizar(semestre, true);
 		}
 
-		public SemestreDto ObterPorId(Guid idSemestre) => this.ObterSemestreDominio(idSemestre).MapearParaDto<SemestreDto>();
+		public AlterarObterSemestreDto ObterPorId(Guid idSemestre) => this.ObterSemestreDominio(idSemestre).MapearParaDto<AlterarObterSemestreDto>();
 
 		public void Remover(Guid id)
 		{

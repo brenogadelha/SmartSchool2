@@ -1,4 +1,6 @@
 ﻿using SmartSchool.Comum.Dominio;
+using SmartSchool.Comum.Validacao;
+using SmartSchool.Dominio.Semestres.Validacao;
 using SmartSchool.Dto.Semestres;
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,8 @@ namespace SmartSchool.Dominio.Semestres
 
 		public static Semestre Criar(SemestreDto dto)
 		{
+			ValidacaoFabrica.Validar(dto, new SemestreValidacao());
+
 			var semestre = new Semestre()
 			{
 				ID = Guid.NewGuid(),
