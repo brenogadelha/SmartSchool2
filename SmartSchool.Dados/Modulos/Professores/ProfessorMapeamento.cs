@@ -18,7 +18,7 @@ namespace SmartSchool.Dados.Modulos.Usuarios
 
 			builder.Property(b => b.Nome)
 					.HasColumnName("PROF_NM_NOME")
-					.HasMaxLength(32)
+					.HasMaxLength(160)
 					.IsRequired();
 
 			builder.Property(b => b.Matricula)
