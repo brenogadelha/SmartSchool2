@@ -4,6 +4,7 @@ using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
 using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Disciplinas;
+using SmartSchool.Dominio.Disciplinas.Especificacao;
 using SmartSchool.Dominio.Professores;
 using SmartSchool.Dominio.Professores.Especificacao;
 using SmartSchool.Dominio.Professores.Validacao;

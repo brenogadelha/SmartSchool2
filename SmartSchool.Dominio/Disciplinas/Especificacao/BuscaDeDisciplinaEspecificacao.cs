@@ -1,6 +1,4 @@
 ﻿using SmartSchool.Comum.Especificao;
-using SmartSchool.Dominio.Disciplinas;
-using SmartSchool.Dominio.Professores;
 using System;
 using System.Linq.Expressions;
 

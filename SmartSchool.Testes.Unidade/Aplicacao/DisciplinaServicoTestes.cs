@@ -1,17 +1,12 @@
 ﻿using Moq;
 using SmartSchool.Aplicacao.Disciplinas.Interface;
 using SmartSchool.Aplicacao.Disciplinas.Servico;
-using SmartSchool.Aplicacao.Professores.Interface;
-using SmartSchool.Aplicacao.Professores.Servico;
+using SmartSchool.Comum.Especificao;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
 using SmartSchool.Dominio.Disciplinas;
-using SmartSchool.Dominio.Professores;
-using SmartSchool.Dto.Disciplinas;
 using SmartSchool.Dto.Disciplinas.Alterar;
-using SmartSchool.Dto.Dtos.Professores;
 using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace SmartSchool.Testes.Unidade.Aplicacao
@@ -27,6 +22,19 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 			this._disciplinaRepositorioMock = new Mock<IRepositorio<Disciplina>>();
 
 			this._disciplinaServico = new DisciplinaServico(this._disciplinaRepositorioMock.Object);
+		}
+
+		[Fact(DisplayName = "Erro Ao Criar Disciplina - Já existe Disciplina com o mesmo nome")]
+		public void ErroAoCriarDisciplina_JaExisteMesmoNome()
+		{
+			var disciplinaDto = new AlterarDisciplinaDto() { Nome = "Linguagens Formais e Automatos", Periodo = 1 };
+
+			this._disciplinaRepositorioMock.SetupSequence(x => x.Obter(It.IsAny<IEspecificavel<Disciplina>>())).Returns(new Disciplina());
+
+			var exception = Assert.Throws<ErroNegocioException>(() => this._disciplinaServico.CriarDisciplina(disciplinaDto));
+			Assert.Equal($"Já existe uma Disciplina com o mesmo nome '{disciplinaDto.Nome}'.", exception.Message);
+
+			this._disciplinaRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Disciplina>(), It.IsAny<bool>()), Times.Never);
 		}
 
 		[Fact(DisplayName = "Erro Ao Alterar Disciplina - Id nulo ou inválido")]
