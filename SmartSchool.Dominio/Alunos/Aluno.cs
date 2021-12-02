@@ -100,7 +100,7 @@ namespace SmartSchool.Dominio.Alunos
 				return;
 			}
 
-			// Excluir do Curso as Disciplinas que não estão presentes na nova lista
+			// Excluir do Aluno as Disciplinas que não estão presentes na nova lista
 			if (this.Disciplinas != null && this.Disciplinas.Any())
 				for (int i = this.Disciplinas.Count - 1; i > -1; i--)
 				{
