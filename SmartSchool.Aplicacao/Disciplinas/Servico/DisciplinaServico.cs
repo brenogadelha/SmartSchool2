@@ -34,6 +34,8 @@ namespace SmartSchool.Aplicacao.Disciplinas.Servico
 
         public void CriarDisciplina(DisciplinaDto disciplinaDto)
         {
+            this.VerificarExisteDisciplinaComMesmoNome(disciplinaDto.Nome, null);
+
             var disciplina = Disciplina.Criar(disciplinaDto);
 
             this._disciplinaRepositorio.Adicionar(disciplina);
@@ -41,6 +43,7 @@ namespace SmartSchool.Aplicacao.Disciplinas.Servico
 
         public void AlterarDisciplina(Guid idDisciplina, AlterarDisciplinaDto disciplinaDto)
         {
+            this.VerificarExisteDisciplinaComMesmoNome(disciplinaDto.Nome, disciplinaDto.ID);
             ValidacaoFabrica.Validar(disciplinaDto, new DisciplinaValidacao());
 
             var disciplina = this.ObterDisciplinaDominio(idDisciplina);
@@ -79,6 +82,13 @@ namespace SmartSchool.Aplicacao.Disciplinas.Servico
                 throw new RecursoInexistenteException($"Disciplina com ID '{idDisciplina}' não existe.");
 
             return disciplina;
+        }
+
+        private void VerificarExisteDisciplinaComMesmoNome(string nome, Guid? idAtual)
+        {
+            var alunoComMesmoNome = this._disciplinaRepositorio.Obter(new BuscaDeDisciplinaPorNomeEspecificacao(nome));
+            if (alunoComMesmoNome != null && (!idAtual.HasValue || idAtual.HasValue && alunoComMesmoNome.ID != idAtual))
+                throw new ErroNegocioException($"Já existe uma Disciplina com o mesmo nome '{nome}'.");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Moq;
 using SmartSchool.Aplicacao.Cursos.Interface;
 using SmartSchool.Aplicacao.Cursos.Servico;
+using SmartSchool.Comum.Especificao;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
 using SmartSchool.Dominio.Cursos;
@@ -25,6 +26,22 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 			this._disciplinaRepositorioMock = new Mock<IRepositorio<Disciplina>>();
 
 			this._cursoServico = new CursoServico(this._cursoRepositorioMock.Object, this._disciplinaRepositorioMock.Object);
+		}
+
+		[Fact(DisplayName = "Erro Ao Criar Curso - Já existe curso com o mesmo nome")]
+		public void ErroAoCriarCurso_JaExisteMesmoNome()
+		{
+			var disciplinas = new List<Guid>();
+			disciplinas.Add(Guid.NewGuid());
+
+			var cursoDto = new AlterarCursoDto() { Nome = "Engenharia da Computação", DisciplinasId = disciplinas };
+
+			this._cursoRepositorioMock.SetupSequence(x => x.Obter(It.IsAny<IEspecificavel<Curso>>())).Returns(new Curso());
+
+			var exception = Assert.Throws<ErroNegocioException>(() => this._cursoServico.CriarCurso(cursoDto));
+			Assert.Equal($"Já existe um Curso com o mesmo nome '{cursoDto.Nome}'.", exception.Message);
+
+			this._cursoRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Curso>(), It.IsAny<bool>()), Times.Never);
 		}
 
 		[Fact(DisplayName = "Erro Ao Alterar Curso - Id nulo ou inválido")]

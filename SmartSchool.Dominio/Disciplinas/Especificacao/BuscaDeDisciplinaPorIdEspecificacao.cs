@@ -1,10 +1,8 @@
 ﻿using SmartSchool.Comum.Especificao;
-using SmartSchool.Dominio.Disciplinas;
-using SmartSchool.Dominio.Professores;
 using System;
 using System.Linq.Expressions;
 
-namespace SmartSchool.Dominio.Professores.Especificacao
+namespace SmartSchool.Dominio.Disciplinas.Especificacao
 {
 	public class BuscaDeDisciplinaPorIdEspecificacao : Especificacao<Disciplina>
 	{

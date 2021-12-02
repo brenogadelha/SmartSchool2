@@ -7,7 +7,7 @@ using SmartSchool.Dominio.Alunos.Especificacao;
 using SmartSchool.Dominio.Cursos;
 using SmartSchool.Dominio.Cursos.Especificacao;
 using SmartSchool.Dominio.Disciplinas;
-using SmartSchool.Dominio.Professores.Especificacao;
+using SmartSchool.Dominio.Disciplinas.Especificacao;
 using SmartSchool.Dominio.Semestres;
 using SmartSchool.Dominio.Semestres.Especificacao;
 using SmartSchool.Dto.Alunos;

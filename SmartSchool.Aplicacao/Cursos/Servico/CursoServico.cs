@@ -7,7 +7,7 @@ using SmartSchool.Dominio.Cursos;
 using SmartSchool.Dominio.Cursos.Especificacao;
 using SmartSchool.Dominio.Cursos.Validacao;
 using SmartSchool.Dominio.Disciplinas;
-using SmartSchool.Dominio.Professores.Especificacao;
+using SmartSchool.Dominio.Disciplinas.Especificacao;
 using SmartSchool.Dto.Curso;
 using System;
 using System.Collections.Generic;
@@ -33,6 +33,8 @@ namespace SmartSchool.Aplicacao.Cursos.Servico
 
 		public void CriarCurso(CursoDto cursoDto)
 		{
+			this.VerificarExisteCursoComMesmoNome(cursoDto.Nome, null);
+
 			foreach (var disciplinaId in cursoDto.DisciplinasId)
 				this.ObterDisciplinaDominio(disciplinaId);
 
@@ -43,6 +45,7 @@ namespace SmartSchool.Aplicacao.Cursos.Servico
 
 		public void AlterarCurso(Guid idCurso, AlterarCursoDto cursoDto)
 		{
+			this.VerificarExisteCursoComMesmoNome(cursoDto.Nome, cursoDto.ID);
 			ValidacaoFabrica.Validar(cursoDto, new CursoValidacao());
 
 			var curso = this.ObterCursoDominio(idCurso);
@@ -91,6 +94,13 @@ namespace SmartSchool.Aplicacao.Cursos.Servico
 				throw new RecursoInexistenteException($"Disciplina com ID '{idDisciplina}' não existe.");
 
 			return disciplina;
+		}
+
+		private void VerificarExisteCursoComMesmoNome(string nome, Guid? idAtual)
+		{
+			var alunoComMesmoNome = this._cursoRepositorio.Obter(new BuscaDeCursoPorNomeEspecificacao(nome));
+			if (alunoComMesmoNome != null && (!idAtual.HasValue || idAtual.HasValue && alunoComMesmoNome.ID != idAtual))
+				throw new ErroNegocioException($"Já existe um Curso com o mesmo nome '{nome}'.");
 		}
 	}
 }
