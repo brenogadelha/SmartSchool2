@@ -14,9 +14,6 @@ namespace SmartSchool.Dominio.Semestres
 		public DateTime DataInicio { get; private set; }
 		public DateTime DataFim { get; private set; }
 
-		//[JsonIgnore]
-		//public List<AlunoSemestre> Alunos { get; private set; } = new List<AlunoSemestre>();
-
 		[JsonIgnore]
 		public List<SemestreAlunoDisciplina> AlunosDisciplinas { get; private set; } = new List<SemestreAlunoDisciplina>();
 
