@@ -42,11 +42,7 @@ namespace SmartSchool.Dominio.Alunos
 			get => this.AlunosDisciplinas.Select(u => u.Disciplina).ToList();
 		}
 
-		//[JsonIgnore]
 		public List<SemestreAlunoDisciplina> SemestresDisciplinas { get; private set; } = new List<SemestreAlunoDisciplina>();
-
-		//[JsonIgnore]
-		//public List<AlunoSemestre> Semestres { get; private set; } = new List<AlunoSemestre>();
 
 		public Aluno() { }
 		public static Aluno Criar(AlunoDto alunoDto)
