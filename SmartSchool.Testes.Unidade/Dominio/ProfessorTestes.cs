@@ -42,7 +42,7 @@ namespace SmartSchool.Testes.Unidade.Dominio
 		{
 			new object[] { "", 2017100150, new List<Guid>() { Guid.NewGuid() }, "Nome do Professor deve ser informado." },
 			new object[] { null, 2017100150, new List<Guid>() { Guid.NewGuid() }, "Nome do Professor deve ser informado." },
-			new object[] { "nome do Professor com mais de 32 caracteres para validação de banco de dados", 2017100150, new List<Guid>() { Guid.NewGuid() }, "Nome do Professor não pode passar de 32 caracteres." },
+			new object[] { "nome do Professor com mais de 160 caracteres para validação de banco de dados nome do Professor com mais de 160 caracteres para validação de banco de dados nome do Professor com mais de 160 caracteres para validação de banco de dados", 2017100150, new List<Guid>() { Guid.NewGuid() }, "Nome do Professor não pode passar de 160 caracteres." },
 			new object[] { "João Paulo", 2017100150, null, "Deve ser informado ao menos uma Disciplina." },
 			new object[] { "João Paulo", null, new List<Guid>() { Guid.NewGuid() }, "Matrícula de Professor deve ser informada." }
 

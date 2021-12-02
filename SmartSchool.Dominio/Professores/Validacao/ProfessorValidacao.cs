@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using SmartSchool.Dto.Professores;
-using System;
 
 namespace SmartSchool.Dominio.Professores.Validacao
 {
@@ -15,7 +14,7 @@ namespace SmartSchool.Dominio.Professores.Validacao
 				.WithMessage("Matrícula de Professor deve ser informada.");
 
 			this.RuleFor(p => p.Nome)
-				.MaximumLength(32).WithMessage("Nome do Professor não pode passar de 32 caracteres.");
+				.MaximumLength(160).WithMessage("Nome do Professor não pode passar de 160 caracteres.");
 
 			this.RuleFor(x => x.Disciplinas).NotEmpty()
 				.WithMessage("Deve ser informado ao menos uma Disciplina.");
