@@ -26,9 +26,9 @@ namespace SmartSchool.Aplicacao.Cursos.Servico
 
 		public IEnumerable<ObterCursoDto> Obter()
 		{
-			var cursos = this._cursoRepositorio.Obter();
+			var disciplina = this._cursoRepositorio.Procurar(new BuscaDeCursoEspecificacao().IncluiInformacoesDeDisciplina());
 
-			return cursos.MapearParaDto<ObterCursoDto>();
+			return disciplina.MapearParaDto<ObterCursoDto>();
 		}
 
 		public void CriarCurso(CursoDto cursoDto)
