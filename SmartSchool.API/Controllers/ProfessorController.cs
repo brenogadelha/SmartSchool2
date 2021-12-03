@@ -74,16 +74,16 @@ namespace SmartSchool.API.Controllers
 		/// Efetua alteração de Professor
 		/// </summary>
 		/// <returns>Http status 204(No Content)</returns>
-		/// <response code="204">Professor alterado com Sucesso</response>
+		/// <response code="201">Professor alterado com Sucesso</response>
 		/// <response code="400">Dados para alteração de Professor inconsistentes.</response>
 		/// <response code="404">Professor inexistente</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPut("{id}")]
-		[ProducesResponseType(204)]
+		[ProducesResponseType(201)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult AlterarProfessor(Guid id, AlterarProfessorDto professorDto)
+		public StatusCodeResult AlterarProfessor(Guid id, AlterarProfessorDto professorDto, [FromQuery(Name = "atualizarDisciplinas")] bool? atualizarDisciplinas = null)
 		{
 			if (professorDto == null)
 				throw new ArgumentNullException(null, "Objeto Professor nulo (não foi informado).");
@@ -93,7 +93,7 @@ namespace SmartSchool.API.Controllers
 
 			professorDto.ID = id;
 
-			this._professorServico.AlterarProfessor(id, professorDto);
+			this._professorServico.AlterarProfessor(id, professorDto, atualizarDisciplinas);
 
 			return this.StatusCode((int)HttpStatusCode.Created);
 		}

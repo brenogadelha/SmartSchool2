@@ -83,12 +83,12 @@ namespace SmartSchool.API.Controllers
 		/// Efetua alteração de Disciplina
 		/// </summary>
 		/// <returns>Http status 204(No Content)</returns>
-		/// <response code="204">Disciplina alterada com Sucesso</response>
+		/// <response code="201">Disciplina alterada com Sucesso</response>
 		/// <response code="400">Dados para alteração de Disciplina inconsistentes.</response>
 		/// <response code="404">Disciplina inexistente</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPut("{id}")]
-		[ProducesResponseType(204)]
+		[ProducesResponseType(201)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]

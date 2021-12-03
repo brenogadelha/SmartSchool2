@@ -2,8 +2,10 @@
 using SmartSchool.Comum.Mapeador;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
+using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Alunos;
 using SmartSchool.Dominio.Alunos.Especificacao;
+using SmartSchool.Dominio.Alunos.Validacao;
 using SmartSchool.Dominio.Cursos;
 using SmartSchool.Dominio.Cursos.Especificacao;
 using SmartSchool.Dominio.Disciplinas;
@@ -35,7 +37,7 @@ namespace SmartSchool.Aplicacao.Alunos.Servico
 
 		public IEnumerable<ObterAlunoDto> Obter()
 		{
-			var alunos = this._alunoRepositorio.Procurar(new BuscaDeAlunoPorAtivoEspecificacao(true));
+			var alunos = this._alunoRepositorio.Procurar(new BuscaDeAlunoPorAtivoEspecificacao(true).IncluiInformacoesDeCurso());
 
 			return alunos.MapearParaDto<ObterAlunoDto>();
 		}
@@ -69,6 +71,8 @@ namespace SmartSchool.Aplicacao.Alunos.Servico
 
 				return;
 			}
+
+			ValidacaoFabrica.Validar(alunoDto, new AlunoValidacao());
 
 			this.VerificarExisteAlunoComMesmoCpfCnpj(alunoDto.Cpf, alunoDto.ID);
 			this.VerificarExisteAlunoComMesmoEmail(alunoDto.Email, alunoDto.ID);

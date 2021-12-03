@@ -48,12 +48,21 @@ namespace SmartSchool.Aplicacao.Professores.Servico
 			this._professorRepositorio.Adicionar(professor);
 		}
 
-		public void AlterarProfessor(Guid idProfessor, AlterarProfessorDto professorDto)
+		public void AlterarProfessor(Guid idProfessor, AlterarProfessorDto professorDto, bool? atualizarDisciplinas = null)
 		{
 			this.VerificarExisteProfessorComMesmaMatricula(professorDto.Matricula, professorDto.ID);
-			ValidacaoFabrica.Validar(professorDto, new AlterarProfessorValidacao());
 
 			var professor = this.ObterProfessorDominio(idProfessor);
+
+			if (atualizarDisciplinas.HasValue)
+			{
+				professor.AtualizarDisciplinas(professorDto.Disciplinas);
+				this._professorRepositorio.Atualizar(professor, true);
+
+				return;
+			}
+
+			ValidacaoFabrica.Validar(professorDto, new AlterarProfessorValidacao());							
 
 			professor.AlterarNome(professorDto.Nome);
 			professor.AlterarMatricula(professorDto.Matricula);
