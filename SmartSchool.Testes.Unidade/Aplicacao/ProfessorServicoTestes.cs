@@ -1,12 +1,14 @@
 ﻿using Moq;
 using SmartSchool.Aplicacao.Professores.Interface;
 using SmartSchool.Aplicacao.Professores.Servico;
+using SmartSchool.Comum.Especificao;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
 using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dominio.Professores;
 using SmartSchool.Dto.Disciplinas;
 using SmartSchool.Dto.Dtos.Professores;
+using SmartSchool.Dto.Professores;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -44,6 +46,23 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 			this._disciplina2 =	Disciplina.Criar(_disciplinaDto2);
 			this._disciplina3 =	Disciplina.Criar(_disciplinaDto3);
 		}
+
+		[Fact(DisplayName = "Erro Ao Criar Professor - Já Existe Professor com esta Matricula")]
+		public void ErroAoCriarProfessor_JaExisteMesmaMatricula()
+		{
+			var disciplinas = new List<Guid>();
+			disciplinas.Add(Guid.NewGuid());
+
+			var professorDto = new ProfessorDto() { Matricula = 2017100150, Nome = "Paulo Roberto", Disciplinas = disciplinas };
+
+			this._professorRepositorioMock.SetupSequence(x => x.Obter(It.IsAny<IEspecificavel<Professor>>())).Returns(new Professor());
+
+			var exception = Assert.Throws<ErroNegocioException>(() => this._professorServico.CriarProfessor(professorDto));
+			Assert.Equal($"Já existe um Professor com a mesma matricula '{professorDto.Matricula}'.", exception.Message);
+
+			this._professorRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Professor>(), It.IsAny<bool>()), Times.Never);
+		}
+
 
 		[Fact(DisplayName = "Erro Ao Alterar Professor - Id nulo ou inválido")]
 		public void ErroAoAlterarProfessor_IdProfessorNuloInvalido()
