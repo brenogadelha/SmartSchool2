@@ -35,6 +35,8 @@ namespace SmartSchool.Aplicacao.Professores.Servico
 
 		public void CriarProfessor(ProfessorDto professorDto)
 		{
+			this.VerificarExisteProfessorComMesmaMatricula(professorDto.Matricula, null);
+
 			if (professorDto.Disciplinas != null)
 			{
 				foreach (var disciplina in professorDto.Disciplinas)
@@ -48,6 +50,7 @@ namespace SmartSchool.Aplicacao.Professores.Servico
 
 		public void AlterarProfessor(Guid idProfessor, AlterarProfessorDto professorDto)
 		{
+			this.VerificarExisteProfessorComMesmaMatricula(professorDto.Matricula, professorDto.ID);
 			ValidacaoFabrica.Validar(professorDto, new AlterarProfessorValidacao());
 
 			var professor = this.ObterProfessorDominio(idProfessor);
@@ -100,6 +103,13 @@ namespace SmartSchool.Aplicacao.Professores.Servico
 				throw new RecursoInexistenteException($"Disciplina com ID '{idDisciplina}' não existe.");
 
 			return disciplina;
+		}
+
+		private void VerificarExisteProfessorComMesmaMatricula(int matricula, Guid? idAtual)
+		{
+			var professorComMesmaMatricula = this._professorRepositorio.Obter(new BuscaDeProfessorPorMatriculaEspecificacao(matricula));
+			if (professorComMesmaMatricula != null && (!idAtual.HasValue || idAtual.HasValue && professorComMesmaMatricula.ID != idAtual))
+				throw new ErroNegocioException($"Já existe um Professor com a mesma matricula '{matricula}'.");
 		}
 	}
 }
