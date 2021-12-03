@@ -39,7 +39,7 @@ namespace SmartSchool.Testes.Unidade.Dominio
 		{
 			new object[] { "", new List<Guid>() { Guid.NewGuid() }, "Nome do Curso deve ser informado." },
 			new object[] { null, new List<Guid>() { Guid.NewGuid() }, "Nome do Curso deve ser informado." },
-			new object[] { "nome do curso com mais de 32 caracteres para validação de banco de dados", new List<Guid>() { Guid.NewGuid() }, "Nome do Curso não pode passar de 32 caracteres." },
+			new object[] { "nome do curso com mais de 80 caracteres para validação de banco de dados nome do curso com mais de 80 caracteres para validação de banco de dados", new List<Guid>() { Guid.NewGuid() }, "Nome do Curso não pode passar de 80 caracteres." },
 			new object[] { "Engenharia da Computação", null, "Deve ser informado ao menos uma Disciplina." },
 
 		};

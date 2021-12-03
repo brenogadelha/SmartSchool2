@@ -39,7 +39,7 @@ namespace SmartSchool.Testes.Unidade.Dominio
 		{
 			new object[] { "", 1, "Nome da Disciplina deve ser informado." },
 			new object[] { null, 1, "Nome da Disciplina deve ser informado." },
-			new object[] { "nome da Disciplina com mais de 32 caracteres para validação de banco de dados", 1, "Nome da Disciplina não pode passar de 32 caracteres." },
+			new object[] { "nome da Disciplina com mais de 80 caracteres para validação de banco de dados nome da Disciplina com mais de 80 caracteres para validação de banco de dados", 1, "Nome da Disciplina não pode passar de 80 caracteres." },
 			new object[] { "Engenharia Economica", null, "Período referente a Disciplina deve ser informado." },
 
 		};

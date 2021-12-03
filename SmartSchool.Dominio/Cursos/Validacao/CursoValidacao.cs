@@ -11,7 +11,7 @@ namespace SmartSchool.Dominio.Cursos.Validacao
 				.WithMessage("Nome do Curso deve ser informado.");
 
 			this.RuleFor(p => p.Nome)
-				.MaximumLength(32).WithMessage("Nome do Curso não pode passar de 32 caracteres.");
+				.MaximumLength(80).WithMessage("Nome do Curso não pode passar de 80 caracteres.");
 
 			this.RuleFor(x => x.DisciplinasId).NotEmpty()
 				.WithMessage("Deve ser informado ao menos uma Disciplina.");

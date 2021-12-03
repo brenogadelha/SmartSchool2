@@ -13,7 +13,7 @@ namespace SmartSchool.Dominio.Disciplinas.Validacao
 				.WithMessage("Nome da Disciplina deve ser informado.");
 
 			this.RuleFor(p => p.Nome)
-				.MaximumLength(32).WithMessage("Nome da Disciplina não pode passar de 32 caracteres.");
+				.MaximumLength(80).WithMessage("Nome da Disciplina não pode passar de 80 caracteres.");
 
 			this.RuleFor(p => p.Periodo)
 				.NotEmpty().WithMessage("Período referente a Disciplina deve ser informado.");

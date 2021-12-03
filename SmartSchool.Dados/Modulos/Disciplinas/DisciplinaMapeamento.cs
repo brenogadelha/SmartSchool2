@@ -16,7 +16,7 @@ namespace SmartSchool.Dados.Modulos.Usuarios
 
 			builder.Property(b => b.Nome)
 					.HasColumnName("DISC_NM_NOME")
-					.HasMaxLength(32)
+					.HasMaxLength(80)
 					.IsRequired();
 
 			builder.Property(b => b.Periodo)
