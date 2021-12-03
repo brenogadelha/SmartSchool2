@@ -43,18 +43,6 @@ namespace SmartSchool.API.Controllers
 		[HttpGet("{id}")]
 		public OkObjectResult ObterPorId(Guid id) => Ok(this._cursoServico.ObterPorId(id));
 
-		//[HttpGet("ByName")]
-		//public IActionResult ObterPorNome(string nome, string sobrenome)
-		//{
-		//    var aluno = _alunoServico.ObterTodosAlunos().FirstOrDefault(a => a.Nome.Contains(nome) && a.Sobrenome.Contains(sobrenome));
-
-		//    if (aluno == null)
-		//        throw new Exception($"Não existe aluno com o nome {nome} informado.");
-
-		//    return Ok(aluno);
-		//}
-		//// POST api/<AlunoController>
-
 
 		/// <summary>
 		/// Cria um novo Curso
@@ -87,7 +75,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult AlterarCurso(Guid id, [FromBody] AlterarCursoDto cursoDto)
+		public StatusCodeResult AlterarCurso(Guid id, [FromBody] AlterarCursoDto cursoDto, [FromQuery(Name = "atualizarDisciplinas")] bool? atualizarDisciplinas = null)
 		{
 			if (cursoDto == null)
 				throw new ArgumentNullException(null, "Objeto Curso nulo (não foi informado).");
@@ -97,7 +85,7 @@ namespace SmartSchool.API.Controllers
 
 			cursoDto.ID = id;
 
-			this._cursoServico.AlterarCurso(id, cursoDto);
+			this._cursoServico.AlterarCurso(id, cursoDto, atualizarDisciplinas);
 
 			return this.StatusCode((int)HttpStatusCode.Created);
 		}

@@ -43,12 +43,21 @@ namespace SmartSchool.Aplicacao.Cursos.Servico
 			this._cursoRepositorio.Adicionar(curso);
 		}
 
-		public void AlterarCurso(Guid idCurso, AlterarCursoDto cursoDto)
+		public void AlterarCurso(Guid idCurso, AlterarCursoDto cursoDto, bool? atualizarDisciplinas = null)
 		{
 			this.VerificarExisteCursoComMesmoNome(cursoDto.Nome, cursoDto.ID);
-			ValidacaoFabrica.Validar(cursoDto, new CursoValidacao());
 
 			var curso = this.ObterCursoDominio(idCurso);
+
+			if (atualizarDisciplinas.HasValue)
+			{
+				curso.AtualizarDisciplinas(cursoDto.DisciplinasId);
+				this._cursoRepositorio.Atualizar(curso, true);
+
+				return;
+			}
+
+			ValidacaoFabrica.Validar(cursoDto, new CursoValidacao());					
 
 			foreach (var disciplinaId in cursoDto.DisciplinasId)
 				this.ObterDisciplinaDominio(disciplinaId);

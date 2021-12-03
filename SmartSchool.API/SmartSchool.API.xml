@@ -61,7 +61,7 @@
             Efetua alteração de Aluno
             </summary>
             <returns>Http status 204(No Content)</returns>
-            <response code="204">Aluno alterado com Sucesso</response>
+            <response code="201">Aluno alterado com Sucesso</response>
             <response code="400">Dados para alteração de Aluno inconsistentes.</response>
             <response code="404">Aluno inexistente</response>
             <response code="500">Erro inesperado</response> 
@@ -101,7 +101,7 @@
             <response code="400">Dados inconsistentes para criação do Curso</response>
             <response code="500">Erro inesperado</response> 
         </member>
-        <member name="M:SmartSchool.API.Controllers.CursoController.AlterarCurso(System.Guid,SmartSchool.Dto.Curso.AlterarCursoDto)">
+        <member name="M:SmartSchool.API.Controllers.CursoController.AlterarCurso(System.Guid,SmartSchool.Dto.Curso.AlterarCursoDto,System.Nullable{System.Boolean})">
             <summary>
             Efetua alteração de Curso
             </summary>
@@ -159,7 +159,7 @@
             Efetua alteração de Disciplina
             </summary>
             <returns>Http status 204(No Content)</returns>
-            <response code="204">Disciplina alterada com Sucesso</response>
+            <response code="201">Disciplina alterada com Sucesso</response>
             <response code="400">Dados para alteração de Disciplina inconsistentes.</response>
             <response code="404">Disciplina inexistente</response>
             <response code="500">Erro inesperado</response> 
@@ -199,12 +199,12 @@
             <response code="400">Dados inconsistentes para criação do Professor</response>
             <response code="500">Erro inesperado</response> 
         </member>
-        <member name="M:SmartSchool.API.Controllers.ProfessorController.AlterarProfessor(System.Guid,SmartSchool.Dto.Dtos.Professores.AlterarProfessorDto)">
+        <member name="M:SmartSchool.API.Controllers.ProfessorController.AlterarProfessor(System.Guid,SmartSchool.Dto.Dtos.Professores.AlterarProfessorDto,System.Nullable{System.Boolean})">
             <summary>
             Efetua alteração de Professor
             </summary>
             <returns>Http status 204(No Content)</returns>
-            <response code="204">Professor alterado com Sucesso</response>
+            <response code="201">Professor alterado com Sucesso</response>
             <response code="400">Dados para alteração de Professor inconsistentes.</response>
             <response code="404">Professor inexistente</response>
             <response code="500">Erro inesperado</response> 

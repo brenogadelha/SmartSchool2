@@ -37,9 +37,9 @@ namespace SmartSchool.Dominio.Alunos
 		public List<AlunoDisciplina> AlunosDisciplinas { get; private set; } = new List<AlunoDisciplina>();
 
 		[NotMapped]
-		public List<Disciplina> Disciplinas
+		public List<Guid> DisciplinasIds
 		{
-			get => this.AlunosDisciplinas.Select(u => u.Disciplina).ToList();
+			get => this.AlunosDisciplinas.Select(u => u.DisciplinaID).ToList();
 		}
 
 		public List<SemestreAlunoDisciplina> SemestresDisciplinas { get; private set; } = new List<SemestreAlunoDisciplina>();
@@ -97,12 +97,12 @@ namespace SmartSchool.Dominio.Alunos
 			}
 
 			// Excluir do Aluno as Disciplinas que não estão presentes na nova lista
-			if (this.Disciplinas != null && this.Disciplinas.Any())
-				for (int i = this.Disciplinas.Count - 1; i > -1; i--)
+			if (this.DisciplinasIds != null && this.DisciplinasIds.Any())
+				for (int i = this.DisciplinasIds.Count - 1; i > -1; i--)
 				{
-					if (!novasDisciplinas.Any(idNovo => idNovo == this.Disciplinas[i].ID))
+					if (!novasDisciplinas.Any(idNovo => idNovo == this.DisciplinasIds[i]))
 					{
-						this.AlunosDisciplinas.Remove(this.AlunosDisciplinas.FirstOrDefault(p => p.DisciplinaID == this.Disciplinas[i].ID));
+						this.AlunosDisciplinas.Remove(this.AlunosDisciplinas.FirstOrDefault(p => p.DisciplinaID == this.DisciplinasIds[i]));
 					}
 				}
 
@@ -110,7 +110,7 @@ namespace SmartSchool.Dominio.Alunos
 
 			// Adicionar ao Aluno as Disciplinas da lista que são diferentes das atuais
 			foreach (Guid id in novasDisciplinas)
-				if (!this.Disciplinas.Any(l => l.ID == id))
+				if (!this.DisciplinasIds.Any(l => l == id))
 				{
 					listaTemp.Add(AlunoDisciplina.Criar(this.ID, id));
 				}
