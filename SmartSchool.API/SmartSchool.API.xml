@@ -12,6 +12,23 @@
             <response code="200">Lista de Alunos</response> 
             <response code="500">Erro inesperado</response>
         </member>
+        <member name="M:SmartSchool.API.Controllers.AlunoController.ObterTodosMediator">
+            <summary>
+            Obtem listagem de todos os Alunos cadastrados
+            </summary>
+            <returns>Lista de todos os Alunos</returns>
+            <response code="200">Lista de Alunos</response> 
+            <response code="500">Erro inesperado</response>
+        </member>
+        <member name="M:SmartSchool.API.Controllers.AlunoController.ObterPorIdMediator(System.Guid)">
+            <summary>
+            Obtém dados de um Aluno específico por ID
+            </summary>
+            <returns>Dados do Aluno solicitado</returns>
+            <response code="200">Obtem dados do Aluno solicitado</response>
+            <response code="404">Aluno inexistente</response>
+            <response code="500">Erro inesperado</response>
+        </member>
         <member name="M:SmartSchool.API.Controllers.AlunoController.ObterPorId(System.Guid)">
             <summary>
             Obtém dados de um Aluno específico por ID
@@ -56,7 +73,26 @@
             <response code="400">Dados inconsistentes para criação do Aluno</response>
             <response code="500">Erro inesperado</response> 
         </member>
+        <member name="M:SmartSchool.API.Controllers.AlunoController.CriarAlunoMediator(SmartSchool.Aplicacao.Alunos.AdicionarAluno.AdicionarAlunoCommand)">
+            <summary>
+            Cria um novo Aluno
+            </summary>
+            <returns>Http status 201(Created)</returns>
+            <response code="200">Aluno criado com sucesso</response>
+            <response code="400">Dados inconsistentes para criação do Aluno</response>
+            <response code="500">Erro inesperado</response> 
+        </member>
         <member name="M:SmartSchool.API.Controllers.AlunoController.AlterarAluno(System.Guid,SmartSchool.Dto.Alunos.AlterarAlunoDto,System.Nullable{System.Boolean})">
+            <summary>
+            Efetua alteração de Aluno
+            </summary>
+            <returns>Http status 204(No Content)</returns>
+            <response code="201">Aluno alterado com Sucesso</response>
+            <response code="400">Dados para alteração de Aluno inconsistentes.</response>
+            <response code="404">Aluno inexistente</response>
+            <response code="500">Erro inesperado</response> 
+        </member>
+        <member name="M:SmartSchool.API.Controllers.AlunoController.AlterarAlunoMediator(System.Guid,SmartSchool.Aplicacao.Alunos.AlterarAluno.AlterarAlunoCommand)">
             <summary>
             Efetua alteração de Aluno
             </summary>

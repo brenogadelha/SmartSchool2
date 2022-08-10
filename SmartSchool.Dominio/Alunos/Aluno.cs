@@ -2,14 +2,16 @@
 using SmartSchool.Comum.Dominio;
 using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Alunos.Validacao;
+using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Cursos;
-using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dominio.Semestres;
 using SmartSchool.Dto.Alunos;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Threading.Tasks;
+using SmartSchool.Comum.Entidades;
 
 namespace SmartSchool.Dominio.Alunos
 {
@@ -74,6 +76,36 @@ namespace SmartSchool.Dominio.Alunos
 			return aluno;
 		}
 
+		public static Result<Aluno> Criar(string nome, string sobrenome, string telefone, DateTime dataInicio, DateTime dataFim, DateTime dataNascimento,
+			int matricula, string celular, string cidade, string cpf, string email, string endereco, Guid cursoId, List<AlunoDisciplinaDto> alunosDisciplinas)
+		{
+			//ValidacaoFabrica.Validar(alunoDto, new AlunoValidacao());
+
+			var aluno = new Aluno()
+			{
+				ID = Guid.NewGuid(),
+				Nome = nome,
+				Sobrenome = sobrenome,
+				Telefone = telefone,
+				DataInicio = dataInicio,
+				DataFim = dataFim,
+				Ativo = true,
+				DataNascimento = dataNascimento,
+				Matricula = matricula,
+				CursoId = cursoId,
+				Celular = celular,
+				Cidade = cidade,
+				Cpf = cpf,
+				Email = email,
+				Endereco = endereco
+			};
+
+			if (alunosDisciplinas != null)
+				aluno.AtualizarDisciplinas(alunosDisciplinas.Select(ad => ad.DisciplinaId).ToList());
+
+			return Result<Aluno>.Success(aluno);
+		}
+
 		public void AlterarNome(string nome) => this.Nome = nome;
 		public void AlterarSobrenome(string sobrenome) => this.Sobrenome = sobrenome;
 		public void AlterarCpf(string cpf) => this.Cpf = cpf;
@@ -86,6 +118,7 @@ namespace SmartSchool.Dominio.Alunos
 		public void AlterarDataNascimento(DateTime dataNascimento) => this.DataNascimento = dataNascimento;
 		public void AlterarDataInicio(DateTime dataInicio) => this.DataInicio = dataInicio;
 		public void AlterarDataFim(DateTime dataFim) => this.DataFim = dataFim;
+		public void AlterarCursoId(Guid cursoId) => this.CursoId = cursoId;
 
 		public void AtualizarDisciplinas(List<Guid> novasDisciplinas)
 		{

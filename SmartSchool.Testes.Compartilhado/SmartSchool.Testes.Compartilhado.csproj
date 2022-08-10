@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SmartSchool.Aplicacao\SmartSchool.Aplicacao.csproj" />
     <ProjectReference Include="..\SmartSchool.Dados\SmartSchool.Dados.csproj" />
   </ItemGroup>
 

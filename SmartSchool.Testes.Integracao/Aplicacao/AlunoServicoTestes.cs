@@ -1,5 +1,8 @@
 ﻿using FluentAssertions;
+using MediatR;
+using Parceiros.Template.Aplicacao.Pessoas.ListarPessoas;
 using SmartSchool.Aplicacao.Alunos.Interface;
+using SmartSchool.Aplicacao.Alunos.ListarAlunos;
 using SmartSchool.Aplicacao.Alunos.Servico;
 using SmartSchool.Comum.Dominio.Enums;
 using SmartSchool.Dados.Comum;
@@ -8,10 +11,12 @@ using SmartSchool.Dados.Modulos.Alunos;
 using SmartSchool.Dados.Modulos.Cursos;
 using SmartSchool.Dados.Modulos.Semestres;
 using SmartSchool.Dados.Modulos.Usuarios;
+using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Cursos;
 using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dominio.Semestres;
 using SmartSchool.Dto.Alunos;
+using SmartSchool.Dto.Alunos.Obter;
 using SmartSchool.Dto.Curso;
 using SmartSchool.Dto.Disciplinas;
 using SmartSchool.Dto.Semestres;
@@ -19,6 +24,7 @@ using SmartSchool.Testes.Compartilhado.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Xunit;
 
 namespace SmartSchool.Testes.Integracao.Aplicacao
@@ -28,6 +34,8 @@ namespace SmartSchool.Testes.Integracao.Aplicacao
 		private readonly IUnidadeDeTrabalho _contextos;
 		private readonly IAlunoServico _alunoServico;
 		private readonly AlunoDtoBuilder _alunoDtoBuilder;
+
+		private readonly IRequestHandler<ListarAlunosCommand, IResult> _listarAlunosHandler;
 
 		private readonly DisciplinaDto _disciplinaDto1;
 		private readonly DisciplinaDto _disciplinaDto2;
@@ -45,9 +53,12 @@ namespace SmartSchool.Testes.Integracao.Aplicacao
 			this._contextos = ContextoFactory.Criar();
 
 			var alunoRepositorio = new AlunoRepositorio(this._contextos);
+			var alunoRepositorioTask = new AlunoRepositorioTask(this._contextos);
 			var cursoRepositorio = new CursoRepositorio(this._contextos);
 			var disciplinaRepositorio = new DisciplinaRepositorio(this._contextos);
 			var semestreRepositorio = new SemestreRepositorio(this._contextos);
+
+			this._listarAlunosHandler = new ListarAlunosHandler(alunoRepositorioTask);
 
 			this._alunoServico = new AlunoServico(alunoRepositorio, disciplinaRepositorio, semestreRepositorio, cursoRepositorio);
 
@@ -301,6 +312,89 @@ namespace SmartSchool.Testes.Integracao.Aplicacao
 			this._alunoServico.Remover(alunoObtidoPorNome.ID);
 
 			//Obtemos todos os ativos
+			var alunosObtidos = this._alunoServico.Obter().ToList();
+
+			alunosObtidos.Should().NotBeNull();
+			alunosObtidos.Count.Should().Be(3);
+			alunosObtidos.Where(x => x.Nome == "Jordan").Count().Should().Be(0);
+		}
+
+		[Fact(DisplayName = "Obtém a lista de Alunos com sucesso TASK")]
+		public void DeveListarTodosAlunosTask()
+		{
+			var aluno0Dto = this._alunoDtoBuilder.Instanciar();
+
+			this._alunoServico.CriarAluno(aluno0Dto);
+
+			var aluno1Dto = AlunoDtoBuilder.Novo
+				.ComCelular("21912399999")
+				.ComCursoId(this._alunoDtoBuilder.Instanciar().CursoId)
+				.ComAlunosDisciplinas(this._alunoDtoBuilder.Instanciar().AlunosDisciplinas)
+				.ComEndereco("Rua molina 423, Rio Comprido")
+				.ComCidade("São Paulo")
+				.ComCpfCnpj("05228025081")
+				.ComDataNascimento(DateTime.Now.AddYears(-40))
+				.ComDataInicio(DateTime.Now.AddDays(-50))
+				.ComDataFim(DateTime.Now.AddYears(4))
+				.ComEmail("estevao.russo@unicarioca.com.br")
+				.ComNome("Estevann")
+				.ComSobrenome("Russo")
+				.ComTelefone("2131592121")
+				.ComId(Guid.NewGuid()).Instanciar();
+
+			this._alunoServico.CriarAluno(aluno1Dto);
+
+			var aluno2Dto = AlunoDtoBuilder.Novo
+				.ComCelular("21912388899")
+				.ComCursoId(this._alunoDtoBuilder.Instanciar().CursoId)
+				.ComAlunosDisciplinas(this._alunoDtoBuilder.Instanciar().AlunosDisciplinas)
+				.ComEndereco("Rua molina 423, Rio Comprido")
+				.ComCidade("Espirito Santo")
+				.ComCpfCnpj("51886437076")
+				.ComDataNascimento(DateTime.Now.AddYears(-50))
+				.ComDataInicio(DateTime.Now.AddDays(20))
+				.ComDataFim(DateTime.Now.AddYears(4))
+				.ComEmail("estevao.russao@unicarioca.com.br")
+				.ComNome("Estevann")
+				.ComSobrenome("Russao")
+				.ComTelefone("2131592222")
+				.ComId(Guid.NewGuid()).Instanciar();
+
+			this._alunoServico.CriarAluno(aluno2Dto);
+
+			var aluno3Dto = AlunoDtoBuilder.Novo
+				.ComCelular("21912388877")
+				.ComEndereco("Rua molina 423, Rio Comprido")
+				.ComCidade("Minas Gerais")
+				.ComCursoId(this._alunoDtoBuilder.Instanciar().CursoId)
+				.ComAlunosDisciplinas(this._alunoDtoBuilder.Instanciar().AlunosDisciplinas)
+				.ComCpfCnpj("84012584057")
+				.ComDataNascimento(DateTime.Now.AddYears(-60))
+				.ComDataInicio(DateTime.Now.AddDays(40))
+				.ComDataFim(DateTime.Now.AddYears(4))
+				.ComEmail("estevao.mineiro@unicarioca.com.br")
+				.ComNome("Jordan")
+				.ComSobrenome("Mineiro")
+				.ComTelefone("2131593353")
+				.ComId(Guid.NewGuid()).Instanciar();
+
+			this._alunoServico.CriarAluno(aluno3Dto);
+
+			var alunoObtidoPorNome = this._contextos.SmartContexto.Alunos.SingleOrDefault(x => x.Nome == aluno3Dto.Nome);
+
+			//Deleta um Aluno - Deve ficar inativo
+			this._alunoServico.Remover(alunoObtidoPorNome.ID);
+
+			//Obtemos todos os ativos
+			var alunosObtidosTask = this._listarAlunosHandler.Handle(new ListarAlunosCommand(), new CancellationToken());
+
+			var teste = alunosObtidosTask.Result.GetValue().Should().NotBeNull();
+			var teste2 = alunosObtidosTask.Result.GetValue() as IEnumerable<ObterAlunoDto>;
+
+			teste2.Should().NotBeNull();
+			teste2.Count().Should().Be(3);
+			teste2.Where(x => x.Nome == "Jordan").Count().Should().Be(0);
+
 			var alunosObtidos = this._alunoServico.Obter().ToList();
 
 			alunosObtidos.Should().NotBeNull();

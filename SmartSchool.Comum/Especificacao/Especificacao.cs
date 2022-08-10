@@ -16,6 +16,8 @@ namespace SmartSchool.Comum.Especificao
 
         public List<Expression<Func<T, object>>> ObjetosInclusaoTipo { get; set; } = new List<Expression<Func<T, object>>>();
 
+        public IList<string> SubInclusoes { get; } = new List<string>();
+
         public bool EhSatisfeitaPor(T obj) => EspecificaoCompilada(obj);
     }
 }

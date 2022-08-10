@@ -53,14 +53,11 @@ namespace SmartSchool.Aplicacao.Alunos.Servico
 			this._alunoRepositorio.Adicionar(aluno);
 
 			if (alunoDto.AlunosDisciplinas != null)
-			{
 				this.GerarAssociacoes(aluno, alunoDto);
-				return;
-			}
 		}
 
 		public void AlterarAluno(Guid idAluno, AlterarAlunoDto alunoDto, bool? atualizarDisciplinas = null)
-		{			
+		{
 			var aluno = this.ObterAlunoDominio(idAluno);
 
 			if (atualizarDisciplinas.HasValue)

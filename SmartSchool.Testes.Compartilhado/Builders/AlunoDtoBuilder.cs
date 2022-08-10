@@ -1,4 +1,5 @@
-﻿using SmartSchool.Dto.Alunos;
+﻿using SmartSchool.Aplicacao.Alunos.AdicionarAluno;
+using SmartSchool.Dto.Alunos;
 using System;
 using System.Collections.Generic;
 
@@ -145,6 +146,7 @@ namespace SmartSchool.Testes.Compartilhado.Builders
 
 			return dto;
 		}
+
 		public AlterarAlunoDto InstanciarAlteracao()
 		{
 			var dto = new AlterarAlunoDto()
@@ -164,6 +166,29 @@ namespace SmartSchool.Testes.Compartilhado.Builders
 				DataFim = this._dataFim,
 				Ativo = this._ativo,
 				ID = this._id,
+				Endereco = this._endereco
+			};
+
+			return dto;
+		}
+
+		public AdicionarAlunoCommand InstanciarCommand()
+		{
+			var dto = new AdicionarAlunoCommand()
+			{
+				Sobrenome = this._sobrenome,
+				DataNascimento = this._dataNascimento,
+				Cpf = this._cpf,
+				Email = this._email,
+				Nome = this._nome,
+				Telefone = this._telefone,
+				Celular = this._celular,
+				Cidade = this._cidade,
+				Matricula = this._matricula,
+				CursoId = this._cursoId,
+				AlunosDisciplinas = this._alunosDisciplinas,
+				DataInicio = this._dataInicio,
+				DataFim = this._dataFim,
 				Endereco = this._endereco
 			};
 

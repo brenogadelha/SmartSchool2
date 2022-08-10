@@ -11,5 +11,6 @@ namespace SmartSchool.Comum.Especificao
 
         Expression<Func<T, bool>> ExpressaoEspecificacao { get; }
         bool EhSatisfeitaPor(T obj);
+        IList<string> SubInclusoes { get; }
     }
 }

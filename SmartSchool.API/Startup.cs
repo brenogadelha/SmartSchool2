@@ -39,6 +39,8 @@ namespace SmartSchool.API
 			services.AddAutoMapper(typeof(Startup).Assembly);
 			services.AddMemoryCache();
 
+			services.AddMyMediatR();
+
 			InjecaoDependencia.Cadastrar(services, Configuration);
 
 			Mapeador.SetMapper(ConfiguracaoAutoMap.Inicializar().CreateMapper());
