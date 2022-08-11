@@ -115,7 +115,7 @@ namespace SmartSchool.Aplicacao.Alunos.Servico
 		{
 			var alunos = this._alunoRepositorio.Procurar(new BuscaDeAlunoPorNomeParcialEspecificacao(busca));
 
-			if (alunos.ToList().Count == 0)
+			if (!alunos.Any())
 				throw new RecursoInexistenteException($"Não foi encontrado nenhum aluno com o parametro '{busca}' informado.");
 
 			return alunos.MapearParaDto<ObterAlunoDto>();

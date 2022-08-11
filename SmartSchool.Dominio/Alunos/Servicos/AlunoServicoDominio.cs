@@ -15,7 +15,7 @@ namespace SmartSchool.Dominio.Alunos.Servicos
 			this._alunoRepositorio = alunoRepositorio;
 		}
 
-		public async Task<Aluno> ObterAsync(Guid idAluno)
+		public async Task<Aluno> ObterPorIdAsync(Guid idAluno)
 		{
 			if (idAluno.Equals(Guid.Empty))
 				throw new ArgumentNullException(null, "Id nulo do Aluno (não foi informado).");
@@ -24,6 +24,19 @@ namespace SmartSchool.Dominio.Alunos.Servicos
 
 			if (aluno == null)
 				throw new RecursoInexistenteException($"Aluno com ID '{idAluno}' não existe.");
+
+			return aluno;
+		}
+
+		public async Task<Aluno> ObterPorMatriculaAsync(int matricula)
+		{
+			if (matricula < 0)
+				throw new ArgumentNullException(null, "Matricula do Aluno (não foi informado).");
+
+			var aluno = await this._alunoRepositorio.ObterAsync(new BuscaDeAlunoPorMatriculaEspecificacao(matricula).IncluiInformacoesDeHistorico().IncluiInformacoesDeDisciplina().IncluiInformacoesDeCurso());
+
+			if (aluno == null)
+				throw new RecursoInexistenteException($"Aluno com matrícula '{matricula}' não existe.");
 
 			return aluno;
 		}

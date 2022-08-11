@@ -9,6 +9,9 @@ using SmartSchool.Aplicacao.Alunos.AlterarAluno;
 using SmartSchool.Aplicacao.Alunos.Interface;
 using SmartSchool.Aplicacao.Alunos.ListarAlunos;
 using SmartSchool.Aplicacao.Alunos.ObterAluno;
+using SmartSchool.Aplicacao.Alunos.ObterAlunoMatricula;
+using SmartSchool.Aplicacao.Alunos.ObterAlunoNome;
+using SmartSchool.Aplicacao.Alunos.ObterHistoricoAluno;
 using SmartSchool.Aplicacao.Alunos.Servico;
 using SmartSchool.Aplicacao.Cursos.Interface;
 using SmartSchool.Aplicacao.Cursos.Servico;
@@ -93,7 +96,15 @@ namespace SmartSchool.Ioc
 			services.AddMediatR(typeof(AdicionarAlunoHandler).Assembly);
 			services.AddMediatR(typeof(AlterarAlunoCommand).Assembly);
 			services.AddMediatR(typeof(AlterarAlunoHandler).Assembly);
+			services.AddMediatR(typeof(ObterAlunoMatriculaHandler).Assembly);
+			services.AddMediatR(typeof(ObterAlunoMatriculaCommand).Assembly);
+			services.AddMediatR(typeof(ObterAlunoNomeCommand).Assembly);
+			services.AddMediatR(typeof(ObterAlunoNomeHandler).Assembly);
+			services.AddMediatR(typeof(ObterHistoricoAlunoCommand).Assembly);
+			services.AddMediatR(typeof(ObterHistoricoAlunoHandler).Assembly);
 
+
+			//services.AddMediatR(typeof(ValidationBehavior<,>).Assembly);
 			services.AddValidatorsFromAssembly(typeof(ValidationBehavior<,>).Assembly);
 			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 

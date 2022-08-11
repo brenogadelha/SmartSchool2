@@ -6,6 +6,8 @@ using SmartSchool.Aplicacao.Alunos.AlterarAluno;
 using SmartSchool.Aplicacao.Alunos.Interface;
 using SmartSchool.Aplicacao.Alunos.ListarAlunos;
 using SmartSchool.Aplicacao.Alunos.ObterAluno;
+using SmartSchool.Aplicacao.Alunos.ObterAlunoMatricula;
+using SmartSchool.Aplicacao.Alunos.ObterAlunoNome;
 using SmartSchool.Dto.Alunos;
 using SmartSchool.Dto.Alunos.Obter;
 using SmartSchool.Dto.Dtos.TratamentoErros;
@@ -67,7 +69,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[HttpGet("Mediator/{id}")]
-		public async Task<IActionResult> ObterPorIdMediator(Guid id)
+		public async Task<IActionResult> ObterPorIdMediator([FromRoute(Name = "id")] Guid id)
 		{
 			var response = await _mediator.Send(new ObterAlunoCommand { Id = id });
 
@@ -85,7 +87,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[HttpGet("{id}")]
-		public OkObjectResult ObterPorId(Guid id)
+		public OkObjectResult ObterPorId([FromRoute(Name = "id")] Guid id)
 		{
 			var aluno = this._alunoServico.ObterPorId(id);
 			return Ok(aluno);
@@ -101,11 +103,29 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(200, Type = typeof(ObterAlunoDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		[HttpGet("{matricula}/id")]
+		[HttpGet("{matricula}")]
 		public OkObjectResult ObterPorMatricula(int matricula)
 		{
 			var aluno = this._alunoServico.ObterPorMatricula(matricula);
 			return Ok(aluno);
+		}
+
+		/// <summary>
+		/// Obtém dados de um Aluno específico por Matrícula
+		/// </summary>
+		/// <returns>Dados do Aluno solicitado</returns>
+		/// <response code="200">Obtem dados do Aluno solicitado</response>
+		/// <response code="404">Aluno inexistente</response>
+		/// <response code="500">Erro inesperado</response>
+		[ProducesResponseType(200, Type = typeof(ObterAlunoDto))]
+		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
+		[HttpGet("Mediator/matricula/{codigo}")]
+		public async Task<IActionResult> ObterPorMatriculaMediator([FromRoute(Name = "codigo")] int matricula)
+		{
+			var response = await _mediator.Send(new ObterAlunoMatriculaCommand { Matricula = matricula });
+
+			return this.ProcessResult(response);
 		}
 
 		/// <summary>
@@ -119,6 +139,23 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
 		public OkObjectResult ObterPorNomeSobrenomeParcial([FromRoute(Name = "parte-identificador")] string busca) => this.Ok(this._alunoServico.ObterPorNomeSobrenomeParcial(busca));
+
+		/// <summary>
+		/// Obtem listagem de todos os Alunos por parte do Nome ou Sobrenome
+		/// </summary>
+		/// <returns>Lista de todos os Alunos encontrados</returns>
+		/// <response code="200">Lista de Alunos encontrados</response> 
+		/// <response code="500">Erro inesperado</response> 
+		[HttpGet("Mediator/{parte-identificador}/nome-a-definir")]
+		[ProducesResponseType(200, Type = typeof(IEnumerable<ObterAlunoDto>))]
+		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
+		[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+		public async Task<IActionResult> ObterPorNomeSobrenomeParcialMediator([FromRoute(Name = "parte-identificador")] string busca)
+		{
+			var response = await _mediator.Send(new ObterAlunoNomeCommand { Busca = busca });
+
+			return this.ProcessResult(response);
+		}
 
 		/// <summary>
 		/// Obtém dados do Histórico de um Aluno específico por ID

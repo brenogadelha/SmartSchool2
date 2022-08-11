@@ -34,7 +34,7 @@ namespace SmartSchool.Aplicacao.Alunos.AlterarAluno
 
 		public async Task<IResult> Handle(AlterarAlunoCommand request, CancellationToken cancellationToken)
 		{
-			var aluno = await this._alunoServicoDominio.ObterAsync(request.ID);
+			var aluno = await this._alunoServicoDominio.ObterPorIdAsync(request.ID);
 
 			//ValidacaoFabrica.Validar(alunoDto, new AlunoValidacao());
 

@@ -25,9 +25,7 @@ namespace Parceiros.Template.Aplicacao.Pessoas.ListarPessoas
         {
             var alunos = await this._alunoRepositorio.Procurar(new BuscaDeAlunoPorAtivoEspecificacao(true).IncluiInformacoesDeCurso());
 
-            var alunosDto = alunos.MapearParaDto<ObterAlunoDto>();
-
-            return Result<IEnumerable<ObterAlunoDto>>.Success(alunosDto);
+            return Result<IEnumerable<ObterAlunoDto>>.Success(alunos.MapearParaDto<ObterAlunoDto>());
         }
     }
 }

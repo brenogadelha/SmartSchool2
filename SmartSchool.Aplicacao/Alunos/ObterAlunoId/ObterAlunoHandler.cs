@@ -1,8 +1,10 @@
 ﻿using MediatR;
+using SmartSchool.Comum.Mapeador;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Dominio.Alunos;
 using SmartSchool.Dominio.Alunos.Especificacao;
 using SmartSchool.Dominio.Comum.Results;
+using SmartSchool.Dto.Alunos.Obter;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,7 +26,7 @@ namespace SmartSchool.Aplicacao.Alunos.ObterAluno
             if (aluno == null)
                 return Result.NotFound();
 
-            return Result<Aluno>.Success(aluno);
+            return Result<ObterAlunoDto>.Success(aluno.MapearParaDto<ObterAlunoDto>());
         }
     }
 }
