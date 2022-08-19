@@ -1,4 +1,5 @@
 ﻿using SmartSchool.Aplicacao.Alunos.AdicionarAluno;
+using SmartSchool.Aplicacao.Alunos.AlterarAluno;
 using SmartSchool.Dto.Alunos;
 using System;
 using System.Collections.Generic;
@@ -176,6 +177,30 @@ namespace SmartSchool.Testes.Compartilhado.Builders
 		{
 			var dto = new AdicionarAlunoCommand()
 			{
+				Sobrenome = this._sobrenome,
+				DataNascimento = this._dataNascimento,
+				Cpf = this._cpf,
+				Email = this._email,
+				Nome = this._nome,
+				Telefone = this._telefone,
+				Celular = this._celular,
+				Cidade = this._cidade,
+				Matricula = this._matricula,
+				CursoId = this._cursoId,
+				AlunosDisciplinas = this._alunosDisciplinas,
+				DataInicio = this._dataInicio,
+				DataFim = this._dataFim,
+				Endereco = this._endereco
+			};
+
+			return dto;
+		}
+
+		public AlterarAlunoCommand InstanciarCommandAlteracao()
+		{
+			var dto = new AlterarAlunoCommand()
+			{
+				ID = this._id,
 				Sobrenome = this._sobrenome,
 				DataNascimento = this._dataNascimento,
 				Cpf = this._cpf,
