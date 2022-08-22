@@ -12,6 +12,7 @@ using SmartSchool.Aplicacao.Alunos.ObterAluno;
 using SmartSchool.Aplicacao.Alunos.ObterAlunoMatricula;
 using SmartSchool.Aplicacao.Alunos.ObterAlunoNome;
 using SmartSchool.Aplicacao.Alunos.ObterHistoricoAluno;
+using SmartSchool.Aplicacao.Alunos.RemoverAluno;
 using SmartSchool.Aplicacao.Alunos.Servico;
 using SmartSchool.Aplicacao.Cursos.Interface;
 using SmartSchool.Aplicacao.Cursos.Servico;
@@ -102,6 +103,8 @@ namespace SmartSchool.Ioc
 			services.AddMediatR(typeof(ObterAlunoNomeHandler).Assembly);
 			services.AddMediatR(typeof(ObterHistoricoAlunoCommand).Assembly);
 			services.AddMediatR(typeof(ObterHistoricoAlunoHandler).Assembly);
+			services.AddMediatR(typeof(RemoverAlunoHandler).Assembly);
+			services.AddMediatR(typeof(RemoverAlunoCommand).Assembly);
 
 
 			//services.AddMediatR(typeof(ValidationBehavior<,>).Assembly);

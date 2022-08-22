@@ -21,7 +21,7 @@ namespace SmartSchool.Testes.Unidade.Dominio
 				DisciplinaId = Guid.NewGuid(),
 				Periodo = 1,
 				SemestreId = Guid.NewGuid(),
-				StatusDisciplina = StatusDisciplinaEnum.Cursando
+				StatusDisciplina = StatusDisciplina.Cursando
 			};
 
 			List<AlunoDisciplinaDto> alunosDisciplinas = new List<AlunoDisciplinaDto>();
@@ -118,7 +118,7 @@ namespace SmartSchool.Testes.Unidade.Dominio
 				DisciplinaId = Guid.NewGuid(),
 				Periodo = 1,
 				SemestreId = Guid.NewGuid(),
-				StatusDisciplina = StatusDisciplinaEnum.Cursando
+				StatusDisciplina = StatusDisciplina.Cursando
 			};
 
 			List<AlunoDisciplinaDto> alunosDisciplinas = new List<AlunoDisciplinaDto>();

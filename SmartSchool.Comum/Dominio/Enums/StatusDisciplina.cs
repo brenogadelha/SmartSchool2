@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SmartSchool.Comum.Dominio.Enums
 {
-	public enum StatusDisciplinaEnum
+	public enum StatusDisciplina
 	{
 		[Description("Cursando")]
 		Cursando = 1,

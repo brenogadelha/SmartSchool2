@@ -86,7 +86,7 @@ namespace SmartSchool.Aplicacao.Alunos.AlterarAluno
 					alunoDisciplina.DisciplinaId, aluno.ID, alunoDisciplina.StatusDisciplina));
 			}
 
-			this._alunoRepositorio.Atualizar(aluno);
+			this._alunoRepositorio.Atualizar(aluno, false);
 		}
 	}
 }

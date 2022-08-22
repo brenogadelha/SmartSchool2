@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartSchool.Comum.Entidades;
+using SmartSchool.Dominio.Tccs;
 
 namespace SmartSchool.Dominio.Alunos
 {
@@ -44,7 +45,11 @@ namespace SmartSchool.Dominio.Alunos
 			get => this.AlunosDisciplinas.Select(u => u.DisciplinaID).ToList();
 		}
 
+		[JsonIgnore]
 		public List<SemestreAlunoDisciplina> SemestresDisciplinas { get; private set; } = new List<SemestreAlunoDisciplina>();
+
+		[JsonIgnore]
+		public List<TccAlunoProfessor> TccsProfessores { get; private set; } = new List<TccAlunoProfessor>();
 
 		public Aluno() { }
 		public static Aluno Criar(AlunoDto alunoDto)

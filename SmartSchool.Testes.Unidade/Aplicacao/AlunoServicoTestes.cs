@@ -42,7 +42,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 				DisciplinaId = Guid.NewGuid(),
 				Periodo = 1,
 				SemestreId = Guid.NewGuid(),
-				StatusDisciplina = StatusDisciplinaEnum.Cursando
+				StatusDisciplina = StatusDisciplina.Cursando
 			};
 
 			List<AlunoDisciplinaDto> alunosDisciplinas = new List<AlunoDisciplinaDto>();

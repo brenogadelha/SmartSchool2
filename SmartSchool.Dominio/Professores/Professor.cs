@@ -2,6 +2,7 @@
 using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dominio.Professores.Validacao;
+using SmartSchool.Dominio.Tccs;
 using SmartSchool.Dto.Professores;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,9 @@ namespace SmartSchool.Dominio.Professores
 
         [JsonIgnore]
         public List<ProfessorDisciplina> ProfessoresDisciplinas { get; private set; } = new List<ProfessorDisciplina>();
+
+		[JsonIgnore]
+		public List<TccProfessor> Tccs { get; private set; } = new List<TccProfessor>();
 
 		[NotMapped]
 		public List<Disciplina> Disciplinas
