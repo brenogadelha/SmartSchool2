@@ -10,6 +10,7 @@ using SmartSchool.Aplicacao.Tccs.ListarPorProfessor;
 using SmartSchool.Aplicacao.Tccs.ObterPorAluno;
 using SmartSchool.Aplicacao.Tccs.ObterPorId;
 using SmartSchool.Aplicacao.Tccs.Remover;
+using SmartSchool.Aplicacao.Tccs.Solicitar;
 using SmartSchool.Comum.Dominio.Enums;
 using SmartSchool.Dto.Dtos.TratamentoErros;
 using SmartSchool.Dto.Tccs;
@@ -185,6 +186,29 @@ namespace SmartSchool.API.Controllers
 		public async Task<IActionResult> RemoverTcc(Guid id)
 		{
 			var response = await this._mediator.Send(new RemoverTccCommand { ID = id });
+			return this.ProcessResult(response);
+		}
+
+		/// <summary>
+		/// Solicita Tcc
+		/// </summary>
+		/// <returns>Http status 204(No Content)</returns>
+		/// <response code="204">Tcc solicitado com Sucesso</response>
+		/// <response code="400">Dados para solicitação de Tcc inconsistentes.</response>
+		/// <response code="401">Não autorizado</response>
+		/// <response code="404">Tcc inexistente</response>
+		/// <response code="422">Erro nas regras de negócio.</response>
+		/// <response code="500">Erro inesperado</response> 
+		[HttpPut("solicitar")]
+		[ProducesResponseType(204)]
+		[ProducesResponseType(401, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(422, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
+		public async Task<IActionResult> SolicitarTcc([FromBody] SolicitarTccCommand tccDto)
+		{
+			var response = await _mediator.Send(tccDto);
+
 			return this.ProcessResult(response);
 		}
 	}

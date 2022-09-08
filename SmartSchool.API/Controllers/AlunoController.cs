@@ -1,24 +1,21 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using SmartSchool.API.Componentes;
 using SmartSchool.Aplicacao.Alunos.Adicionar;
 using SmartSchool.Aplicacao.Alunos.Alterar;
 using SmartSchool.Aplicacao.Alunos.Listar;
+using SmartSchool.Aplicacao.Alunos.ObterHistorico;
 using SmartSchool.Aplicacao.Alunos.ObterPorId;
 using SmartSchool.Aplicacao.Alunos.ObterPorMatricula;
 using SmartSchool.Aplicacao.Alunos.ObterPorNome;
-using SmartSchool.Aplicacao.Alunos.ObterHistorico;
 using SmartSchool.Aplicacao.Alunos.RemoverAluno;
 using SmartSchool.Dto.Alunos.Obter;
 using SmartSchool.Dto.Dtos.TratamentoErros;
+using SmartSchool.Dto.Tccs;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
-using SmartSchool.Aplicacao.Tccs.Aprovar;
-using SmartSchool.Comum.Dominio.Enums;
-using SmartSchool.Dto.Tccs;
-using SmartSchool.Aplicacao.Alunos.Solicitar;
 
 namespace SmartSchool.API.Controllers
 {
@@ -183,29 +180,6 @@ namespace SmartSchool.API.Controllers
 		public async Task<IActionResult> RemoverAluno(Guid id)
 		{
 			var response = await this._mediator.Send(new RemoverAlunoCommand { ID = id });
-			return this.ProcessResult(response);
-		}
-
-		/// <summary>
-		/// Solicita Tcc
-		/// </summary>
-		/// <returns>Http status 204(No Content)</returns>
-		/// <response code="204">Tcc solicitado com Sucesso</response>
-		/// <response code="400">Dados para solicitação de Tcc inconsistentes.</response>
-		/// <response code="401">Não autorizado</response>
-		/// <response code="404">Tcc inexistente</response>
-		/// <response code="422">Erro nas regras de negócio.</response>
-		/// <response code="500">Erro inesperado</response> 
-		[HttpPut("tccs/solicitar")]
-		[ProducesResponseType(204)]
-		[ProducesResponseType(401, Type = typeof(TratamentoErroDto))]
-		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
-		[ProducesResponseType(422, Type = typeof(TratamentoErroDto))]
-		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public async Task<IActionResult> SolicitarTcc([FromBody] SolicitarTccDto tccDto)
-		{
-			var response = await _mediator.Send(new SolicitarTccCommand { TccId = tccDto.TccId, AlunosIds = tccDto.AlunosIds, ProfessorId = tccDto.ProfessorId, Solicitacao = tccDto.Solicitacao });
-
 			return this.ProcessResult(response);
 		}
 	}

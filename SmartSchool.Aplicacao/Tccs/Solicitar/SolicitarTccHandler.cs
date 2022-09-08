@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SmartSchool.Aplicacao.Alunos.Solicitar
+namespace SmartSchool.Aplicacao.Tccs.Solicitar
 {
 	public class SolicitarTccHandler : IRequestHandler<SolicitarTccCommand, IResult>
 	{

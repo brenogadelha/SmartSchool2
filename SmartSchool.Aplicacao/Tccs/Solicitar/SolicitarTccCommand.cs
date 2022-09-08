@@ -3,7 +3,7 @@ using SmartSchool.Dominio.Comum.Results;
 using System;
 using System.Collections.Generic;
 
-namespace SmartSchool.Aplicacao.Alunos.Solicitar
+namespace SmartSchool.Aplicacao.Tccs.Solicitar
 {
 	public class SolicitarTccCommand : IRequest<IResult>
 	{
