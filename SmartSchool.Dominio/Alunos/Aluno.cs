@@ -5,14 +5,12 @@ using SmartSchool.Dominio.Alunos.Validacao;
 using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Cursos;
 using SmartSchool.Dominio.Semestres;
+using SmartSchool.Dominio.Tccs;
 using SmartSchool.Dto.Alunos;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Threading.Tasks;
-using SmartSchool.Comum.Entidades;
-using SmartSchool.Dominio.Tccs;
 
 namespace SmartSchool.Dominio.Alunos
 {
@@ -54,8 +52,6 @@ namespace SmartSchool.Dominio.Alunos
 		public Aluno() { }
 		public static Aluno Criar(AlunoDto alunoDto)
 		{
-			ValidacaoFabrica.Validar(alunoDto, new AlunoValidacao());
-
 			var aluno = new Aluno()
 			{
 				ID = Guid.NewGuid(),
@@ -78,14 +74,14 @@ namespace SmartSchool.Dominio.Alunos
 			if(alunoDto.AlunosDisciplinas != null)
 			aluno.AtualizarDisciplinas(alunoDto.AlunosDisciplinas.Select(ad => ad.DisciplinaId).ToList());
 
+			ValidacaoFabrica.Validar(aluno, new AlunoValidacao());
+
 			return aluno;
 		}
 
 		public static Result<Aluno> Criar(string nome, string sobrenome, string telefone, DateTime dataInicio, DateTime dataFim, DateTime dataNascimento,
 			int matricula, string celular, string cidade, string cpf, string email, string endereco, Guid cursoId, List<AlunoDisciplinaDto> alunosDisciplinas)
 		{
-			//ValidacaoFabrica.Validar(alunoDto, new AlunoValidacao());
-
 			var aluno = new Aluno()
 			{
 				ID = Guid.NewGuid(),
@@ -107,6 +103,8 @@ namespace SmartSchool.Dominio.Alunos
 
 			if (alunosDisciplinas != null)
 				aluno.AtualizarDisciplinas(alunosDisciplinas.Select(ad => ad.DisciplinaId).ToList());
+
+			ValidacaoFabrica.Validar(aluno, new AlunoValidacao());
 
 			return Result<Aluno>.Success(aluno);
 		}

@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
+using SmartSchool.API.Componentes.ControleDeErros;
 using SmartSchool.Comum.Mapeador;
 using SmartSchool.Ioc;
+using System;
+using System.Globalization;
 using System.IO;
 
 namespace SmartSchool.API
@@ -22,8 +26,38 @@ namespace SmartSchool.API
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			//services.AddDbContext<SmartContexto>(options =>
-			//    options.UseSqlServer(AppSettings.Data.DefaultConnectionString));
+			services.AddMyMediatR();
+
+			services.AddHsts(options =>
+			{
+				options.Preload = true;
+				options.IncludeSubDomains = true;
+				options.MaxAge = TimeSpan.FromDays(365);
+			});
+
+			var culture = "pt-BR";
+			var supportedCultures = new[] { new CultureInfo(culture) };
+			services.Configure<RequestLocalizationOptions>(options =>
+			{
+				options.DefaultRequestCulture = new RequestCulture(culture: culture, uiCulture: culture);
+				options.SupportedCultures = supportedCultures;
+				options.SupportedUICultures = supportedCultures;
+			});
+
+			services.AddCors(options =>
+			{
+				options.AddPolicy(name: "PoliticaSmartSchool", p => p
+																	.AllowAnyMethod()
+																	.AllowAnyHeader()
+																	.SetIsOriginAllowed(origin => true)
+																	.AllowCredentials());
+			});
+
+			services.AddMvc(options =>
+			{
+				options.Filters.Add(typeof(ExceptionFilter));
+				options.EnableEndpointRouting = false;
+			});
 
 			services.AddSwaggerGen(options =>
 			{
@@ -34,12 +68,15 @@ namespace SmartSchool.API
 				options.CustomSchemaIds(x => x.FullName);
 			});
 
-			services.AddControllers().AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+			services.AddControllers()
+			   .AddNewtonsoftJson(options =>
+			   {
+				   options.SerializerSettings.DateFormatString = "dd/MM/yyyy HH:mm:ss";
+				   options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+			   });
 
 			services.AddAutoMapper(typeof(Startup).Assembly);
 			services.AddMemoryCache();
-
-			services.AddMyMediatR();
 
 			InjecaoDependencia.Cadastrar(services, Configuration);
 
@@ -50,13 +87,15 @@ namespace SmartSchool.API
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			if (env.IsDevelopment())
-			{
 				app.UseDeveloperExceptionPage();
-			}
 
-			//app.UseHttpsRedirection();
-
-			app.UseRouting();
+			var supportedCultures = new[] { new CultureInfo("pt-BR") };
+			app.UseRequestLocalization(new RequestLocalizationOptions
+			{
+				DefaultRequestCulture = new RequestCulture("pt-BR"),
+				SupportedCultures = supportedCultures,
+				SupportedUICultures = supportedCultures
+			});
 
 			app.UseSwagger()
 				.UseSwaggerUI(options =>
@@ -65,13 +104,32 @@ namespace SmartSchool.API
 					options.RoutePrefix = "";
 				});
 
+			//			if (env.IsDevelopment())
+			//			{
+			//				app.UseSwaggerUI(c =>
+			//				{
+			//					string path = AppSettings.Data.UrlBase;
 
-			//app.UseAuthorization();
+			//					if (!string.IsNullOrEmpty(path))
+			//						path = $"/{path}";
 
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapControllers();
-			});
+			//#if DEBUG
+			//					path = string.Empty;
+			//#endif
+
+			//					c.SwaggerEndpoint("/swagger/SmartApi/swagger.json", "SmartApi");
+			//					c.RoutePrefix = "";
+			//				});
+			//			}
+
+			//app.UseEndpoints(endpoints =>
+			//{
+			//	endpoints.MapControllers();
+			//});
+
+			app.UseHsts();
+			app.UseCors("PoliticaGameficacao");
+			app.UseMvc();
 		}
 	}
 }

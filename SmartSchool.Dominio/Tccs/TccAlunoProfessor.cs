@@ -16,8 +16,10 @@ namespace SmartSchool.Dominio.Tccs
 		public TccProfessor ProfessorTcc { get; private set; }
 		public DateTime DataSolicitacao { get; set; }
 		public TccStatus Status { get; private set; }
+		public string Solicitacao { get; set; }
+		public string RespostaSolicitacao { get; set; }
 
-		public static TccAlunoProfessor Criar(int periodo, Aluno aluno, TccProfessor professorTcc, TccStatus tccStatus)
+		public static TccAlunoProfessor Criar(Aluno aluno, TccProfessor professorTcc, TccStatus tccStatus, string solicitacao)
 		{
 			var tccAlunoProfessor = new TccAlunoProfessor { ProfessorTcc = professorTcc, Aluno = aluno };
 			tccAlunoProfessor.AlunoID = aluno.ID;
@@ -25,18 +27,23 @@ namespace SmartSchool.Dominio.Tccs
 			tccAlunoProfessor.ProfessorID = professorTcc.ProfessorID;
 			tccAlunoProfessor.Status = tccStatus;
 			tccAlunoProfessor.DataSolicitacao = DateTime.Now;
+			tccAlunoProfessor.Solicitacao = solicitacao;
 
 			return tccAlunoProfessor;
 		}
 
-		public static TccAlunoProfessor Criar(Guid tccId, Guid professorId, Guid alunoId, TccStatus tccStatus) => new TccAlunoProfessor()
+		public static TccAlunoProfessor Criar(Guid tccId, Guid professorId, Guid alunoId, string solicitacao) => new TccAlunoProfessor()
 		{
 			TccID = tccId,
 			ProfessorID = professorId,
 			AlunoID = alunoId,
-			Status = tccStatus,
-			DataSolicitacao = DateTime.Now
+			Status = TccStatus.Solicitado,
+			DataSolicitacao = DateTime.Now,
+			Solicitacao = solicitacao
 		};
+
+		public void AlterarStatus(TccStatus status) => this.Status = status;
+		public void AlterarRespostaSolicitacao(string respostaSolicitacao) => this.RespostaSolicitacao = respostaSolicitacao;
 	}
 
 }

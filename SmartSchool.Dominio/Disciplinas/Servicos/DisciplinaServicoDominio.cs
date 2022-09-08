@@ -8,9 +8,9 @@ namespace SmartSchool.Dominio.Disciplinas.Servicos
 {
 	public class DisciplinaServicoDominio : IDisciplinaServicoDominio
 	{
-		private readonly IRepositorioTask<Disciplina> _disciplinaRepositorio;
+		private readonly IRepositorio<Disciplina> _disciplinaRepositorio;
 
-		public DisciplinaServicoDominio(IRepositorioTask<Disciplina> disciplinaRepositorio)
+		public DisciplinaServicoDominio(IRepositorio<Disciplina> disciplinaRepositorio)
 		{
 			this._disciplinaRepositorio = disciplinaRepositorio;
 		}

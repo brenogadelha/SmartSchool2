@@ -33,6 +33,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SmartSchool.Aplicacao\SmartSchool.Aplicacao.csproj" />
     <ProjectReference Include="..\SmartSchool.Comum\SmartSchool.Comum.csproj" />
+    <ProjectReference Include="..\SmartSchool.Dominio\SmartSchool.Dominio.csproj" />
     <ProjectReference Include="..\SmartSchool.Ioc\SmartSchool.Ioc.csproj" />
   </ItemGroup>
 

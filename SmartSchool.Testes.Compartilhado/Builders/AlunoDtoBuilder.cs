@@ -1,5 +1,5 @@
-﻿using SmartSchool.Aplicacao.Alunos.AdicionarAluno;
-using SmartSchool.Aplicacao.Alunos.AlterarAluno;
+﻿using SmartSchool.Aplicacao.Alunos.Adicionar;
+using SmartSchool.Aplicacao.Alunos.Alterar;
 using SmartSchool.Dto.Alunos;
 using System;
 using System.Collections.Generic;

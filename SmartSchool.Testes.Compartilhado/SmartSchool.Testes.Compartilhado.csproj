@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SmartSchool.Aplicacao\SmartSchool.Aplicacao.csproj" />
     <ProjectReference Include="..\SmartSchool.Dados\SmartSchool.Dados.csproj" />
+    <ProjectReference Include="..\SmartSchool.Ioc\SmartSchool.Ioc.csproj" />
   </ItemGroup>
 
 </Project>

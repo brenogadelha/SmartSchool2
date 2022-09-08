@@ -1,49 +1,54 @@
-﻿using SmartSchool.Comum.Especificao;
+﻿using Microsoft.EntityFrameworkCore;
+using SmartSchool.Comum.Especificao;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Dados.Comum;
 using SmartSchool.Dominio.Disciplinas;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
-namespace SmartSchool.Dados.Modulos.Usuarios
+namespace SmartSchool.Dados.Modulos.Disciplinas
 {
 	public class DisciplinaRepositorio : IRepositorio<Disciplina>
 	{
 		private readonly IUnidadeDeTrabalho _contexto;
 		public DisciplinaRepositorio(IUnidadeDeTrabalho contextos) => this._contexto = contextos;
 
-		public void Adicionar(Disciplina entidade, bool finalizarTransacao = true)
+		public virtual async Task Adicionar(Disciplina entidade, bool finalizarTransacao = true)
 		{
-			this._contexto.SmartContexto.Disciplinas.Add(entidade);
+			await this._contexto.SmartContexto.Disciplinas.AddAsync(entidade);
 
 			if (finalizarTransacao)
-				this._contexto.SmartContexto.SaveChanges();
+				await this._contexto.SmartContexto.SaveChangesAsync();
 		}
 
-		public void Atualizar(Disciplina entidade, bool finalizarTransacao = true)
+		public virtual async Task Atualizar(Disciplina entidade, bool finalizarTransacao = true)
 		{
 			this._contexto.SmartContexto.Disciplinas.Update(entidade);
 
 			if (finalizarTransacao)
-				this._contexto.SmartContexto.SaveChanges();
+				await this._contexto.SmartContexto.SaveChangesAsync();
 		}
 
-		public IEnumerable<Disciplina> Obter() => this._contexto.SmartContexto.Disciplinas;
+		public virtual async Task<IEnumerable<Disciplina>> Obter() => await this._contexto.SmartContexto.Disciplinas.ToListAsync();
 
-		public Disciplina Obter(IEspecificavel<Disciplina> especificacao) =>
-			this._contexto.SmartContexto.ObterPorEspecificacao(especificacao).FirstOrDefault();
-
-		public IEnumerable<Disciplina> Procurar(IEspecificavel<Disciplina> especificacao) =>
-			this._contexto.SmartContexto.ObterPorEspecificacao(especificacao);
-
-		public void Remover(Disciplina entidade, bool finalizarTransacao = true)
+		public virtual async Task<Disciplina> ObterAsync(IEspecificavel<Disciplina> especificacao)
 		{
-			this._contexto.SmartContexto.Disciplinas.Remove(entidade);
+			return await this._contexto.SmartContexto.GetDbSetWithQueryable(especificacao).FirstOrDefaultAsync();
+
+			//var query = GetDbSetWithQueryable(especificacao);
+
+			//return await (usarTracking ? query.FirstOrDefaultAsync(especificacao.ExpressaoEspecificacao) : query.AsNoTracking().FirstOrDefaultAsync(especificacao.ExpressaoEspecificacao));
+		}
+
+		public virtual async Task<IEnumerable<Disciplina>> Procurar(IEspecificavel<Disciplina> especificacao) =>
+			await this._contexto.SmartContexto.GetDbSetWithQueryable(especificacao).ToListAsync();
+
+		public virtual async Task RemoverAsync(Disciplina entidade, bool finalizarTransacao = true)
+		{
+			await Task.FromResult(this._contexto.SmartContexto.Disciplinas.Remove(entidade));
 
 			if (finalizarTransacao)
 				this._contexto.SmartContexto.SaveChanges();
 		}
-
 	}
 }

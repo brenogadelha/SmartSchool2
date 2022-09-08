@@ -26,6 +26,7 @@ namespace SmartSchool.Dados.Contextos
 		public DbSet<Semestre> Semestres { get; set; }
 		public DbSet<Curso> Cursos { get; set; }
 		public DbSet<Tcc> Tccs { get; set; }
+		public DbSet<TccAlunoProfessor> TccAlunosProfessores { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -40,6 +41,7 @@ namespace SmartSchool.Dados.Contextos
 			modelBuilder.ApplyConfiguration(new CursoDisciplinaMapeamento());
 			modelBuilder.ApplyConfiguration(new SemestreAlunoDisciplinaMapeamento());
 			modelBuilder.ApplyConfiguration(new SemestreMapeamento());
+			modelBuilder.ApplyConfiguration(new TccMapeamento());
 			modelBuilder.ApplyConfiguration(new TccProfessorMapeamento());
 			modelBuilder.ApplyConfiguration(new TccAlunoProfessorMapeamento());
 		}

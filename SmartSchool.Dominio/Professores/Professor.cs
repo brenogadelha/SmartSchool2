@@ -1,5 +1,6 @@
 ﻿using SmartSchool.Comum.Dominio;
 using SmartSchool.Comum.Validacao;
+using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dominio.Professores.Validacao;
 using SmartSchool.Dominio.Tccs;
@@ -17,8 +18,9 @@ namespace SmartSchool.Dominio.Professores
         public Guid ID { get; private set; }
         public int Matricula { get; private set; }
         public string Nome { get; private set; }
+		public bool Ativo { get; set; }
 
-        [JsonIgnore]
+		[JsonIgnore]
         public List<ProfessorDisciplina> ProfessoresDisciplinas { get; private set; } = new List<ProfessorDisciplina>();
 
 		[JsonIgnore]
@@ -40,16 +42,35 @@ namespace SmartSchool.Dominio.Professores
             {
                 ID = Guid.NewGuid(),
                 Nome = professorDto.Nome,
-                Matricula = professorDto.Matricula
-            };
+                Matricula = professorDto.Matricula,
+				Ativo = true
+			};
 
 			professor.AtualizarDisciplinas(professorDto.Disciplinas);
 
 			return professor;
         }
 
-        public void AlterarNome(string nome) => this.Nome = nome;
+		public static Result<Professor> Criar(string nome, int matricula, List<Guid> disciplinas)
+		{
+			//ValidacaoFabrica.Validar(professorDto, new ProfessorValidacao());
+
+			var professor = new Professor()
+			{
+				ID = Guid.NewGuid(),
+				Nome = nome,
+				Matricula = matricula,
+				Ativo = true
+			};
+
+			professor.AtualizarDisciplinas(disciplinas);
+
+			return Result<Professor>.Success(professor);
+		}
+
+		public void AlterarNome(string nome) => this.Nome = nome;
         public void AlterarMatricula(int matricula) => this.Matricula = matricula;
+        public void AlterarAtivo(bool ativo) => this.Ativo = ativo;
 		public void AtualizarDisciplinas(List<Guid> novasDisciplinas)
 		{
 			// Verifica se foram incluídas novas Disciplinas. Caso não, são removidas as atuais.

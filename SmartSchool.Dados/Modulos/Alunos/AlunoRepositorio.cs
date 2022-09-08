@@ -1,10 +1,10 @@
-﻿using SmartSchool.Comum.Especificao;
+﻿using Microsoft.EntityFrameworkCore;
+using SmartSchool.Comum.Especificao;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Dados.Comum;
 using SmartSchool.Dominio.Alunos;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace SmartSchool.Dados.Modulos.Alunos
 {
@@ -13,31 +13,42 @@ namespace SmartSchool.Dados.Modulos.Alunos
 		private readonly IUnidadeDeTrabalho _contexto;
 		public AlunoRepositorio(IUnidadeDeTrabalho contextos) => this._contexto = contextos;
 
-		public void Adicionar(Aluno entidade, bool finalizarTransacao = true)
+		public virtual async Task Adicionar(Aluno entidade, bool finalizarTransacao = true)
 		{
-			this._contexto.SmartContexto.Alunos.Add(entidade);
+			await this._contexto.SmartContexto.Alunos.AddAsync(entidade);
 
 			if (finalizarTransacao)
-				this._contexto.SmartContexto.SaveChanges();
+				await this._contexto.SmartContexto.SaveChangesAsync();
 		}
 
-		public void Atualizar(Aluno entidade, bool finalizarTransacao = true)
+		public virtual async Task Atualizar(Aluno entidade, bool finalizarTransacao = true)
 		{
 			this._contexto.SmartContexto.Alunos.Update(entidade);
 
 			if (finalizarTransacao)
-				this._contexto.SmartContexto.SaveChanges();
+				await this._contexto.SmartContexto.SaveChangesAsync();
 		}
 
-		public IEnumerable<Aluno> Obter() => this._contexto.SmartContexto.Alunos;
+		public virtual async Task<IEnumerable<Aluno>> Obter() => await this._contexto.SmartContexto.Alunos.ToListAsync();
 
-		public Aluno Obter(IEspecificavel<Aluno> especificacao) =>
-			this._contexto.SmartContexto.ObterPorEspecificacao(especificacao).FirstOrDefault();
+		public virtual async Task<Aluno> ObterAsync(IEspecificavel<Aluno> especificacao)
+		{
+			return await this._contexto.SmartContexto.GetDbSetWithQueryable(especificacao).FirstOrDefaultAsync();
 
-		public IEnumerable<Aluno> Procurar(IEspecificavel<Aluno> especificacao) =>
-			this._contexto.SmartContexto.ObterPorEspecificacao(especificacao);
+			//var query = GetDbSetWithQueryable(especificacao);
 
-		public void Remover(Aluno entidade, bool finalizarTransacao = true) => throw new NotImplementedException();
+			//return await (usarTracking ? query.FirstOrDefaultAsync(especificacao.ExpressaoEspecificacao) : query.AsNoTracking().FirstOrDefaultAsync(especificacao.ExpressaoEspecificacao));
+		}
 
+		public virtual async Task<IEnumerable<Aluno>> Procurar(IEspecificavel<Aluno> especificacao) =>
+			await this._contexto.SmartContexto.GetDbSetWithQueryable(especificacao).ToListAsync();
+
+		public virtual async Task RemoverAsync(Aluno entidade, bool finalizarTransacao = true)
+		{
+			await Task.FromResult(this._contexto.SmartContexto.Alunos.Remove(entidade));
+
+			if (finalizarTransacao)
+				this._contexto.SmartContexto.SaveChanges();
+		}
 	}
 }

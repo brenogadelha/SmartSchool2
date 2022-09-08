@@ -10,6 +10,6 @@ namespace SmartSchool.Dominio.Professores.Especificacao
 
 		public BuscaDeProfessorPorMatriculaEspecificacao(int matricula) => this._matricula = matricula;
 
-		public override Expression<Func<Professor, bool>> ExpressaoEspecificacao => x => x.Matricula == this._matricula;
+		public override Expression<Func<Professor, bool>> ExpressaoEspecificacao => x => x.Matricula == this._matricula && x.Ativo == true;
 	}
 }

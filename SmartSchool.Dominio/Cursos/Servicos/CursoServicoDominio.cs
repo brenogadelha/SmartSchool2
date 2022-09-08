@@ -8,9 +8,9 @@ namespace SmartSchool.Dominio.Cursos.Servicos
 {
 	public class CursoServicoDominio : ICursoServicoDominio
 	{
-		private readonly IRepositorioTask<Curso> _cursoRepositorio;
+		private readonly IRepositorio<Curso> _cursoRepositorio;
 
-		public CursoServicoDominio(IRepositorioTask<Curso> alunoRepositorio)
+		public CursoServicoDominio(IRepositorio<Curso> alunoRepositorio)
 		{
 			this._cursoRepositorio = alunoRepositorio;
 		}
@@ -20,12 +20,12 @@ namespace SmartSchool.Dominio.Cursos.Servicos
 			if (idCurso.Equals(Guid.Empty))
 				throw new ArgumentNullException(null, "Id nulo do Curso (não foi informado).");
 
-			var aluno = await this._cursoRepositorio.ObterAsync(new BuscaDeCursoPorIdEspecificacao(idCurso).IncluiInformacoesDeDisciplina());
+			var curso = await this._cursoRepositorio.ObterAsync(new BuscaDeCursoPorIdEspecificacao(idCurso).IncluiInformacoesDeDisciplina());
 
-			if (aluno == null)
+			if (curso == null)
 				throw new RecursoInexistenteException($"Curso com ID '{idCurso}' não existe.");
 
-			return aluno;
+			return curso;
 		}
 
 		public async Task<bool> VerificarExisteCursoComMesmoNome(string nome, Guid? idAtual)

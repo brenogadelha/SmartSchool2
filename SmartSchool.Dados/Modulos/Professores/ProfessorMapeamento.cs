@@ -25,6 +25,10 @@ namespace SmartSchool.Dados.Modulos.Usuarios
 					.HasColumnName("PROF_COD_PROFESSOR")
 					.ValueGeneratedNever()
 					.IsRequired();
+
+			builder.Property(b => b.Ativo)
+				   .HasColumnName("PROF_IN_ATIVO")
+				   .IsRequired();
 		}
 	}
 }

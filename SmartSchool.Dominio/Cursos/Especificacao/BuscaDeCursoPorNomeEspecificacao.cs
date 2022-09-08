@@ -10,6 +10,6 @@ namespace SmartSchool.Dominio.Cursos.Especificacao
 
 		public BuscaDeCursoPorNomeEspecificacao(string nome) => this._nome = nome;
 
-		public override Expression<Func<Curso, bool>> ExpressaoEspecificacao => x => x.Nome == this._nome;
+		public override Expression<Func<Curso, bool>> ExpressaoEspecificacao => x => x.Nome == this._nome && x.Ativo == true;
 	}
 }

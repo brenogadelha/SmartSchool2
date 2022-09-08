@@ -32,6 +32,14 @@ namespace SmartSchool.Dados.Modulos.Tccs
 				   .HasColumnName("TAPR_ID_STATUS_TCC")
 				   .IsRequired();
 
+			builder.Property(dp => dp.Solicitacao)
+				   .HasColumnName("TAPR_TXT_SOLICITACAO")
+				   .HasMaxLength(1008);
+
+			builder.Property(dp => dp.RespostaSolicitacao)
+				   .HasColumnName("TAPR_TXT_RESPOSTA_SOLICITACAO")
+				   .HasMaxLength(1008);
+
 			builder.HasOne(dp => dp.Aluno)
 				   .WithMany(b => b.TccsProfessores)
 				   .HasForeignKey(dp => dp.AlunoID)

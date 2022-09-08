@@ -1,10 +1,10 @@
-﻿using SmartSchool.Comum.Especificao;
+﻿using Microsoft.EntityFrameworkCore;
+using SmartSchool.Comum.Especificao;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Dados.Comum;
 using SmartSchool.Dominio.Semestres;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace SmartSchool.Dados.Modulos.Semestres
 {
@@ -13,37 +13,42 @@ namespace SmartSchool.Dados.Modulos.Semestres
 		private readonly IUnidadeDeTrabalho _contexto;
 		public SemestreRepositorio(IUnidadeDeTrabalho contextos) => this._contexto = contextos;
 
-		public void Adicionar(Semestre entidade, bool finalizarTransacao = true)
+		public virtual async Task Adicionar(Semestre entidade, bool finalizarTransacao = true)
 		{
-			this._contexto.SmartContexto.Semestres.Add(entidade);
+			await this._contexto.SmartContexto.Semestres.AddAsync(entidade);
 
 			if (finalizarTransacao)
-				this._contexto.SmartContexto.SaveChanges();
+				await this._contexto.SmartContexto.SaveChangesAsync();
 		}
 
-		public void Atualizar(Semestre entidade, bool finalizarTransacao = true)
+		public virtual async Task Atualizar(Semestre entidade, bool finalizarTransacao = true)
 		{
 			this._contexto.SmartContexto.Semestres.Update(entidade);
 
 			if (finalizarTransacao)
-				this._contexto.SmartContexto.SaveChanges();
+				await this._contexto.SmartContexto.SaveChangesAsync();
 		}
 
-		public IEnumerable<Semestre> Obter() => this._contexto.SmartContexto.Semestres;
+		public virtual async Task<IEnumerable<Semestre>> Obter() => await this._contexto.SmartContexto.Semestres.ToListAsync();
 
-		public Semestre Obter(IEspecificavel<Semestre> especificacao) =>
-			this._contexto.SmartContexto.ObterPorEspecificacao(especificacao).FirstOrDefault();
-
-		public IEnumerable<Semestre> Procurar(IEspecificavel<Semestre> especificacao) =>
-			this._contexto.SmartContexto.ObterPorEspecificacao(especificacao);
-
-		public void Remover(Semestre entidade, bool finalizarTransacao = true)
+		public virtual async Task<Semestre> ObterAsync(IEspecificavel<Semestre> especificacao)
 		{
-			this._contexto.SmartContexto.Semestres.Remove(entidade);
+			return await this._contexto.SmartContexto.GetDbSetWithQueryable(especificacao).FirstOrDefaultAsync();
+
+			//var query = GetDbSetWithQueryable(especificacao);
+
+			//return await (usarTracking ? query.FirstOrDefaultAsync(especificacao.ExpressaoEspecificacao) : query.AsNoTracking().FirstOrDefaultAsync(especificacao.ExpressaoEspecificacao));
+		}
+
+		public virtual async Task<IEnumerable<Semestre>> Procurar(IEspecificavel<Semestre> especificacao) =>
+			await this._contexto.SmartContexto.GetDbSetWithQueryable(especificacao).ToListAsync();
+
+		public virtual async Task RemoverAsync(Semestre entidade, bool finalizarTransacao = true)
+		{
+			await Task.FromResult(this._contexto.SmartContexto.Semestres.Remove(entidade));
 
 			if (finalizarTransacao)
 				this._contexto.SmartContexto.SaveChanges();
 		}
-
 	}
 }

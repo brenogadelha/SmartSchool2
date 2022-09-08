@@ -20,6 +20,10 @@ namespace SmartSchool.Dados.Modulos.Semestres
 			builder.Property(b => b.DataInicio)
 					.HasColumnName("SEME_DT_INICIO")
 					.IsRequired();
+
+			builder.Property(b => b.Ativo)
+				   .HasColumnName("SEME_IN_ATIVO")
+				   .IsRequired();
 		}
 	}
 }

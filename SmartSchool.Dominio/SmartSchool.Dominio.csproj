@@ -9,4 +9,8 @@
     <ProjectReference Include="..\SmartSchool.Dto\SmartSchool.Dto.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Tccs\Validacao\" />
+  </ItemGroup>
+
 </Project>

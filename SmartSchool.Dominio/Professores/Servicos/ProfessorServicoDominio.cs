@@ -8,9 +8,9 @@ namespace SmartSchool.Dominio.Professores.Servicos
 {
 	public class ProfessorServicoDominio : IProfessorServicoDominio
 	{
-		private readonly IRepositorioTask<Professor> _professorRepositorio;
+		private readonly IRepositorio<Professor> _professorRepositorio;
 
-		public ProfessorServicoDominio(IRepositorioTask<Professor> alunoRepositorio)
+		public ProfessorServicoDominio(IRepositorio<Professor> alunoRepositorio)
 		{
 			this._professorRepositorio = alunoRepositorio;
 		}

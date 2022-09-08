@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace SmartSchool.Dados.Modulos.Tccs
 {
-	public class TccRepositorioTask : IRepositorioTask<Tcc>
+	public class TccRepositorio : IRepositorio<Tcc>
 	{
 		private readonly IUnidadeDeTrabalho _contexto;
-		public TccRepositorioTask(IUnidadeDeTrabalho contextos) => this._contexto = contextos;
+		public TccRepositorio(IUnidadeDeTrabalho contextos) => this._contexto = contextos;
 
 		public virtual async Task Adicionar(Tcc entidade, bool finalizarTransacao = true)
 		{

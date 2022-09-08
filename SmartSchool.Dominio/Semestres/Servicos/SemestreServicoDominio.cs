@@ -8,11 +8,11 @@ namespace SmartSchool.Dominio.Semestres.Servicos
 {
 	public class SemestreServicoDominio : ISemestreServicoDominio
 	{
-		private readonly IRepositorioTask<Semestre> _cursoRepositorio;
+		private readonly IRepositorio<Semestre> _cursoRepositorio;
 
-		public SemestreServicoDominio(IRepositorioTask<Semestre> alunoRepositorio)
+		public SemestreServicoDominio(IRepositorio<Semestre> semestreRepositorio)
 		{
-			this._cursoRepositorio = alunoRepositorio;
+			this._cursoRepositorio = semestreRepositorio;
 		}
 
 		public async Task<Semestre> ObterAsync(Guid idSemestre)

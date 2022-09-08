@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SmartSchool.Comum.Repositorio
 {
-	public interface IRepositorioTask<TEntity>
+	public interface IRepositorio<TEntity>
 		where TEntity : class
 	{
 		Task<IEnumerable<TEntity>> Obter();

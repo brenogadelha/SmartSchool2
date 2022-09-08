@@ -1,22 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SmartSchool.Aplicacao.Cursos.Interface;
+﻿using MediatR;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
+using SmartSchool.API.Componentes;
+using SmartSchool.Aplicacao.Cursos.Adicionar;
+using SmartSchool.Aplicacao.Cursos.Alterar;
+using SmartSchool.Aplicacao.Cursos.Listar;
+using SmartSchool.Aplicacao.Cursos.ObterPorId;
+using SmartSchool.Aplicacao.Cursos.Remover;
 using SmartSchool.Dto.Curso;
 using SmartSchool.Dto.Dtos.TratamentoErros;
 using System;
 using System.Collections.Generic;
-using System.Net;
+using System.Threading.Tasks;
 
 namespace SmartSchool.API.Controllers
 {
-	[Route("api/[controller]")]
-	[ApiController]
+	[Produces("application/json")]
+	[Route("api/Cursos")]
+	[EnableCors("PoliticaSmartSchool")]
 	public class CursoController : Controller
 	{
-		private readonly ICursoServico _cursoServico;
+		private readonly IMediator _mediator;
 
-		public CursoController(ICursoServico cursoServico)
+		public CursoController(IMediator mediator)
 		{
-			this._cursoServico = cursoServico;
+			this._mediator = mediator;
 		}
 
 		/// <summary>
@@ -28,7 +36,12 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(200, Type = typeof(IEnumerable<CursoDto>))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[HttpGet]
-		public OkObjectResult ObterTodos() => Ok(_cursoServico.Obter());
+		public async Task<IActionResult> ObterTodos()
+		{
+			var response = await _mediator.Send(new ListarCursosCommand());
+
+			return this.ProcessResult(response);
+		}
 
 		/// <summary>
 		/// Obtém dados do Curso específico por ID
@@ -41,7 +54,12 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[HttpGet("{id}")]
-		public OkObjectResult ObterPorId(Guid id) => Ok(this._cursoServico.ObterPorId(id));
+		public async Task<IActionResult> ObterPorId([FromRoute(Name = "id")] Guid id)
+		{
+			var response = await _mediator.Send(new ObterCursoCommand { Id = id });
+
+			return this.ProcessResult(response);
+		}
 
 
 		/// <summary>
@@ -55,11 +73,11 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(201)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult CriarCurso([FromBody] CursoDto cursoDto)
+		public async Task<IActionResult> CriarCurso([FromBody] AdicionarCursoCommand cursoDto)
 		{
-			this._cursoServico.CriarCurso(cursoDto);
+			var response = await _mediator.Send(cursoDto);
 
-			return this.StatusCode((int)HttpStatusCode.Created);
+			return this.ProcessResult(response);
 		}
 
 		/// <summary>
@@ -75,7 +93,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult AlterarCurso(Guid id, [FromBody] AlterarCursoDto cursoDto, [FromQuery(Name = "atualizarDisciplinas")] bool? atualizarDisciplinas = null)
+		public async Task<IActionResult> AlterarCurso(Guid id, [FromBody] AlterarCursoCommand cursoDto)
 		{
 			if (cursoDto == null)
 				throw new ArgumentNullException(null, "Objeto Curso nulo (não foi informado).");
@@ -85,9 +103,9 @@ namespace SmartSchool.API.Controllers
 
 			cursoDto.ID = id;
 
-			this._cursoServico.AlterarCurso(id, cursoDto, atualizarDisciplinas);
+			var response = await _mediator.Send(cursoDto);
 
-			return this.StatusCode((int)HttpStatusCode.Created);
+			return this.ProcessResult(response);
 		}
 
 		/// <summary>
@@ -102,10 +120,10 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult ExcluirCurso(Guid id)
+		public async Task<IActionResult> RemoverCurso(Guid id)
 		{
-			this._cursoServico.Remover(id);
-			return this.StatusCode(204);
+			var response = await this._mediator.Send(new RemoverCursoCommand { ID = id });
+			return this.ProcessResult(response);
 		}
 	}
 }

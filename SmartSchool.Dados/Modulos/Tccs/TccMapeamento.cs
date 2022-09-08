@@ -33,6 +33,10 @@ namespace SmartSchool.Dados.Modulos.Tccs
 					.HasColumnName("TCC_TXT_PROBLEMATICA")
 					.HasMaxLength(3008)
 					.IsRequired();
+
+			builder.Property(b => b.Ativo)
+				   .HasColumnName("TCC_IN_ATIVO")
+				   .IsRequired();
 		}
 	}
 }

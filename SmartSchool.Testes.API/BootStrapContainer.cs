@@ -10,14 +10,13 @@ using SmartSchool.Comum.Infra;
 using SmartSchool.Dados.Contextos;
 using SmartSchool.Dados.Comum;
 using MediatR;
-using SmartSchool.Aplicacao.Alunos.ListarAlunos;
-using SmartSchool.Aplicacao.Alunos.ObterAluno;
-using Parceiros.Template.Aplicacao.Pessoas.ListarPessoas;
-using SmartSchool.Aplicacao.Alunos.AdicionarAluno;
-using SmartSchool.Aplicacao.Alunos.AlterarAluno;
-using SmartSchool.Aplicacao.Alunos.ObterAlunoMatricula;
-using SmartSchool.Aplicacao.Alunos.ObterAlunoNome;
-using SmartSchool.Aplicacao.Alunos.ObterHistoricoAluno;
+using SmartSchool.Aplicacao.Alunos.Listar;
+using SmartSchool.Aplicacao.Alunos.ObterPorId;
+using SmartSchool.Aplicacao.Alunos.Adicionar;
+using SmartSchool.Aplicacao.Alunos.Alterar;
+using SmartSchool.Aplicacao.Alunos.ObterPorMatricula;
+using SmartSchool.Aplicacao.Alunos.ObterPorNome;
+using SmartSchool.Aplicacao.Alunos.ObterHistorico;
 using FluentValidation;
 using SmartSchool.Ioc.Behavior;
 using SmartSchool.Comum.Repositorio;
@@ -68,10 +67,10 @@ namespace SmartSchool.Testes.API
 			services.AddMediatR(typeof(ObterHistoricoAlunoCommand).Assembly);
 			services.AddMediatR(typeof(ObterHistoricoAlunoHandler).Assembly);
 
-			services.AddScoped<IRepositorioTask<Aluno>, AlunoRepositorioTask>();
-			services.AddScoped<IRepositorioTask<Curso>, CursoRepositorioTask>();
-			services.AddScoped<IRepositorioTask<Disciplina>, DisciplinaRepositorioTask>();
-			services.AddScoped<IRepositorioTask<Semestre>, SemestreRepositorioTask>();
+			services.AddScoped<IRepositorio<Aluno>, AlunoRepositorio>();
+			services.AddScoped<IRepositorio<Curso>, CursoRepositorio>();
+			services.AddScoped<IRepositorio<Disciplina>, DisciplinaRepositorio>();
+			services.AddScoped<IRepositorio<Semestre>, SemestreRepositorio>();
 
 			services.AddValidatorsFromAssembly(typeof(ValidationBehavior<,>).Assembly);
 			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

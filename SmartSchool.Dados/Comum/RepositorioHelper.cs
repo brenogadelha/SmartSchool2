@@ -33,7 +33,7 @@ namespace SmartSchool.Dados.Comum
 				query = query.Include(inclusao);
 			}
 
-			foreach (var subInclusao in especificacao.SubInclusoes)
+			foreach (var subInclusao in especificacao.ObjetosInclusaoStrings)
 			{
 				query = query.Include(subInclusao);
 			}

@@ -22,6 +22,10 @@ namespace SmartSchool.Dados.Modulos.Usuarios
 			builder.Property(b => b.Periodo)
 					.HasColumnName("DISC_ID_PERIODO")
 					.IsRequired();
+
+			builder.Property(b => b.Ativo)
+				   .HasColumnName("DISC_IN_ATIVO")
+				   .IsRequired();
 		}
 	}
 }
