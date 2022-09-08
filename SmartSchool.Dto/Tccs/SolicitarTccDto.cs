@@ -8,5 +8,6 @@ namespace SmartSchool.Dto.Tccs
 		public string Solicitacao { get; set; }
 		public List<Guid> AlunosIds { get; set; }
 		public Guid ProfessorId { get; set; }
+		public Guid TccId { get; set; }
 	}
 }

@@ -196,15 +196,15 @@ namespace SmartSchool.API.Controllers
 		/// <response code="404">Tcc inexistente</response>
 		/// <response code="422">Erro nas regras de negócio.</response>
 		/// <response code="500">Erro inesperado</response> 
-		[HttpPut("{tcc-id}/solicitar")]
+		[HttpPut("tccs/solicitar")]
 		[ProducesResponseType(204)]
 		[ProducesResponseType(401, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(422, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public async Task<IActionResult> SolicitarTcc([FromRoute(Name = "tcc-id")] Guid tccId, [FromBody] SolicitarTccDto tccDto)
+		public async Task<IActionResult> SolicitarTcc([FromBody] SolicitarTccDto tccDto)
 		{
-			var response = await _mediator.Send(new SolicitarTccCommand { TccId = tccId, AlunosIds = tccDto.AlunosIds, ProfessorId = tccDto.ProfessorId, Solicitacao = tccDto.Solicitacao });
+			var response = await _mediator.Send(new SolicitarTccCommand { TccId = tccDto.TccId, AlunosIds = tccDto.AlunosIds, ProfessorId = tccDto.ProfessorId, Solicitacao = tccDto.Solicitacao });
 
 			return this.ProcessResult(response);
 		}

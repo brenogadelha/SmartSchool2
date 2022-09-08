@@ -75,7 +75,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(200, Type = typeof(ObterSolicitacoesTccsDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		[HttpGet("professores/{id}")]
+		[HttpGet("professores/{professor-id}")]
 		public async Task<IActionResult> ObterPorProfessor([FromRoute(Name = "id")] Guid id, [FromQuery] int status)
 		{
 			var response = await _mediator.Send(new ListarTccsPorProfessorCommand { ProfessorId = id, StatusTcc = (TccStatus)status });
@@ -93,7 +93,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(200, Type = typeof(ObterSolicitacoesTccsDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		[HttpGet("alunos/{id}")]
+		[HttpGet("alunos/{aluno-id}")]
 		public async Task<IActionResult> ObterPorAluno([FromRoute(Name = "id")] Guid id)
 		{
 			var response = await _mediator.Send(new ObterTccPorAlunoCommand { AlunoId = id });
