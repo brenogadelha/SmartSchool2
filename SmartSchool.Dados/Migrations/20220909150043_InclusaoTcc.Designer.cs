@@ -10,8 +10,8 @@ using SmartSchool.Dados.Contextos;
 namespace SmartSchool.Dados.Migrations
 {
     [DbContext(typeof(SmartContexto))]
-    [Migration("20220904234902_InclusaoSolicitacaoTcc")]
-    partial class InclusaoSolicitacaoTcc
+    [Migration("20220909150043_InclusaoTcc")]
+    partial class InclusaoTcc
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -353,7 +353,9 @@ namespace SmartSchool.Dados.Migrations
 
                     b.HasKey("TccID", "AlunoID", "ProfessorID");
 
-                    b.HasIndex("AlunoID", "ProfessorID");
+                    b.HasIndex("AlunoID");
+
+                    b.HasIndex("ProfessorID", "TccID");
 
                     b.ToTable("TCC_ALUNO_PROFESSOR");
                 });
@@ -488,7 +490,7 @@ namespace SmartSchool.Dados.Migrations
 
                     b.HasOne("SmartSchool.Dominio.Tccs.TccProfessor", "ProfessorTcc")
                         .WithMany("Alunos")
-                        .HasForeignKey("AlunoID", "ProfessorID")
+                        .HasForeignKey("ProfessorID", "TccID")
                         .HasConstraintName("FK_TAPR_ALUN")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

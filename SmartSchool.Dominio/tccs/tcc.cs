@@ -103,13 +103,11 @@ namespace SmartSchool.Dominio.Tccs
 			foreach (Guid id in novosProfessores)
 				if (!this.ProfessoresIds.Any(l => l == id))
 				{
-					listaTemp.Add(TccProfessor.Criar(this.ID, id));
+					listaTemp.Add(TccProfessor.Criar(id, this.ID));
 				}
 
 			this.TccProfessores.AddRange(listaTemp);
 		}
-		// Fazer métodos GET para tcc's com status "SOLICITADO".
-		// Se negado, informar o motivo para o aluno.
 	}
 }
 

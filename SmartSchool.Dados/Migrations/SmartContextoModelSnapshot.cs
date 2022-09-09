@@ -351,7 +351,9 @@ namespace SmartSchool.Dados.Migrations
 
                     b.HasKey("TccID", "AlunoID", "ProfessorID");
 
-                    b.HasIndex("AlunoID", "ProfessorID");
+                    b.HasIndex("AlunoID");
+
+                    b.HasIndex("ProfessorID", "TccID");
 
                     b.ToTable("TCC_ALUNO_PROFESSOR");
                 });
@@ -486,7 +488,7 @@ namespace SmartSchool.Dados.Migrations
 
                     b.HasOne("SmartSchool.Dominio.Tccs.TccProfessor", "ProfessorTcc")
                         .WithMany("Alunos")
-                        .HasForeignKey("AlunoID", "ProfessorID")
+                        .HasForeignKey("ProfessorID", "TccID")
                         .HasConstraintName("FK_TAPR_ALUN")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

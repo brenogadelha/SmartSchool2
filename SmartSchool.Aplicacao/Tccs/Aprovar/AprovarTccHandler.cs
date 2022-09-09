@@ -32,10 +32,6 @@ namespace SmartSchool.Aplicacao.Tccs.Aprovar
 			tcc.AlterarStatus(request.StatusTcc);
 			tcc.AlterarRespostaSolicitacao(request.RespostaSolicitacao);
 
-			// Caso tenha sido aprovado, inativamos o tema para que ninguém mais faça solicitação para o mesmo
-			if (request.StatusTcc == TccStatus.Aceito)
-				tcc.ProfessorTcc.Tcc.AlterarAtivo(false);
-
 			await this._tccRepositorio.Atualizar(tcc);
 
 			return Result.Success();

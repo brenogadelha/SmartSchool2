@@ -6,6 +6,6 @@ namespace SmartSchool.Dto.Tccs
 	{
 		public string Tema { get; set; }
 		public Guid Id { get; set; }
-		public string professores { get; set; }
+		public string Professor { get; set; }
 	}
 }

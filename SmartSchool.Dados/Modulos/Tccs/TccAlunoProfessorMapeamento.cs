@@ -13,16 +13,13 @@ namespace SmartSchool.Dados.Modulos.Tccs
 			builder.HasKey(dp => new { dp.TccID, dp.AlunoID, dp.ProfessorID });
 
 			builder.Property(dp => dp.TccID)
-				   .HasColumnName("TAPR_ID_TCC")
-				   .IsRequired();
+				   .HasColumnName("TAPR_ID_TCC");
 
 			builder.Property(dp => dp.AlunoID)
-				   .HasColumnName("TAPR_ID_ALUNO")
-				   .IsRequired();
+				   .HasColumnName("TAPR_ID_ALUNO");
 
 			builder.Property(dp => dp.ProfessorID)
-				   .HasColumnName("TAPR_ID_PROFESSOR")
-				   .IsRequired();
+				   .HasColumnName("TAPR_ID_PROFESSOR");
 
 			builder.Property(dp => dp.DataSolicitacao)
 				   .HasColumnName("TAPR_ID_DATA_SOLICITACAO")
@@ -48,7 +45,7 @@ namespace SmartSchool.Dados.Modulos.Tccs
 
 			builder.HasOne(dp => dp.ProfessorTcc)
 				   .WithMany(p => p.Alunos)
-				   .HasForeignKey(dp => new { dp.AlunoID, dp.ProfessorID })
+				   .HasForeignKey(dp => new { dp.ProfessorID, dp.TccID })
 				   .HasConstraintName("FK_TAPR_ALUN")
 				   .OnDelete(DeleteBehavior.Restrict);
 		}

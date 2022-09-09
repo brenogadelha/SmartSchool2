@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SmartSchool.Dados.Migrations
 {
-    public partial class TccExclusaoLogicaParaTodos : Migration
+    public partial class InclusaoTcc : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -92,7 +92,9 @@ namespace SmartSchool.Dados.Migrations
                     TAPR_ID_PROFESSOR = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TAPR_ID_ALUNO = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TAPR_ID_DATA_SOLICITACAO = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TAPR_ID_STATUS_TCC = table.Column<int>(type: "int", nullable: false)
+                    TAPR_ID_STATUS_TCC = table.Column<int>(type: "int", nullable: false),
+                    TAPR_TXT_SOLICITACAO = table.Column<string>(type: "nvarchar(1008)", maxLength: 1008, nullable: true),
+                    TAPR_TXT_RESPOSTA_SOLICITACAO = table.Column<string>(type: "nvarchar(1008)", maxLength: 1008, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -106,7 +108,7 @@ namespace SmartSchool.Dados.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TAPR_ALUN",
-                        columns: x => new { x.TAPR_ID_ALUNO, x.TAPR_ID_PROFESSOR },
+                        columns: x => new { x.TAPR_ID_PROFESSOR, x.TAPR_ID_TCC },
                         principalSchema: "SmartSchool",
                         principalTable: "TCC_PROFESSOR",
                         principalColumns: new[] { "TCPR_ID_PROFESSOR", "TCPR_ID_TCC" },
@@ -114,10 +116,16 @@ namespace SmartSchool.Dados.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TCC_ALUNO_PROFESSOR_TAPR_ID_ALUNO_TAPR_ID_PROFESSOR",
+                name: "IX_TCC_ALUNO_PROFESSOR_TAPR_ID_ALUNO",
                 schema: "SmartSchool",
                 table: "TCC_ALUNO_PROFESSOR",
-                columns: new[] { "TAPR_ID_ALUNO", "TAPR_ID_PROFESSOR" });
+                column: "TAPR_ID_ALUNO");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TCC_ALUNO_PROFESSOR_TAPR_ID_PROFESSOR_TAPR_ID_TCC",
+                schema: "SmartSchool",
+                table: "TCC_ALUNO_PROFESSOR",
+                columns: new[] { "TAPR_ID_PROFESSOR", "TAPR_ID_TCC" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_TCC_PROFESSOR_TCPR_ID_TCC",

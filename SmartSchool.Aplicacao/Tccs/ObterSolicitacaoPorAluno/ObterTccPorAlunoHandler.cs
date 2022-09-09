@@ -22,12 +22,12 @@ namespace SmartSchool.Aplicacao.Tccs.ObterPorAluno
 
         public async Task<IResult> Handle(ObterTccPorAlunoCommand request, CancellationToken cancellationToken)
         {
-            var tcc = await this._tccRepositorio.ObterAsync(new BuscaDeSolicitacaoTccPorAlunoIdEspecificacao(request.AlunoId));
+            var tcc = await this._tccRepositorio.ObterAsync(new BuscaDeSolicitacaoTccPorAlunoIdEspecificacao(request.AlunoId).IncluiInformacoesDeTcc().IncluiInformacoesDeProfessor());
 
             if (tcc == null)
                 throw new RecursoInexistenteException("Não existe TCC para o aluno informado.");
 
-            return Result<ObterSolicitacoesTccsDto>.Success(tcc.MapearParaDto<ObterSolicitacoesTccsDto>());
+            return Result<ObterStatusSolicitacaoTccDto>.Success(tcc.MapearParaDto<ObterStatusSolicitacaoTccDto>());
         }
     }
 }

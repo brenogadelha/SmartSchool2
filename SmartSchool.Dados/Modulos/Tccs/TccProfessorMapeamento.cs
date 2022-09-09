@@ -13,12 +13,10 @@ namespace SmartSchool.Dados.Modulos.Professores
 			builder.HasKey(dp => new { dp.ProfessorID, dp.TccID });
 
 			builder.Property(dp => dp.ProfessorID)
-				   .HasColumnName("TCPR_ID_PROFESSOR")
-				   .IsRequired();
+				   .HasColumnName("TCPR_ID_PROFESSOR");
 
 			builder.Property(dp => dp.TccID)
-				   .HasColumnName("TCPR_ID_TCC")
-				   .IsRequired();
+				   .HasColumnName("TCPR_ID_TCC");
 
 			builder.HasOne(dp => dp.Professor)
 				   .WithMany(b => b.Tccs)

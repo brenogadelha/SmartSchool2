@@ -17,8 +17,6 @@ namespace SmartSchool.Dominio.Alunos
 		public Guid DisciplinaID { get; private set; }
 		public Disciplina Disciplina { get; private set; }
 
-
-
 		[JsonIgnore]
 		public List<SemestreAlunoDisciplina> Semestres { get; private set; } = new List<SemestreAlunoDisciplina>();
 

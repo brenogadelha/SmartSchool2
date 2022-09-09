@@ -22,7 +22,7 @@ namespace SmartSchool.Aplicacao.Tccs.ListarPorProfessor
 
         public async Task<IResult> Handle(ListarTccsPorProfessorCommand request, CancellationToken cancellationToken)
         {
-            var tccs = await this._tccRepositorio.Procurar(new BuscaDeSolicitacaoTccPorProfessorIdEspecificacao(request.ProfessorId, request.StatusTcc));
+            var tccs = await this._tccRepositorio.Procurar(new BuscaDeSolicitacaoTccPorProfessorIdEspecificacao(request.ProfessorId, request.StatusTcc).IncluiInformacoesDeTcc().IncluiInformacoesDeAluno());
 
             return Result<IEnumerable<ObterSolicitacoesTccsDto>>.Success(tccs.MapearParaDto<ObterSolicitacoesTccsDto>());
         }

@@ -1,6 +1,5 @@
 ﻿using SmartSchool.Comum.Dominio;
 using SmartSchool.Dominio.Professores;
-using SmartSchool.Dominio.Semestres;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;

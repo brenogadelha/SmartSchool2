@@ -10,6 +10,9 @@ namespace SmartSchool.Dto.Tccs
 		public Guid AlunoID { get; private set; }
 		public string Tema { get; set; }
 		public DateTime DataSolicitacao { get; set; }
-		public TccStatus Status { get; private set; }
+		public string Status { get; private set; }
+		public string NomeAluno { get; private set; }
+		public string MatriculaAluno { get; private set; }
+		public string Solicitacao { get; private set; }
 	}
 }

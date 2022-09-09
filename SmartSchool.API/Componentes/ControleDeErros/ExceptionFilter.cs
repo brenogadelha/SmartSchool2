@@ -66,7 +66,7 @@ namespace SmartSchool.API.Componentes.ControleDeErros
 			}
 			else
 			{
-				tratamentoErro.Mensagem = "Ocorreu um erro inesperado.";
+				tratamentoErro.Mensagem = $"Ocorreu um erro inesperado: '{context.Exception.InnerException.Message}'.";
 				status = HttpStatusCode.InternalServerError;
 			}
 
