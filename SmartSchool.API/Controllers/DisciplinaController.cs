@@ -84,11 +84,11 @@ namespace SmartSchool.API.Controllers
 		/// Cria uma nova Disciplina
 		/// </summary>
 		/// <returns>Http status 201(Created)</returns>
-		/// <response code="201">Disciplina criada com sucesso</response>
+		/// <response code="200">Disciplina criada com sucesso</response>
 		/// <response code="400">Dados inconsistentes para criação da Disciplina</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPost]
-		[ProducesResponseType(201)]
+		[ProducesResponseType(200)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		public async Task<IActionResult> CriarDisciplina([FromBody] AdicionarDisciplinaCommand disciplina)
@@ -102,12 +102,12 @@ namespace SmartSchool.API.Controllers
 		/// Efetua alteração de Disciplina
 		/// </summary>
 		/// <returns>Http status 204(No Content)</returns>
-		/// <response code="201">Disciplina alterada com Sucesso</response>
+		/// <response code="204">Disciplina alterada com Sucesso</response>
 		/// <response code="400">Dados para alteração de Disciplina inconsistentes.</response>
 		/// <response code="404">Disciplina inexistente</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPut("{id}")]
-		[ProducesResponseType(201)]
+		[ProducesResponseType(204)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]

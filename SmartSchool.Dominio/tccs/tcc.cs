@@ -1,6 +1,8 @@
 ﻿using SmartSchool.Comum.Dominio;
+using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Professores;
+using SmartSchool.Dominio.Tccs.Validacao;
 using SmartSchool.Dto.Tccs;
 using System;
 using System.Collections.Generic;
@@ -15,8 +17,6 @@ namespace SmartSchool.Dominio.Tccs
 		public Guid ID { get; private set; }
 		public string Tema { get; set; }
 		public string Descricao { get; set; }
-		public string Objetivo { get; set; }
-		public string Problematica { get; set; }
 		public bool Ativo { get; set; }
 
 		[JsonIgnore]
@@ -43,31 +43,30 @@ namespace SmartSchool.Dominio.Tccs
 				ID = Guid.NewGuid(),
 				Tema = dto.Tema,
 				Descricao = dto.Descricao,
-				Objetivo = dto.Objetivo,
-				Problematica = dto.Problematica,
 				Ativo = true
 			};
 
 			tcc.AtualizarProfessores(dto.Professores);
 
+			ValidacaoFabrica.Validar(tcc, new TccValidacao());
+
 			return tcc;
 		}
 
-		public static Result<Tcc> Criar(string tema, string objetivo, string descricao, string problematica, List<Guid> professores)
+		public static Result<Tcc> Criar(string tema, string descricao, List<Guid> professores)
 		{
-			//ValidacaoFabrica.Validar(dto, new SemestreValidacao());
 
 			var tcc = new Tcc()
 			{
 				ID = Guid.NewGuid(),
 				Tema = tema,
 				Descricao = descricao,
-				Objetivo = objetivo,
-				Problematica = problematica,
 				Ativo = true
 			};
 
 			tcc.AtualizarProfessores(professores);
+
+			ValidacaoFabrica.Validar(tcc, new TccValidacao());
 
 			return Result<Tcc>.Success(tcc);
 		}
@@ -75,8 +74,6 @@ namespace SmartSchool.Dominio.Tccs
 		public void AlterarAtivo(bool ativo) => this.Ativo = ativo;
 		public void AlterarTema(string tema) => this.Tema = tema;
 		public void AlterarDescricao(string descricao) => this.Descricao = descricao;
-		public void AlterarObejtivo(string objetivo) => this.Objetivo = objetivo;
-		public void AlterarProblematica(string problematica) => this.Problematica = problematica;
 
 		public void AtualizarProfessores(List<Guid> novosProfessores)
 		{

@@ -62,11 +62,11 @@ namespace SmartSchool.API.Controllers
 		/// Cria um novo Professor
 		/// </summary>
 		/// <returns>Http status 201(Created)</returns>
-		/// <response code="201">Professor criado com sucesso</response>
+		/// <response code="200">Professor criado com sucesso</response>
 		/// <response code="400">Dados inconsistentes para criação do Professor</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPost]
-		[ProducesResponseType(201)]
+		[ProducesResponseType(200)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		public async Task<IActionResult> CriarProfessor([FromBody] AdicionarProfessorCommand professorDto)
@@ -80,12 +80,12 @@ namespace SmartSchool.API.Controllers
 		/// Efetua alteração de Professor
 		/// </summary>
 		/// <returns>Http status 204(No Content)</returns>
-		/// <response code="201">Professor alterado com Sucesso</response>
+		/// <response code="204">Professor alterado com Sucesso</response>
 		/// <response code="400">Dados para alteração de Professor inconsistentes.</response>
 		/// <response code="404">Professor inexistente</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPut("{id}")]
-		[ProducesResponseType(201)]
+		[ProducesResponseType(204)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]

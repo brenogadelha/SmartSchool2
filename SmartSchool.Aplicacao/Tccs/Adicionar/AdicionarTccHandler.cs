@@ -33,7 +33,7 @@ namespace SmartSchool.Aplicacao.Tccs.Adicionar
 			foreach (var professorId in request.Professores)
 				await this._professorServicoDominio.ObterAsync(professorId);
 
-			var tcc = Tcc.Criar(request.Tema, request.Objetivo, request.Descricao, request.Problematica, request.Professores);
+			var tcc = Tcc.Criar(request.Tema, request.Descricao, request.Professores);
 
 			await this._tccRepositorio.Adicionar(tcc);
 

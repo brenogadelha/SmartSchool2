@@ -38,9 +38,7 @@ namespace SmartSchool.Aplicacao.Tccs.Alterar
 			var tcc = await this._tccServicoDominio.ObterAsync(request.ID);
 
 			tcc.AlterarTema(request.Tema);
-			tcc.AlterarObejtivo(request.Objetivo);
 			tcc.AlterarDescricao(request.Descricao);
-			tcc.AlterarProblematica(request.Problematica);
 			tcc.AtualizarProfessores(request.Professores);
 
 			await this._tccRepositorio.Atualizar(tcc, true);

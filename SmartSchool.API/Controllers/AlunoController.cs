@@ -127,7 +127,7 @@ namespace SmartSchool.API.Controllers
 		/// <response code="400">Dados inconsistentes para criação do Aluno</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPost]
-		[ProducesResponseType(201)]
+		[ProducesResponseType(200)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		public async Task<IActionResult> CriarAluno([FromBody] AdicionarAlunoCommand aluno)
@@ -141,7 +141,7 @@ namespace SmartSchool.API.Controllers
 		/// Efetua alteração de Aluno
 		/// </summary>
 		/// <returns>Http status 204(No Content)</returns>
-		/// <response code="201">Aluno alterado com Sucesso</response>
+		/// <response code="204">Aluno alterado com Sucesso</response>
 		/// <response code="400">Dados para alteração de Aluno inconsistentes.</response>
 		/// <response code="404">Aluno inexistente</response>
 		/// <response code="500">Erro inesperado</response> 
