@@ -106,11 +106,11 @@ namespace SmartSchool.API.Controllers
 		/// Cria um novo Tcc
 		/// </summary>
 		/// <returns>Http status 201(Created)</returns>
-		/// <response code="201">Tcc criado com sucesso</response>
+		/// <response code="200">Tcc criado com sucesso</response>
 		/// <response code="400">Dados inconsistentes para criação do Tcc</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPost]
-		[ProducesResponseType(201)]
+		[ProducesResponseType(200)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		public async Task<IActionResult> CriarTcc([FromBody] AdicionarTccCommand tccDto)
