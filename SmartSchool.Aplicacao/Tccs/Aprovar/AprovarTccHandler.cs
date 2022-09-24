@@ -21,18 +21,18 @@ namespace SmartSchool.Aplicacao.Tccs.Aprovar
 
 		public async Task<IResult> Handle(AprovarTccCommand request, CancellationToken cancellationToken)
 		{
-			var tcc = await this._tccRepositorio.ObterAsync(new BuscaDeSolicitacaoTccPorProfessorAlunoIdEspecificacao(request.ProfessorId, request.AlunoId));
+			var solicitacaoTcc = await this._tccRepositorio.ObterAsync(new BuscaDeSolicitacaoTccPorProfessorAlunoIdEspecificacao(request.ProfessorId, request.AlunoId));
 
-			if (tcc == null)
-				throw new RecursoInexistenteException("Não foi encontrado TCC para o Aluno e Professor informados.");
+			if (solicitacaoTcc == null)
+				throw new RecursoInexistenteException("Não foi encontrada solicitação de TCC para o Aluno informado.");
 
 			if (request.StatusTcc == TccStatus.Negado && string.IsNullOrEmpty(request.RespostaSolicitacao))
 				throw new ErroNegocioException("Em caso de negação, é necessário informar o motivo.");
 
-			tcc.AlterarStatus(request.StatusTcc);
-			tcc.AlterarRespostaSolicitacao(request.RespostaSolicitacao);
+			solicitacaoTcc.AlterarStatus(request.StatusTcc);
+			solicitacaoTcc.AlterarRespostaSolicitacao(request.RespostaSolicitacao);
 
-			await this._tccRepositorio.Atualizar(tcc);
+			await this._tccRepositorio.Atualizar(solicitacaoTcc);
 
 			return Result.Success();
 		}

@@ -54,7 +54,8 @@ namespace SmartSchool.Dominio.Cursos
 			var curso = new Curso()
 			{
 				ID = Guid.NewGuid(),
-				Nome = nome
+				Nome = nome,
+				Ativo = true
 			};
 
 			curso.AtualizarDisciplinas(idsDisciplinas);
