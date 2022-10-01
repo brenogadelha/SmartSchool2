@@ -30,6 +30,6 @@ namespace SmartSchool.Dominio.Tccs.Especificacao
 			return this;
 		}
 
-		public override Expression<Func<TccAlunoProfessor, bool>> ExpressaoEspecificacao => x => x.ProfessorID == this._professorId && this._tccStatus > 0 ? x.Status == this._tccStatus : true;
+		public override Expression<Func<TccAlunoProfessor, bool>> ExpressaoEspecificacao => x => x.ProfessorID == this._professorId && (this._tccStatus > 0 ? x.Status == this._tccStatus : true);
 	}
 }
