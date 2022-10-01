@@ -150,7 +150,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public async Task<IActionResult> AlterarAluno(Guid id, [FromBody] AlterarAlunoCommand aluno)
+		public async Task<IActionResult> AlterarAluno([FromRoute(Name = "id")] Guid id, [FromBody] AlterarAlunoCommand aluno)
 		{
 			if (aluno == null)
 				throw new ArgumentNullException(null, "Objeto Aluno nulo (não foi informado).");
@@ -177,7 +177,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public async Task<IActionResult> RemoverAluno(Guid id)
+		public async Task<IActionResult> RemoverAluno([FromRoute(Name = "id")] Guid id)
 		{
 			var response = await this._mediator.Send(new RemoverAlunoCommand { ID = id });
 			return this.ProcessResult(response);

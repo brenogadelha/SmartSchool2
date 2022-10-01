@@ -133,7 +133,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public async Task<IActionResult> AlterarTcc(Guid id, [FromBody] AlterarTccCommand tccDto)
+		public async Task<IActionResult> AlterarTcc([FromRoute(Name = "id")] Guid id, [FromBody] AlterarTccCommand tccDto)
 		{
 			if (tccDto == null)
 				throw new ArgumentNullException(null, "Objeto Curso nulo (não foi informado).");
@@ -183,7 +183,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public async Task<IActionResult> RemoverTcc(Guid id)
+		public async Task<IActionResult> RemoverTcc([FromRoute(Name = "id")] Guid id)
 		{
 			var response = await this._mediator.Send(new RemoverTccCommand { ID = id });
 			return this.ProcessResult(response);

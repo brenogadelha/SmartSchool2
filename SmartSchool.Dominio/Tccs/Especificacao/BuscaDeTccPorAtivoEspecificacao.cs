@@ -1,5 +1,7 @@
-﻿using SmartSchool.Comum.Especificao;
+﻿using SmartSchool.Comum.Dominio.Enums;
+using SmartSchool.Comum.Especificao;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace SmartSchool.Dominio.Tccs.Especificacao
@@ -14,6 +16,6 @@ namespace SmartSchool.Dominio.Tccs.Especificacao
 			return this;
 		}
 
-		public override Expression<Func<Tcc, bool>> ExpressaoEspecificacao => x => x.Ativo == true;
+		public override Expression<Func<Tcc, bool>> ExpressaoEspecificacao => x => x.Ativo == true && x.TccProfessores.Any(tp => tp.Professor.DisponibilidadeTcc == DisponibilidadeTcc.Disponível);
 	}
 }

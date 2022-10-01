@@ -54,7 +54,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[HttpGet("{id}")]
-		public async Task<IActionResult> ObterPorId(Guid id)
+		public async Task<IActionResult> ObterPorId([FromRoute(Name = "id")] Guid id)
 		{
 			var response = await _mediator.Send(new ObterSemestreCommand { Id = id });
 
@@ -92,7 +92,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public async Task<IActionResult> AlterarSemestre(Guid id, [FromBody] AlterarSemestreCommand semestreDto)
+		public async Task<IActionResult> AlterarSemestre([FromRoute(Name = "id")] Guid id, [FromBody] AlterarSemestreCommand semestreDto)
 		{
 			if (semestreDto == null)
 				throw new ArgumentNullException(null, "Objeto Semestre nulo (não foi informado).");
@@ -118,7 +118,7 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public async Task<IActionResult> RemoverSemestre(Guid id)
+		public async Task<IActionResult> RemoverSemestre([FromRoute(Name = "id")] Guid id)
 		{
 			var response = await this._mediator.Send(new RemoverSemestreCommand { ID = id });
 			return this.ProcessResult(response);

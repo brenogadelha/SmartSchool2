@@ -115,6 +115,7 @@ namespace SmartSchool.Ioc
 			services.AddMediatR(typeof(ListarProfessoresHandler).Assembly);
 			services.AddMediatR(typeof(AlterarProfessorHandler).Assembly);
 			services.AddMediatR(typeof(RemoverProfessorHandler).Assembly);
+			services.AddMediatR(typeof(AlterarDisponibilidadeTccProfessorHandler).Assembly);
 
 			services.AddMediatR(typeof(AdicionarTccHandler).Assembly);
 			services.AddMediatR(typeof(ObterTccHandler).Assembly);

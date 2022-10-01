@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SmartSchool.Dominio.Alunos;
+using SmartSchool.Comum.Dominio.Enums;
 using SmartSchool.Dominio.Professores;
 
 namespace SmartSchool.Dados.Modulos.Usuarios
@@ -28,6 +28,11 @@ namespace SmartSchool.Dados.Modulos.Usuarios
 
 			builder.Property(b => b.Ativo)
 				   .HasColumnName("PROF_IN_ATIVO")
+				   .IsRequired();
+
+			builder.Property(dp => (int)dp.DisponibilidadeTcc)
+				   .HasColumnName("PROF_ID_DISPONIBILIDADE_TCC")
+				   .HasDefaultValue(DisponibilidadeTcc.Indisponível)
 				   .IsRequired();
 		}
 	}
