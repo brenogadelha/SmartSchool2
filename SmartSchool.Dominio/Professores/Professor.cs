@@ -38,14 +38,15 @@ namespace SmartSchool.Dominio.Professores
 
 		public static Professor Criar(ProfessorDto professorDto) => Criar(professorDto.Nome, professorDto.Matricula, professorDto.Disciplinas);
 
-		public static Result<Professor> Criar(string nome, int matricula, List<Guid> disciplinas)
+		public static Result<Professor> Criar(string nome, int matricula, List<Guid> disciplinas, DisponibilidadeTcc disponibilidadeTcc = DisponibilidadeTcc.Indisponível)
 		{
 			var professor = new Professor()
 			{
 				ID = Guid.NewGuid(),
 				Nome = nome,
 				Matricula = matricula,
-				Ativo = true
+				Ativo = true,
+				DisponibilidadeTcc = disponibilidadeTcc
 			};
 
 			professor.AtualizarDisciplinas(disciplinas);

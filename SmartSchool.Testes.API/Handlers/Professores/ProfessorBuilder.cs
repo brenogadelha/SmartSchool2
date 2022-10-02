@@ -1,4 +1,5 @@
-﻿using SmartSchool.Dados.Comum;
+﻿using SmartSchool.Comum.Dominio.Enums;
+using SmartSchool.Dados.Comum;
 using SmartSchool.Dados.Contextos;
 using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dominio.Professores;
@@ -31,7 +32,7 @@ namespace SmartSchool.Testes.API.Controllers.Professores
 			this._disciplina2 = Disciplina.Criar(disciplinaDto2);
 			this._disciplina3 = Disciplina.Criar(disciplinaDto3);
 
-			this._professor = Professor.Criar("Paulo Roberto", 2017100150, new List<Guid> { this._disciplina.ID, this._disciplina2.ID, this._disciplina3.ID });
+			this._professor = Professor.Criar("Paulo Roberto", 2017100150, new List<Guid> { this._disciplina.ID, this._disciplina2.ID, this._disciplina3.ID }, DisponibilidadeTcc.Disponível);
 
 			this._contextos.SmartContexto.Disciplinas.Add(this._disciplina);
 			this._contextos.SmartContexto.Disciplinas.Add(this._disciplina2);

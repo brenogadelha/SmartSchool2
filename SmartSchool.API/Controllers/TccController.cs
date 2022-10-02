@@ -67,11 +67,10 @@ namespace SmartSchool.API.Controllers
 		}
 
 		/// <summary>
-		/// Obtém lista de Tccs por Professor
+		/// Obtém lista de Solicitações de Tccs por Professor
 		/// </summary>
-		/// <returns>Lista de todos os Tccs por Professor</returns>
-		/// <response code="200">Lista de Tccs</response>
-		/// <response code="404">Tcc inexistente</response>
+		/// <returns>Lista de todos as solicitações de Tccs por Professor</returns>
+		/// <response code="200">Lista de solicitações de Tccs</response>
 		/// <response code="500">Erro inesperado</response>
 		[ProducesResponseType(200, Type = typeof(ObterSolicitacoesTccsDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]

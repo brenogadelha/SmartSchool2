@@ -25,7 +25,7 @@ namespace SmartSchool.Aplicacao.Tccs.ObterPorAluno
             var tcc = await this._tccRepositorio.ObterAsync(new BuscaDeSolicitacaoTccPorAlunoIdEspecificacao(request.AlunoId).IncluiInformacoesDeTcc().IncluiInformacoesDeProfessor());
 
             if (tcc == null)
-                throw new RecursoInexistenteException("Não existe TCC para o aluno informado.");
+                throw new RecursoInexistenteException("Não existe solicitação de TCC para o aluno informado.");
 
             return Result<ObterStatusSolicitacaoTccDto>.Success(tcc.MapearParaDto<ObterStatusSolicitacaoTccDto>());
         }

@@ -9,6 +9,9 @@ namespace SmartSchool.Dominio.Tccs.Validacao
 			this.RuleFor(x => x.Tema).NotEmpty()
 				.WithMessage("Tema do TCC deve ser informado.");
 
+			this.RuleFor(x => x.TccProfessores).NotEmpty()
+				.WithMessage("Deve ser informado pelo menos um professor para orientar sobre o Tema.");
+
 			this.RuleFor(p => p.Tema)
 				.MaximumLength(160).WithMessage("Tema do TCC não pode passar de 160 caracteres.");
 

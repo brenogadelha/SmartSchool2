@@ -10,7 +10,6 @@ namespace SmartSchool.Testes.Unidade.Dominio
 {
 	public class ProfessorTestes : TesteUnidade
 	{
-
 		public ProfessorTestes() { }
 
 		[Fact(DisplayName = "Criação e Alteração de Professor com Sucesso")]
