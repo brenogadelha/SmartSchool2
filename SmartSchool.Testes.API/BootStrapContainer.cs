@@ -1,33 +1,35 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Xunit;
-using Xunit.Abstractions;
-using Xunit.DependencyInjection;
-using SmartSchool.Comum.Infra.Opcoes;
-using SmartSchool.Comum.Configuracao;
-using SmartSchool.Comum.Infra;
-using SmartSchool.Dados.Contextos;
-using SmartSchool.Dados.Comum;
-using MediatR;
-using SmartSchool.Aplicacao.Alunos.Listar;
-using SmartSchool.Aplicacao.Alunos.ObterPorId;
 using SmartSchool.Aplicacao.Alunos.Adicionar;
 using SmartSchool.Aplicacao.Alunos.Alterar;
+using SmartSchool.Aplicacao.Alunos.Listar;
+using SmartSchool.Aplicacao.Alunos.ObterHistorico;
+using SmartSchool.Aplicacao.Alunos.ObterPorId;
 using SmartSchool.Aplicacao.Alunos.ObterPorMatricula;
 using SmartSchool.Aplicacao.Alunos.ObterPorNome;
-using SmartSchool.Aplicacao.Alunos.ObterHistorico;
-using FluentValidation;
-using SmartSchool.Ioc.Behavior;
+using SmartSchool.Comum.Infra;
 using SmartSchool.Comum.Repositorio;
-using SmartSchool.Dominio.Alunos;
-using SmartSchool.Dominio.Cursos;
-using SmartSchool.Dominio.Disciplinas;
-using SmartSchool.Dominio.Semestres;
+using SmartSchool.Dados.Comum;
+using SmartSchool.Dados.Contextos;
 using SmartSchool.Dados.Modulos.Alunos;
 using SmartSchool.Dados.Modulos.Cursos;
 using SmartSchool.Dados.Modulos.Disciplinas;
+using SmartSchool.Dados.Modulos.Professores;
 using SmartSchool.Dados.Modulos.Semestres;
+using SmartSchool.Dados.Modulos.Tccs;
+using SmartSchool.Dominio.Alunos;
+using SmartSchool.Dominio.Cursos;
+using SmartSchool.Dominio.Disciplinas;
+using SmartSchool.Dominio.Professores;
+using SmartSchool.Dominio.Semestres;
+using SmartSchool.Dominio.Tccs;
+using SmartSchool.Ioc.Behavior;
+using Xunit;
+using Xunit.Abstractions;
+using Xunit.DependencyInjection;
 
 [assembly: TestFramework("SmartSchool.Testes.API.BootStrapContainer", "SmartSchool.Testes.API")]
 namespace SmartSchool.Testes.API
@@ -35,13 +37,7 @@ namespace SmartSchool.Testes.API
 	public class BootStrapContainer : DependencyInjectionTestFramework
 	{
 		public readonly IConfiguration Configuration;
-		public BootStrapContainer(IMessageSink messageSink) : base(messageSink)
-		{
-			Configuration = ConfiguracaoFabrica.Criar();
-
-			var dataOpcoes = Configuration.GetSection("Data").Get<DataOpcoes>();
-			AppSettings.SetarOpcoes(dataOpcoes);
-		}
+		public BootStrapContainer(IMessageSink messageSink) : base(messageSink) { }
 		protected override void ConfigureServices(IServiceCollection services)
 		{
 			var stringConexão = AppSettings.Data.DefaultConnectionString;
@@ -71,6 +67,9 @@ namespace SmartSchool.Testes.API
 			services.AddScoped<IRepositorio<Curso>, CursoRepositorio>();
 			services.AddScoped<IRepositorio<Disciplina>, DisciplinaRepositorio>();
 			services.AddScoped<IRepositorio<Semestre>, SemestreRepositorio>();
+			services.AddScoped<IRepositorio<Professor>, ProfessorRepositorio>();
+			services.AddScoped<IRepositorio<Tcc>, TccRepositorio>();
+			services.AddScoped<IRepositorio<TccAlunoProfessor>, TccAlunoProfessorRepositorio>();
 
 			services.AddValidatorsFromAssembly(typeof(ValidationBehavior<,>).Assembly);
 			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

@@ -52,31 +52,9 @@ namespace SmartSchool.Dominio.Alunos
 		public Aluno() { }
 		public static Aluno Criar(AlunoDto alunoDto)
 		{
-			var aluno = new Aluno()
-			{
-				ID = Guid.NewGuid(),
-				Nome = alunoDto.Nome,
-				Sobrenome = alunoDto.Sobrenome,
-				Telefone = alunoDto.Telefone,
-				DataInicio = alunoDto.DataInicio,
-				DataFim = alunoDto.DataFim,
-				Ativo = true,
-				DataNascimento = alunoDto.DataNascimento,
-				Matricula = alunoDto.Matricula,
-				CursoId = alunoDto.CursoId,
-				Celular = alunoDto.Celular,
-				Cidade = alunoDto.Cidade,
-				Cpf = alunoDto.Cpf,
-				Email = alunoDto.Email,
-				Endereco = alunoDto.Endereco
-			};
-
-			if(alunoDto.AlunosDisciplinas != null)
-			aluno.AtualizarDisciplinas(alunoDto.AlunosDisciplinas.Select(ad => ad.DisciplinaId).ToList());
-
-			ValidacaoFabrica.Validar(aluno, new AlunoValidacao());
-
-			return aluno;
+			return Criar(alunoDto.Nome, alunoDto.Sobrenome, alunoDto.Telefone, alunoDto.DataInicio, alunoDto.DataFim,
+				alunoDto.DataNascimento, alunoDto.Matricula, alunoDto.Celular, alunoDto.Cidade, alunoDto.Cpf,
+				alunoDto.Email, alunoDto.Endereco, alunoDto.CursoId, alunoDto.AlunosDisciplinas);
 		}
 
 		public static Result<Aluno> Criar(string nome, string sobrenome, string telefone, DateTime dataInicio, DateTime dataFim, DateTime dataNascimento,

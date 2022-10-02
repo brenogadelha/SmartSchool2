@@ -3,7 +3,7 @@ using SmartSchool.Dto.Curso;
 
 namespace SmartSchool.Dominio.Cursos.Validacao
 {
-	public class CursoValidacao : AbstractValidator<CursoDto>
+	public class CursoValidacao : AbstractValidator<Curso>
 	{
 		public CursoValidacao()
 		{
@@ -13,7 +13,7 @@ namespace SmartSchool.Dominio.Cursos.Validacao
 			this.RuleFor(p => p.Nome)
 				.MaximumLength(80).WithMessage("Nome do Curso não pode passar de 80 caracteres.");
 
-			this.RuleFor(x => x.DisciplinasId).NotEmpty()
+			this.RuleFor(x => x.CursosDisciplinas).NotEmpty()
 				.WithMessage("Deve ser informado ao menos uma Disciplina.");
 		}
 	}

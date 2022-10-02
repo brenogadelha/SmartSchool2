@@ -34,24 +34,7 @@ namespace SmartSchool.Dominio.Tccs
 			get => this.TccProfessores.Select(u => u.Professor).ToList();
 		}
 
-		public static Tcc Criar(TccDto dto)
-		{
-			//ValidacaoFabrica.Validar(dto, new SemestreValidacao());
-
-			var tcc = new Tcc()
-			{
-				ID = Guid.NewGuid(),
-				Tema = dto.Tema,
-				Descricao = dto.Descricao,
-				Ativo = true
-			};
-
-			tcc.AtualizarProfessores(dto.Professores);
-
-			ValidacaoFabrica.Validar(tcc, new TccValidacao());
-
-			return tcc;
-		}
+		public static Tcc Criar(TccDto dto) => Criar(dto.Tema, dto.Descricao, dto.Professores);
 
 		public static Result<Tcc> Criar(string tema, string descricao, List<Guid> professores)
 		{

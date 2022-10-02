@@ -1,7 +1,6 @@
 ﻿using SmartSchool.Comum.Dominio;
 using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Comum.Results;
-using SmartSchool.Dominio.Professores;
 using SmartSchool.Dominio.Semestres.Validacao;
 using SmartSchool.Dto.Semestres;
 using System;
@@ -20,25 +19,10 @@ namespace SmartSchool.Dominio.Semestres
 		[JsonIgnore]
 		public List<SemestreAlunoDisciplina> AlunosDisciplinas { get; private set; } = new List<SemestreAlunoDisciplina>();
 
-		public static Semestre Criar(SemestreDto dto)
-		{
-			ValidacaoFabrica.Validar(dto, new SemestreValidacao());
-
-			var semestre = new Semestre()
-			{
-				ID = Guid.NewGuid(),
-				DataInicio = dto.DataInicio,
-				DataFim = dto.DataFim,
-				Ativo = true
-			};
-
-			return semestre;
-		}
+		public static Semestre Criar(SemestreDto dto) => Criar(dto.DataInicio, dto.DataFim);
 
 		public static Result<Semestre> Criar(DateTime dataInicio, DateTime dataFim)
 		{
-			//ValidacaoFabrica.Validar(dto, new SemestreValidacao());
-
 			var semestre = new Semestre()
 			{
 				ID = Guid.NewGuid(),
@@ -46,6 +30,8 @@ namespace SmartSchool.Dominio.Semestres
 				DataFim = dataFim,
 				Ativo = true
 			};
+
+			ValidacaoFabrica.Validar(semestre, new SemestreValidacao());
 
 			return Result<Semestre>.Success(semestre);
 		}

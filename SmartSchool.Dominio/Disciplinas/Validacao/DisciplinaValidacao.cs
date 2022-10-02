@@ -1,10 +1,8 @@
 ﻿using FluentValidation;
-using SmartSchool.Dto.Disciplinas;
-using System;
 
 namespace SmartSchool.Dominio.Disciplinas.Validacao
 {
-	public class DisciplinaValidacao : AbstractValidator<DisciplinaDto>
+	public class DisciplinaValidacao : AbstractValidator<Disciplina>
 	{		
 		public DisciplinaValidacao()
 		{

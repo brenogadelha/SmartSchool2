@@ -36,25 +36,10 @@ namespace SmartSchool.Dominio.Disciplinas
 		public List<CursoDisciplina> Cursos { get; private set; } = new List<CursoDisciplina>();
 
 		public Disciplina() { }
-		public static Disciplina Criar(DisciplinaDto disciplinaDto)
-		{
-			ValidacaoFabrica.Validar(disciplinaDto, new DisciplinaValidacao());
-
-			var disciplina = new Disciplina()
-			{
-				ID = Guid.NewGuid(),
-				Nome = disciplinaDto.Nome,
-				Periodo = (PeriodoDisciplinaEnum)disciplinaDto.Periodo,
-				Ativo = true
-			};
-
-			return disciplina;
-		}
+		public static Disciplina Criar(DisciplinaDto disciplinaDto) => Criar(disciplinaDto.Nome, disciplinaDto.Periodo);
 
 		public static Result<Disciplina> Criar(string nome, int periodo)
 		{
-			//ValidacaoFabrica.Validar(disciplinaDto, new DisciplinaValidacao());
-
 			var disciplina = new Disciplina()
 			{
 				ID = Guid.NewGuid(),
@@ -62,6 +47,8 @@ namespace SmartSchool.Dominio.Disciplinas
 				Periodo = (PeriodoDisciplinaEnum)periodo,
 				Ativo = true
 			};
+
+			ValidacaoFabrica.Validar(disciplina, new DisciplinaValidacao());
 
 			return Result<Disciplina>.Success(disciplina);
 		}

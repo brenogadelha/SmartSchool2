@@ -36,24 +36,7 @@ namespace SmartSchool.Dominio.Professores
 
 		public Professor() { }
 
-		public static Professor Criar(ProfessorDto professorDto)
-		{
-			ValidacaoFabrica.Validar(professorDto, new ProfessorValidacao());
-
-			//var professor = new Professor()
-			//         {
-			//             ID = Guid.NewGuid(),
-			//             Nome = professorDto.Nome,
-			//             Matricula = professorDto.Matricula,
-			//	Ativo = true
-			//};
-
-			//professor.AtualizarDisciplinas(professorDto.Disciplinas);
-
-			//return professor;
-
-			return Criar(professorDto.Nome, professorDto.Matricula, professorDto.Disciplinas);
-		}
+		public static Professor Criar(ProfessorDto professorDto) => Criar(professorDto.Nome, professorDto.Matricula, professorDto.Disciplinas);
 
 		public static Result<Professor> Criar(string nome, int matricula, List<Guid> disciplinas)
 		{
@@ -66,6 +49,8 @@ namespace SmartSchool.Dominio.Professores
 			};
 
 			professor.AtualizarDisciplinas(disciplinas);
+
+			ValidacaoFabrica.Validar(professor, new ProfessorValidacao());
 
 			return Result<Professor>.Success(professor);
 		}

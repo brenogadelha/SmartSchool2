@@ -3,7 +3,7 @@ using SmartSchool.Dto.Semestres;
 
 namespace SmartSchool.Dominio.Semestres.Validacao
 {
-	public class SemestreValidacao : AbstractValidator<SemestreDto>
+	public class SemestreValidacao : AbstractValidator<Semestre>
 	{
 		public SemestreValidacao()
 		{

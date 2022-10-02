@@ -31,26 +31,9 @@ namespace SmartSchool.Dominio.Cursos
 		[JsonIgnore]
 		public List<Aluno> Alunos { get; private set; } = new List<Aluno>();
 
-		public static Curso Criar(CursoDto cursoDto)
-		{
-			ValidacaoFabrica.Validar(cursoDto, new CursoValidacao());
-
-			var curso = new Curso()
-			{
-				ID = Guid.NewGuid(),
-				Nome = cursoDto.Nome,
-				Ativo = true
-			};
-
-			curso.AtualizarDisciplinas(cursoDto.DisciplinasId);
-
-			return curso;
-		}
-
+		public static Curso Criar(CursoDto cursoDto) => Criar(cursoDto.Nome, cursoDto.DisciplinasId);
 		public static Result<Curso> Criar(string nome, List<Guid> idsDisciplinas)
 		{
-			//ValidacaoFabrica.Validar(cursoDto, new CursoValidacao());
-
 			var curso = new Curso()
 			{
 				ID = Guid.NewGuid(),
@@ -59,6 +42,8 @@ namespace SmartSchool.Dominio.Cursos
 			};
 
 			curso.AtualizarDisciplinas(idsDisciplinas);
+
+			ValidacaoFabrica.Validar(curso, new CursoValidacao());
 
 			return Result<Curso>.Success(curso);
 		}
