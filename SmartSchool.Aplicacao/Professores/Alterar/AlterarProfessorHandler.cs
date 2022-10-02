@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using SmartSchool.Aplicacao.Professores.Alterar;
+using SmartSchool.Aplicacao.Professores.Alterar.Validacao;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
+using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Disciplinas.Servicos;
 using SmartSchool.Dominio.Professores;
@@ -27,7 +29,7 @@ namespace SmartSchool.Aplicacao.Disciplinas.Alterar
 
 		public async Task<IResult> Handle(AlterarProfessorCommand request, CancellationToken cancellationToken)
 		{
-			//ValidacaoFabrica.Validar(professorDto, new AlterarProfessorValidacao());
+			ValidacaoFabrica.Validar(request, new AlterarProfessorValidacao());
 
 			if (await this._professorServicoDominio.VerificarExisteProfessorComMesmaMatricula(request.Matricula, request.ID))
 				throw new ErroNegocioException($"Já existe um Professor com a mesma matricula '{request.Matricula}'.");

@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using SmartSchool.Aplicacao.Semestres.Alterar.Validacao;
 using SmartSchool.Comum.Repositorio;
+using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Semestres;
 using SmartSchool.Dominio.Semestres.Servicos;
@@ -21,7 +23,7 @@ namespace SmartSchool.Aplicacao.Semestres.Alterar
 
 		public async Task<IResult> Handle(AlterarSemestreCommand request, CancellationToken cancellationToken)
 		{
-			//ValidacaoFabrica.Validar(semestreDto, new SemestreValidacao());
+			ValidacaoFabrica.Validar(request, new AlterarSemestreValidacao());
 
 			var semestre = await this._semestreServicoDominio.ObterAsync(request.ID);
 

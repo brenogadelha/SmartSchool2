@@ -1,10 +1,12 @@
 ﻿using MediatR;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
+using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Professores.Servicos;
 using SmartSchool.Dominio.Tccs;
 using SmartSchool.Dominio.Tccs.Servicos;
+using SmartSchool.Dominio.Tccs.Validacao;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,7 +27,7 @@ namespace SmartSchool.Aplicacao.Tccs.Alterar
 
 		public async Task<IResult> Handle(AlterarTccCommand request, CancellationToken cancellationToken)
 		{
-			//ValidacaoFabrica.Validar(cursoDto, new CursoValidacao());
+			ValidacaoFabrica.Validar(request, new AlterarTccValidacao());
 
 			if (await this._tccServicoDominio.VerificarExisteTccComMesmoTema(request.Tema, null))
 				throw new ErroNegocioException($"Já existe um Tcc com o mesmo Tema '{request.Tema}'.");

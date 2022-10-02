@@ -1,6 +1,8 @@
 ﻿using MediatR;
+using SmartSchool.Aplicacao.Disciplinas.Alterar.Validacao;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
+using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dominio.Disciplinas.Servicos;
@@ -22,10 +24,10 @@ namespace SmartSchool.Aplicacao.Disciplinas.Alterar
 
 		public async Task<IResult> Handle(AlterarDisciplinaCommand request, CancellationToken cancellationToken)
 		{
+			ValidacaoFabrica.Validar(request, new AlterarDisciplinaValidacao());
+
 			if (await this._disciplinaServicoDominio.VerificarExisteDisciplinaComMesmoNome(request.Nome, request.ID))
 				throw new ErroNegocioException($"Já existe uma Disciplina com o mesmo nome '{request.Nome}'.");
-
-			//ValidacaoFabrica.Validar(disciplinaDto, new DisciplinaValidacao());
 
 			var disciplina = await this._disciplinaServicoDominio.ObterAsync(request.ID);
 
