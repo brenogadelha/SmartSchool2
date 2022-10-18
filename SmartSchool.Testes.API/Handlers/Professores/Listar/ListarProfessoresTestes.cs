@@ -61,7 +61,7 @@ namespace SmartSchool.Testes.API.Controllers.Professores
 		[Fact(DisplayName = "Lista Professores")]
 		public async void DeveListarProfessores()
 		{
-			var professorDto = new ListarProfessoresCommand();
+			var professorDto = new ListarProfessoresQuery();
 
 			var retorno = await this._mediator.Send(professorDto);
 

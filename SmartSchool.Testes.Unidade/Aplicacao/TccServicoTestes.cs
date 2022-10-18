@@ -147,7 +147,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		public void ErroAoObterTcc_PorID_NaoExiste()
 		{
 			Guid id = Guid.NewGuid();
-			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(new ObterTccCommand { Id = id }));
+			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(new ObterTccQuery { Id = id }));
 			Assert.Equal($"Tcc com ID '{id}' não existe.", exception.Result.Message);
 
 			this._tccRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Tcc>(), It.IsAny<bool>()), Times.Never);
@@ -156,7 +156,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		[Fact(DisplayName = "Erro Ao Obter Tcc - Id Nulo")]
 		public void ErroAoObterTcc_IdNulo()
 		{
-			var exception = Assert.ThrowsAsync<ArgumentNullException>(() => this._mediator.Send(new ObterTccCommand { Id = Guid.Empty }));
+			var exception = Assert.ThrowsAsync<ArgumentNullException>(() => this._mediator.Send(new ObterTccQuery { Id = Guid.Empty }));
 			Assert.Equal("Id nulo do Tcc (não foi informado).", exception.Result.Message);
 
 			this._tccRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Tcc>(), It.IsAny<bool>()), Times.Never);
@@ -165,7 +165,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		[Fact(DisplayName = "Erro Ao Obter solicitação de Tcc por Aluno - Não existe")]
 		public void ErroAoObterSolicitacaoTccPorAluno()
 		{
-			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(new ObterTccPorAlunoCommand { AlunoId = Guid.Empty }));
+			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(new ObterTccPorAlunoQuery { AlunoId = Guid.Empty }));
 			Assert.Equal("Não existe solicitação de TCC para o aluno informado.", exception.Result.Message);
 
 			this._tccRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Tcc>(), It.IsAny<bool>()), Times.Never);

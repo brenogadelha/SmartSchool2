@@ -93,7 +93,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		public void ErroAoObterDisciplina_PorID_NaoExiste()
 		{
 			Guid id = Guid.NewGuid();
-			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(new ObterDisciplinaCommand { Id = id }));
+			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(new ObterDisciplinaQuery { Id = id }));
 			Assert.Equal($"Disciplina com ID '{id}' não existe.", exception.Result.Message);
 
 			this._disciplinaRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Disciplina>(), It.IsAny<bool>()), Times.Never);
@@ -102,7 +102,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		[Fact(DisplayName = "Erro Ao Obter Disciplina - Id Nulo")]
 		public void ErroAoObterDisciplina_IdNulo()
 		{
-			var exception = Assert.ThrowsAsync<ArgumentNullException>(() => this._mediator.Send(new ObterDisciplinaCommand { Id = Guid.Empty }));
+			var exception = Assert.ThrowsAsync<ArgumentNullException>(() => this._mediator.Send(new ObterDisciplinaQuery { Id = Guid.Empty }));
 			Assert.Equal("Id nulo da Disciplina (não foi informado).", exception.Result.Message);
 
 			this._disciplinaRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Disciplina>(), It.IsAny<bool>()), Times.Never);

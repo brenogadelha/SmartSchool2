@@ -77,7 +77,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		public void ErroAoObterSemestre_PorID_NaoExiste()
 		{
 			Guid id = Guid.NewGuid();
-			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(new ObterSemestreCommand { Id = id }));
+			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(new ObterSemestreQuery { Id = id }));
 			Assert.Equal($"Semestre com ID '{id}' não existe.", exception.Result.Message);
 
 			this._semestreRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Semestre>(), It.IsAny<bool>()), Times.Never);
@@ -86,7 +86,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		[Fact(DisplayName = "Erro Ao Obter Semestre - Id Nulo")]
 		public void ErroAoObterSemestre_IdNulo()
 		{
-			var exception = Assert.ThrowsAsync<ArgumentNullException>(() => this._mediator.Send(new ObterSemestreCommand { Id = Guid.Empty }));
+			var exception = Assert.ThrowsAsync<ArgumentNullException>(() => this._mediator.Send(new ObterSemestreQuery { Id = Guid.Empty }));
 			Assert.Equal("Id nulo do Semestre (não foi informado).", exception.Result.Message);
 
 			this._semestreRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Semestre>(), It.IsAny<bool>()), Times.Never);

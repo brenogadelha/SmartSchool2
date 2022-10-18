@@ -40,7 +40,7 @@ namespace SmartSchool.API.Controllers
 		[HttpGet]
 		public async Task<IActionResult> ObterTodos()
 		{
-			var response = await _mediator.Send(new ListarDisciplinasCommand());
+			var response = await _mediator.Send(new ListarDisciplinasQuery());
 
 			return this.ProcessResult(response);
 		}
@@ -58,7 +58,7 @@ namespace SmartSchool.API.Controllers
 		[HttpGet("{id}")]
 		public async Task<IActionResult> ObterPorId([FromRoute(Name = "id")] Guid id)
 		{
-			var response = await _mediator.Send(new ObterDisciplinaCommand { Id = id });
+			var response = await _mediator.Send(new ObterDisciplinaQuery { Id = id });
 
 			return this.ProcessResult(response);
 		}
@@ -75,7 +75,7 @@ namespace SmartSchool.API.Controllers
 		[HttpGet("{disciplina-id}/professores")]
 		public async Task<IActionResult> ObterTodosProfessoresDisciplina([FromRoute(Name = "disciplina-id")] Guid id)
 		{
-			var response = await _mediator.Send(new ObterProfessoresDisciplinaCommand { Id = id });
+			var response = await _mediator.Send(new ObterProfessoresDisciplinaQuery { Id = id });
 
 			return this.ProcessResult(response);
 		}

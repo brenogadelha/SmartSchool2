@@ -119,7 +119,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 		[Fact(DisplayName = "Obtém Alunos por nome total/parcial")]
 		public async void DeveObterAlunosPorNome()
 		{
-			var requestAlunos = await this._mediator.Send(new ListarAlunosCommand());
+			var requestAlunos = await this._mediator.Send(new ListarAlunosQuery());
 			var resultAlunosObtidos = requestAlunos.Should().BeOfType<Result<IEnumerable<ObterAlunoDto>>>().Subject;
 
 			resultAlunosObtidos.Value.Should().NotBeNull();

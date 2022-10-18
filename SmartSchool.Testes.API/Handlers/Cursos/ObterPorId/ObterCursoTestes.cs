@@ -47,7 +47,7 @@ namespace SmartSchool.Testes.API.Controllers.Cursos
 		{
 			var curso = this._cursoBuilder.ObterCurso();
 
-			var retornoAlteracao = await this._mediator.Send(new ObterCursoCommand { Id = curso.ID });
+			var retornoAlteracao = await this._mediator.Send(new ObterCursoQuery { Id = curso.ID });
 			var resultCursoObtidoPorId = retornoAlteracao.Should().BeOfType<Result<ObterCursoDto>>().Subject;
 
 			resultCursoObtidoPorId.Value.Should().NotBeNull();

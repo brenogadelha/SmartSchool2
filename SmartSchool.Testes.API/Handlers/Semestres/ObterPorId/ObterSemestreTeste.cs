@@ -38,7 +38,7 @@ namespace SmartSchool.Testes.API.Controllers.Semestres
 		{
 			var semestre = this._semestreBuilder.ObterSemestre();
 
-			var semestreDto = new ObterSemestreCommand { Id = semestre.ID };
+			var semestreDto = new ObterSemestreQuery { Id = semestre.ID };
 
 			var retorno = await this._mediator.Send(semestreDto);
 

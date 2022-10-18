@@ -57,7 +57,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 			var aluno = this._alunoBuilder.ObterAluno();
 
 			// Obtem por Matrícula
-			var requestAlunoPorMatricula = await this._mediator.Send(new ObterAlunoMatriculaCommand { Matricula = aluno.Matricula });
+			var requestAlunoPorMatricula = await this._mediator.Send(new ObterAlunoMatriculaQuery { Matricula = aluno.Matricula });
 			var resultAlunoObtidoPorMatricula = requestAlunoPorMatricula.Should().BeOfType<Result<ObterAlunoDto>>().Subject;
 
 			resultAlunoObtidoPorMatricula.Value.Should().NotBeNull();

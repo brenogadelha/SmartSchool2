@@ -42,7 +42,7 @@ namespace SmartSchool.Testes.API.Controllers.Disciplinas
 		{
 			var disciplina = this._disciplinaBuilder.ObterDisciplina();
 
-			var retorno = await this._mediator.Send(new ObterProfessoresDisciplinaCommand { Id = disciplina.ID });
+			var retorno = await this._mediator.Send(new ObterProfessoresDisciplinaQuery { Id = disciplina.ID });
 
 			var resultDisciplinas = retorno.Should().BeOfType<Result<IEnumerable<ObterProfessorLightDto>>>().Subject;
 

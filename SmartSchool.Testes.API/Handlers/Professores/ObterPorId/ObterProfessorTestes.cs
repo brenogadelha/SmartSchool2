@@ -44,7 +44,7 @@ namespace SmartSchool.Testes.API.Controllers.Professores
 		{
 			var professor = this._professorBuilder.ObterProfessor();
 
-			var professorDto = new ObterProfessorCommand() { Id = professor.ID };
+			var professorDto = new ObterProfessorQuery() { Id = professor.ID };
 
 			var retorno = await this._mediator.Send(professorDto);
 

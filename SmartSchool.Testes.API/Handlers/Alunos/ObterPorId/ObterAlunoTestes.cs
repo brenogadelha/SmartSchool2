@@ -56,7 +56,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 		{
 			var aluno = this._alunoBuilder.ObterAluno();
 
-			var requestAlunoPorId = await this._mediator.Send(new ObterAlunoCommand { Id = aluno.ID });
+			var requestAlunoPorId = await this._mediator.Send(new ObterAlunoQuery { Id = aluno.ID });
 			var resultAlunoObtidoPorId = requestAlunoPorId.Should().BeOfType<Result<ObterAlunoDto>>().Subject;
 
 			resultAlunoObtidoPorId.Value.Should().NotBeNull();

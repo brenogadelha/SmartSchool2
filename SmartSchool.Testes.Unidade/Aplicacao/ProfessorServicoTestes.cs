@@ -120,7 +120,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		public void ErroAoObterProfessor_PorID_ProfessorNaoExiste()
 		{
 			Guid id = Guid.NewGuid();
-			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(new ObterProfessorCommand { Id = id }));
+			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(new ObterProfessorQuery { Id = id }));
 			Assert.Equal($"Professor com ID '{id}' não existe.", exception.Result.Message);
 
 			this._professorRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Professor>(), It.IsAny<bool>()), Times.Never);
@@ -129,7 +129,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		[Fact(DisplayName = "Erro Ao Obter Professor - Id Nulo")]
 		public void ErroAoObterProfessor_IdNulo()
 		{
-			var exception = Assert.ThrowsAsync<ArgumentNullException>(() => this._mediator.Send(new ObterProfessorCommand { Id = Guid.Empty }));
+			var exception = Assert.ThrowsAsync<ArgumentNullException>(() => this._mediator.Send(new ObterProfessorQuery { Id = Guid.Empty }));
 			Assert.Equal("Id nulo do Professor (não foi informado).", exception.Result.Message);
 
 			this._professorRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Professor>(), It.IsAny<bool>()), Times.Never);

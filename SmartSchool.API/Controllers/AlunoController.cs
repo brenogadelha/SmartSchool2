@@ -12,7 +12,6 @@ using SmartSchool.Aplicacao.Alunos.ObterPorNome;
 using SmartSchool.Aplicacao.Alunos.RemoverAluno;
 using SmartSchool.Dto.Alunos.Obter;
 using SmartSchool.Dto.Dtos.TratamentoErros;
-using SmartSchool.Dto.Tccs;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -42,7 +41,7 @@ namespace SmartSchool.API.Controllers
 		[HttpGet]
 		public async Task<IActionResult> ObterTodos()
 		{
-			var response = await _mediator.Send(new ListarAlunosCommand());
+			var response = await _mediator.Send(new ListarAlunosQuery());
 
 			return this.ProcessResult(response);
 		}
@@ -60,7 +59,7 @@ namespace SmartSchool.API.Controllers
 		[HttpGet("{id}")]
 		public async Task<IActionResult> ObterPorId([FromRoute(Name = "id")] Guid id)
 		{
-			var response = await _mediator.Send(new ObterAlunoCommand { Id = id });
+			var response = await _mediator.Send(new ObterAlunoQuery { Id = id });
 
 			return this.ProcessResult(response);
 		}
@@ -78,7 +77,7 @@ namespace SmartSchool.API.Controllers
 		[HttpGet("matricula/{codigo}")]
 		public async Task<IActionResult> ObterPorMatricula([FromRoute(Name = "codigo")] int matricula)
 		{
-			var response = await _mediator.Send(new ObterAlunoMatriculaCommand { Matricula = matricula });
+			var response = await _mediator.Send(new ObterAlunoMatriculaQuery { Matricula = matricula });
 
 			return this.ProcessResult(response);
 		}
@@ -95,7 +94,7 @@ namespace SmartSchool.API.Controllers
 		[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
 		public async Task<IActionResult> ObterPorNomeSobrenomeParcial([FromRoute(Name = "parte-identificador")] string busca)
 		{
-			var response = await _mediator.Send(new ObterAlunoNomeCommand { Busca = busca });
+			var response = await _mediator.Send(new ObterAlunoNomeQuery { Busca = busca });
 
 			return this.ProcessResult(response);
 		}
@@ -114,7 +113,7 @@ namespace SmartSchool.API.Controllers
 		[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
 		public async Task<IActionResult> ObterHistoricoPorIdAluno([FromRoute(Name = "aluno-id")] Guid id, [FromQuery(Name = "periodo")] int? periodo = null)
 		{
-			var response = await _mediator.Send(new ObterHistoricoAlunoCommand { Id = id, Periodo = periodo });
+			var response = await _mediator.Send(new ObterHistoricoAlunoQuery { Id = id, Periodo = periodo });
 
 			return this.ProcessResult(response);
 		}

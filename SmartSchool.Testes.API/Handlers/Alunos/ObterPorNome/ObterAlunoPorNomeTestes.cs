@@ -120,7 +120,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 		[Fact(DisplayName = "Obtém Alunos por nome total/parcial")]
 		public async void DeveObterAlunosPorNome()
 		{
-			var requestAlunosPorNome = await this._mediator.Send(new ObterAlunoNomeCommand { Busca = "este" });
+			var requestAlunosPorNome = await this._mediator.Send(new ObterAlunoNomeQuery { Busca = "este" });
 			var resultAlunosObtidosPorNomeParcial = requestAlunosPorNome.Should().BeOfType<Result<IEnumerable<ObterAlunoDto>>>().Subject;
 
 			resultAlunosObtidosPorNomeParcial.Value.Should().NotBeNull();
@@ -129,7 +129,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 			resultAlunosObtidosPorNomeParcial.Value.Where(x => x.Nome == "Estevann").Count().Should().Be(1);
 
 			//Busca por Sobrenome parcial
-			var requestAlunosPorSobrenomeParcial = await this._mediator.Send(new ObterAlunoNomeCommand { Busca = "Pula" });
+			var requestAlunosPorSobrenomeParcial = await this._mediator.Send(new ObterAlunoNomeQuery { Busca = "Pula" });
 			var resultAlunosObtidosPorSobrenomeParcial = requestAlunosPorSobrenomeParcial.Should().BeOfType<Result<IEnumerable<ObterAlunoDto>>>().Subject;
 
 			resultAlunosObtidosPorSobrenomeParcial.Value.Should().NotBeNull();
@@ -138,7 +138,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 			resultAlunosObtidosPorSobrenomeParcial.Value.Where(x => x.Nome == "Estevann").Count().Should().Be(1);
 
 			//Busca por Nome e Sobrenome Parcial
-			var requestAlunosPorNomeParcial2 = await this._mediator.Send(new ObterAlunoNomeCommand { Busca = "JORdania Minei" });
+			var requestAlunosPorNomeParcial2 = await this._mediator.Send(new ObterAlunoNomeQuery { Busca = "JORdania Minei" });
 			var resultAlunosObtidosPorNomeParcial2 = requestAlunosPorNomeParcial2.Should().BeOfType<Result<IEnumerable<ObterAlunoDto>>>().Subject;
 
 			resultAlunosObtidosPorNomeParcial2.Value.Should().NotBeNull();

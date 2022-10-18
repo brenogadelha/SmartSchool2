@@ -40,44 +40,44 @@ namespace SmartSchool.Testes.API
 		public BootStrapContainer(IMessageSink messageSink) : base(messageSink) { }
 		protected override void ConfigureServices(IServiceCollection services)
 		{
-			var stringConexão = AppSettings.Data.DefaultConnectionString;
+			//var stringConexão = AppSettings.Data.DefaultConnectionString;
 
-			services.AddTransient<SmartContexto>();
+			//services.AddTransient<SmartContexto>();
 
-			services.AddDbContext<SmartContexto>(options =>
-				options.UseSqlServer(stringConexão)
-			);
+			//services.AddDbContext<SmartContexto>(options =>
+			//	options.UseSqlServer(stringConexão)
+			//);
 
-			services.AddMediatR(typeof(ListarAlunosCommand).Assembly);
-			services.AddMediatR(typeof(ListarAlunosHandler).Assembly);
-			services.AddMediatR(typeof(ObterAlunoCommand).Assembly);
-			services.AddMediatR(typeof(ObterAlunoHandler).Assembly);
-			services.AddMediatR(typeof(AdicionarAlunoCommand).Assembly);
-			services.AddMediatR(typeof(AdicionarAlunoHandler).Assembly);
-			services.AddMediatR(typeof(AlterarAlunoCommand).Assembly);
-			services.AddMediatR(typeof(AlterarAlunoHandler).Assembly);
-			services.AddMediatR(typeof(ObterAlunoMatriculaHandler).Assembly);
-			services.AddMediatR(typeof(ObterAlunoMatriculaCommand).Assembly);
-			services.AddMediatR(typeof(ObterAlunoNomeCommand).Assembly);
-			services.AddMediatR(typeof(ObterAlunoNomeHandler).Assembly);
-			services.AddMediatR(typeof(ObterHistoricoAlunoCommand).Assembly);
-			services.AddMediatR(typeof(ObterHistoricoAlunoHandler).Assembly);
+			//services.AddMediatR(typeof(ListarAlunosCommand).Assembly);
+			//services.AddMediatR(typeof(ListarAlunosHandler).Assembly);
+			//services.AddMediatR(typeof(ObterAlunoCommand).Assembly);
+			//services.AddMediatR(typeof(ObterAlunoHandler).Assembly);
+			//services.AddMediatR(typeof(AdicionarAlunoCommand).Assembly);
+			//services.AddMediatR(typeof(AdicionarAlunoHandler).Assembly);
+			//services.AddMediatR(typeof(AlterarAlunoCommand).Assembly);
+			//services.AddMediatR(typeof(AlterarAlunoHandler).Assembly);
+			//services.AddMediatR(typeof(ObterAlunoMatriculaHandler).Assembly);
+			//services.AddMediatR(typeof(ObterAlunoMatriculaCommand).Assembly);
+			//services.AddMediatR(typeof(ObterAlunoNomeCommand).Assembly);
+			//services.AddMediatR(typeof(ObterAlunoNomeHandler).Assembly);
+			//services.AddMediatR(typeof(ObterHistoricoAlunoCommand).Assembly);
+			//services.AddMediatR(typeof(ObterHistoricoAlunoHandler).Assembly);
 
-			services.AddScoped<IRepositorio<Aluno>, AlunoRepositorio>();
-			services.AddScoped<IRepositorio<Curso>, CursoRepositorio>();
-			services.AddScoped<IRepositorio<Disciplina>, DisciplinaRepositorio>();
-			services.AddScoped<IRepositorio<Semestre>, SemestreRepositorio>();
-			services.AddScoped<IRepositorio<Professor>, ProfessorRepositorio>();
-			services.AddScoped<IRepositorio<Tcc>, TccRepositorio>();
-			services.AddScoped<IRepositorio<TccAlunoProfessor>, TccAlunoProfessorRepositorio>();
+			//services.AddScoped<IRepositorio<Aluno>, AlunoRepositorio>();
+			//services.AddScoped<IRepositorio<Curso>, CursoRepositorio>();
+			//services.AddScoped<IRepositorio<Disciplina>, DisciplinaRepositorio>();
+			//services.AddScoped<IRepositorio<Semestre>, SemestreRepositorio>();
+			//services.AddScoped<IRepositorio<Professor>, ProfessorRepositorio>();
+			//services.AddScoped<IRepositorio<Tcc>, TccRepositorio>();
+			//services.AddScoped<IRepositorio<TccAlunoProfessor>, TccAlunoProfessorRepositorio>();
 
-			services.AddValidatorsFromAssembly(typeof(ValidationBehavior<,>).Assembly);
-			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+			//services.AddValidatorsFromAssembly(typeof(ValidationBehavior<,>).Assembly);
+			//services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 			services.AddMemoryCache();
 
 			#region Dados
-			services.AddScoped<IUnidadeDeTrabalho, Contextos>();
+			//services.AddScoped<IUnidadeDeTrabalho, Contextos>();
 			#endregion
 		}
 	}

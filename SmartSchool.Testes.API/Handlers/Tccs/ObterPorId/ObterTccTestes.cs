@@ -47,7 +47,7 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 		{
 			var tcc = this._tccBuilder.ObterTcc();
 
-			var retornoAlteracao = await this._mediator.Send(new ObterTccCommand { Id = tcc.ID });
+			var retornoAlteracao = await this._mediator.Send(new ObterTccQuery { Id = tcc.ID });
 			var resultTccObtidoPorId = retornoAlteracao.Should().BeOfType<Result<ObterTccDto>>().Subject;
 
 			resultTccObtidoPorId.Value.Should().NotBeNull();

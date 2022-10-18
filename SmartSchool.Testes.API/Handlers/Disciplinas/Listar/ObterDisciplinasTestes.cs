@@ -61,7 +61,7 @@ namespace SmartSchool.Testes.API.Controllers.Disciplinas
 		{
 			var disciplina = this._disciplinaBuilder.ObterDisciplina();
 
-			var retorno = await this._mediator.Send(new ListarDisciplinasCommand());
+			var retorno = await this._mediator.Send(new ListarDisciplinasQuery());
 
 			var resultDisciplinas = retorno.Should().BeOfType<Result<IEnumerable<ObterDisciplinaDto>>>().Subject;
 

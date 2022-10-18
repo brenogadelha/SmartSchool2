@@ -74,7 +74,7 @@ namespace SmartSchool.Testes.API.Controllers.Cursos
 		[Fact(DisplayName = "Obtém Cursos com sucesso")]
 		public async void DeveListarCursos()
 		{			
-			var requestCursos = await this._mediator.Send(new ListarCursosCommand());
+			var requestCursos = await this._mediator.Send(new ListarCursosQuery());
 			var resultCursosObtidos = requestCursos.Should().BeOfType<Result<IEnumerable<ObterCursoDto>>>().Subject;
 
 			resultCursosObtidos.Value.Should().NotBeNull();

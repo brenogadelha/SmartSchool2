@@ -43,7 +43,7 @@ namespace SmartSchool.API.Controllers
 		[HttpGet]
 		public async Task<IActionResult> ObterTodos()
 		{
-			var response = await _mediator.Send(new ListarTccsCommand());
+			var response = await _mediator.Send(new ListarTccsQuery());
 
 			return this.ProcessResult(response);
 		}
@@ -61,7 +61,7 @@ namespace SmartSchool.API.Controllers
 		[HttpGet("{id}")]
 		public async Task<IActionResult> ObterPorId([FromRoute(Name = "id")] Guid id)
 		{
-			var response = await _mediator.Send(new ObterTccCommand { Id = id });
+			var response = await _mediator.Send(new ObterTccQuery { Id = id });
 
 			return this.ProcessResult(response);
 		}
@@ -78,7 +78,7 @@ namespace SmartSchool.API.Controllers
 		[HttpGet("professores/{professor-id}")]
 		public async Task<IActionResult> ObterPorProfessor([FromRoute(Name = "professor-id")] Guid id, [FromQuery] int status)
 		{
-			var response = await _mediator.Send(new ListarTccsPorProfessorCommand { ProfessorId = id, StatusTcc = (TccStatus)status });
+			var response = await _mediator.Send(new ListarTccsPorProfessorQuery { ProfessorId = id, StatusTcc = (TccStatus)status });
 
 			return this.ProcessResult(response);
 		}
@@ -96,7 +96,7 @@ namespace SmartSchool.API.Controllers
 		[HttpGet("alunos/{aluno-id}")]
 		public async Task<IActionResult> ObterPorAluno([FromRoute(Name = "aluno-id")] Guid id)
 		{
-			var response = await _mediator.Send(new ObterTccPorAlunoCommand { AlunoId = id });
+			var response = await _mediator.Send(new ObterTccPorAlunoQuery { AlunoId = id });
 
 			return this.ProcessResult(response);
 		}

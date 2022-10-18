@@ -59,7 +59,7 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 		[Fact(DisplayName = "Obtém Tccs com sucesso")]
 		public async void DeveListarTccs()
 		{
-			var requestTccs = await this._mediator.Send(new ListarTccsCommand());
+			var requestTccs = await this._mediator.Send(new ListarTccsQuery());
 			var resultTccsObtidos = requestTccs.Should().BeOfType<Result<IEnumerable<ObterTccsDto>>>().Subject;
 
 			resultTccsObtidos.Value.Should().NotBeNull();

@@ -92,13 +92,13 @@ namespace SmartSchool.Ioc
 		{
 			services.AddMediatR(typeof(ValidationBehavior<,>).Assembly);
 
-			services.AddMediatR(typeof(ListarAlunosHandler).Assembly);
-			services.AddMediatR(typeof(ObterAlunoHandler).Assembly);
+			services.AddMediatR(typeof(ListarAlunosQueryHandler).Assembly);
+			services.AddMediatR(typeof(ObterAlunoQueryHandler).Assembly);
 			services.AddMediatR(typeof(AdicionarAlunoHandler).Assembly);
 			services.AddMediatR(typeof(AlterarAlunoHandler).Assembly);
-			services.AddMediatR(typeof(ObterAlunoMatriculaHandler).Assembly);
-			services.AddMediatR(typeof(ObterAlunoNomeHandler).Assembly);
-			services.AddMediatR(typeof(ObterHistoricoAlunoHandler).Assembly);
+			services.AddMediatR(typeof(ObterAlunoMatriculaQueryHandler).Assembly);
+			services.AddMediatR(typeof(ObterAlunoNomeQueryHandler).Assembly);
+			services.AddMediatR(typeof(ObterHistoricoAlunoQueryHandler).Assembly);
 			services.AddMediatR(typeof(RemoverAlunoHandler).Assembly);
 
 			//services.AddMediatR(typeof(ListarAlunosCommand).Assembly);
@@ -111,19 +111,19 @@ namespace SmartSchool.Ioc
 			//services.AddMediatR(typeof(RemoverAlunoCommand).Assembly);
 
 			services.AddMediatR(typeof(AdicionarProfessorHandler).Assembly);
-			services.AddMediatR(typeof(ObterProfessorHandler).Assembly);
-			services.AddMediatR(typeof(ListarProfessoresHandler).Assembly);
+			services.AddMediatR(typeof(ObterProfessorQueryHandler).Assembly);
+			services.AddMediatR(typeof(ListarProfessoresQueryHandler).Assembly);
 			services.AddMediatR(typeof(AlterarProfessorHandler).Assembly);
 			services.AddMediatR(typeof(RemoverProfessorHandler).Assembly);
 			services.AddMediatR(typeof(AlterarDisponibilidadeTccProfessorHandler).Assembly);
 
 			services.AddMediatR(typeof(AdicionarTccHandler).Assembly);
-			services.AddMediatR(typeof(ObterTccHandler).Assembly);
-			services.AddMediatR(typeof(ListarTccsHandler).Assembly);
+			services.AddMediatR(typeof(ObterTccQueryHandler).Assembly);
+			services.AddMediatR(typeof(ListarTccsQueryHandler).Assembly);
 			services.AddMediatR(typeof(AlterarTccHandler).Assembly);
 			services.AddMediatR(typeof(AprovarTccHandler).Assembly);
-			services.AddMediatR(typeof(ListarTccsPorProfessorHandler).Assembly);
-			services.AddMediatR(typeof(ObterTccPorAlunoHandler).Assembly);
+			services.AddMediatR(typeof(ListarTccsPorProfessorQueryHandler).Assembly);
+			services.AddMediatR(typeof(ObterTccPorAlunoQueryHandler).Assembly);
 			services.AddMediatR(typeof(RemoverTccHandler).Assembly);
 
 			//services.AddMediatR(typeof(ListarProfessoresCommand).Assembly);

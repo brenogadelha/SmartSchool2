@@ -83,7 +83,7 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 		[Fact(DisplayName = "Lista solicitações de Tccs por Professor")]
 		public async void DeveObterTccSolicitadoPorAluno()
 		{
-			var retornoSolicitacoesProfessor = await this._mediator.Send(new ListarTccsPorProfessorCommand
+			var retornoSolicitacoesProfessor = await this._mediator.Send(new ListarTccsPorProfessorQuery
 			{
 				ProfessorId = this._professorBuilder.ObterProfessor().ID
 			});

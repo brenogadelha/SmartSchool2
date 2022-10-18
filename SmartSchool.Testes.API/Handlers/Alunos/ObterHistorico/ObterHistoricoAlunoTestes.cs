@@ -164,7 +164,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 		{
 			//var aluno = this._alunoBuilder.ObterAluno();
 
-			var requestAlunoHistorico = await this._mediator.Send(new ObterHistoricoAlunoCommand { Id = this._aluno.ID });
+			var requestAlunoHistorico = await this._mediator.Send(new ObterHistoricoAlunoQuery { Id = this._aluno.ID });
 			var historicoAluno = requestAlunoHistorico.Should().BeOfType<Result<IEnumerable<ObterHistoricoAlunoDto>>>().Subject;
 
 			historicoAluno.Value.Should().NotBeNull();
@@ -173,7 +173,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 			historicoAluno.Value.Where(ha => ha.Periodo == 2).Count().Should().Be(2);
 			historicoAluno.Value.Where(ha => ha.StatusDisciplinaDescricao == "Cursando").Count().Should().Be(3);
 
-			var requestAlunoHistoricoPorPeriodo = await this._mediator.Send(new ObterHistoricoAlunoCommand { Id = this._aluno.ID, Periodo = 2 });
+			var requestAlunoHistoricoPorPeriodo = await this._mediator.Send(new ObterHistoricoAlunoQuery { Id = this._aluno.ID, Periodo = 2 });
 			var historicoAlunoPorPeriodo = requestAlunoHistoricoPorPeriodo.Should().BeOfType<Result<IEnumerable<ObterHistoricoAlunoDto>>>().Subject;
 
 			historicoAlunoPorPeriodo.Value.Count().Should().Be(2);

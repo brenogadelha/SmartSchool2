@@ -51,7 +51,7 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 		[Fact(DisplayName = "Obtém Tcc solicitado por Aluno com sucesso")]
 		public async void DeveObterTccSolicitadoPorAluno()
 		{
-			var retornoSolicitacaoTcc = await this._mediator.Send(new ObterTccPorAlunoCommand
+			var retornoSolicitacaoTcc = await this._mediator.Send(new ObterTccPorAlunoQuery
 			{
 				AlunoId = this._alunoBuilder.ObterAluno().ID
 			});

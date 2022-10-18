@@ -52,7 +52,7 @@ namespace SmartSchool.Testes.API.Controllers.Semestres
 		[Fact(DisplayName = "Lista Semestres")]
 		public async void DeveObterSemestre()
 		{
-			var retorno = await this._mediator.Send(new ListarSemestresCommand());
+			var retorno = await this._mediator.Send(new ListarSemestresQuery());
 
 			var resultSemestres = retorno.Should().BeOfType<Result<IEnumerable<ObterSemestreDto>>>().Subject;
 
