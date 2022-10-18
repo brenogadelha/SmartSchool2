@@ -13,7 +13,6 @@ namespace SmartSchool.Dominio.Alunos.Especificacao
 		public BuscaDeAlunoPorIdEspecificacao IncluiInformacoesDeHistorico()
 		{
 			this.ObjetosInclusaoTipo.Add(x => x.SemestresDisciplinas);
-			this.ObjetosInclusaoStrings.Add("SemestresDisciplinas");
 			this.ObjetosInclusaoStrings.Add("SemestresDisciplinas.AlunoDisciplina.Disciplina");
 
 			return this;

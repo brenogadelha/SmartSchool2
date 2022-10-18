@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
 using SmartSchool.Comum.Validacao;
-using SmartSchool.Dto.Alunos;
 using System;
 
 namespace SmartSchool.Dominio.Alunos.Validacao
 {
-	public class AlunoValidacao : AbstractValidator<AlunoDto>
+	public class AlunoValidacao : AbstractValidator<Aluno>
 	{		
 		public AlunoValidacao()
 		{

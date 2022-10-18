@@ -126,6 +126,10 @@ namespace SmartSchool.Dados.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("CURS_ID_CURSO");
 
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit")
+                        .HasColumnName("CURS_IN_ATIVO");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(80)
@@ -161,6 +165,10 @@ namespace SmartSchool.Dados.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("DISC_ID_DISCIPLINA");
 
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit")
+                        .HasColumnName("DISC_IN_ATIVO");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(80)
@@ -181,6 +189,16 @@ namespace SmartSchool.Dados.Migrations
                     b.Property<Guid>("ID")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("PROF_ID_PROFESSOR");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit")
+                        .HasColumnName("PROF_IN_ATIVO");
+
+                    b.Property<int>("DisponibilidadeTcc")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(2)
+                        .HasColumnName("PROF_ID_DISPONIBILIDADE_TCC");
 
                     b.Property<int>("Matricula")
                         .HasColumnType("int")
@@ -220,6 +238,10 @@ namespace SmartSchool.Dados.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("SEME_ID_SEMESTRE");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit")
+                        .HasColumnName("SEME_IN_ATIVO");
 
                     b.Property<DateTime>("DataFim")
                         .HasColumnType("datetime2")
@@ -261,6 +283,90 @@ namespace SmartSchool.Dados.Migrations
                     b.HasIndex("AlunoID", "DisciplinaID");
 
                     b.ToTable("SEMESTRE_ALUNO_DISCIPLINA");
+                });
+
+            modelBuilder.Entity("SmartSchool.Dominio.Tccs.Tcc", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("TCC_ID_TCC");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit")
+                        .HasColumnName("TCC_IN_ATIVO");
+
+                    b.Property<string>("Descricao")
+                        .HasMaxLength(3008)
+                        .HasColumnType("nvarchar(3008)")
+                        .HasColumnName("TCC_TXT_DESCRIÇÃO");
+
+                    b.Property<string>("Tema")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)")
+                        .HasColumnName("TCC_NM_TEMA");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("TCC");
+                });
+
+            modelBuilder.Entity("SmartSchool.Dominio.Tccs.TccAlunoProfessor", b =>
+                {
+                    b.Property<Guid>("TccID")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("TAPR_ID_TCC");
+
+                    b.Property<Guid>("AlunoID")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("TAPR_ID_ALUNO");
+
+                    b.Property<Guid>("ProfessorID")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("TAPR_ID_PROFESSOR");
+
+                    b.Property<DateTime>("DataSolicitacao")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("TAPR_ID_DATA_SOLICITACAO");
+
+                    b.Property<string>("RespostaSolicitacao")
+                        .HasMaxLength(1008)
+                        .HasColumnType("nvarchar(1008)")
+                        .HasColumnName("TAPR_TXT_RESPOSTA_SOLICITACAO");
+
+                    b.Property<string>("Solicitacao")
+                        .HasMaxLength(1008)
+                        .HasColumnType("nvarchar(1008)")
+                        .HasColumnName("TAPR_TXT_SOLICITACAO");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("TAPR_ID_STATUS_TCC");
+
+                    b.HasKey("TccID", "AlunoID", "ProfessorID");
+
+                    b.HasIndex("AlunoID");
+
+                    b.HasIndex("ProfessorID", "TccID");
+
+                    b.ToTable("TCC_ALUNO_PROFESSOR");
+                });
+
+            modelBuilder.Entity("SmartSchool.Dominio.Tccs.TccProfessor", b =>
+                {
+                    b.Property<Guid>("ProfessorID")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("TCPR_ID_PROFESSOR");
+
+                    b.Property<Guid>("TccID")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("TCPR_ID_TCC");
+
+                    b.HasKey("ProfessorID", "TccID");
+
+                    b.HasIndex("TccID");
+
+                    b.ToTable("TCC_PROFESSOR");
                 });
 
             modelBuilder.Entity("SmartSchool.Dominio.Alunos.Aluno", b =>
@@ -365,11 +471,55 @@ namespace SmartSchool.Dados.Migrations
                     b.Navigation("Semestre");
                 });
 
+            modelBuilder.Entity("SmartSchool.Dominio.Tccs.TccAlunoProfessor", b =>
+                {
+                    b.HasOne("SmartSchool.Dominio.Alunos.Aluno", "Aluno")
+                        .WithMany("TccsProfessores")
+                        .HasForeignKey("AlunoID")
+                        .HasConstraintName("FK_ALUN_TAPR")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SmartSchool.Dominio.Tccs.TccProfessor", "ProfessorTcc")
+                        .WithMany("Alunos")
+                        .HasForeignKey("ProfessorID", "TccID")
+                        .HasConstraintName("FK_TAPR_ALUN")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Aluno");
+
+                    b.Navigation("ProfessorTcc");
+                });
+
+            modelBuilder.Entity("SmartSchool.Dominio.Tccs.TccProfessor", b =>
+                {
+                    b.HasOne("SmartSchool.Dominio.Professores.Professor", "Professor")
+                        .WithMany("Tccs")
+                        .HasForeignKey("ProfessorID")
+                        .HasConstraintName("FK_PROF_TCC")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SmartSchool.Dominio.Tccs.Tcc", "Tcc")
+                        .WithMany("TccProfessores")
+                        .HasForeignKey("TccID")
+                        .HasConstraintName("FK_TCC_PROF")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Professor");
+
+                    b.Navigation("Tcc");
+                });
+
             modelBuilder.Entity("SmartSchool.Dominio.Alunos.Aluno", b =>
                 {
                     b.Navigation("AlunosDisciplinas");
 
                     b.Navigation("SemestresDisciplinas");
+
+                    b.Navigation("TccsProfessores");
                 });
 
             modelBuilder.Entity("SmartSchool.Dominio.Alunos.AlunoDisciplina", b =>
@@ -396,11 +546,23 @@ namespace SmartSchool.Dados.Migrations
             modelBuilder.Entity("SmartSchool.Dominio.Professores.Professor", b =>
                 {
                     b.Navigation("ProfessoresDisciplinas");
+
+                    b.Navigation("Tccs");
                 });
 
             modelBuilder.Entity("SmartSchool.Dominio.Semestres.Semestre", b =>
                 {
                     b.Navigation("AlunosDisciplinas");
+                });
+
+            modelBuilder.Entity("SmartSchool.Dominio.Tccs.Tcc", b =>
+                {
+                    b.Navigation("TccProfessores");
+                });
+
+            modelBuilder.Entity("SmartSchool.Dominio.Tccs.TccProfessor", b =>
+                {
+                    b.Navigation("Alunos");
                 });
 #pragma warning restore 612, 618
         }

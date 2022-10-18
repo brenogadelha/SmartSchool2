@@ -1,7 +1,10 @@
 ﻿using SmartSchool.Comum.Dominio;
+using SmartSchool.Comum.Dominio.Enums;
 using SmartSchool.Comum.Validacao;
+using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dominio.Professores.Validacao;
+using SmartSchool.Dominio.Tccs;
 using SmartSchool.Dto.Professores;
 using System;
 using System.Collections.Generic;
@@ -11,14 +14,19 @@ using System.Text.Json.Serialization;
 
 namespace SmartSchool.Dominio.Professores
 {
-    public class Professor : IEntidade
-    {
-        public Guid ID { get; private set; }
-        public int Matricula { get; private set; }
-        public string Nome { get; private set; }
+	public class Professor : IEntidade
+	{
+		public Guid ID { get; private set; }
+		public int Matricula { get; private set; }
+		public string Nome { get; private set; }
+		public bool Ativo { get; set; }
+		public DisponibilidadeTcc DisponibilidadeTcc { get; set; }
 
-        [JsonIgnore]
-        public List<ProfessorDisciplina> ProfessoresDisciplinas { get; private set; } = new List<ProfessorDisciplina>();
+		[JsonIgnore]
+		public List<ProfessorDisciplina> ProfessoresDisciplinas { get; private set; } = new List<ProfessorDisciplina>();
+
+		[JsonIgnore]
+		public List<TccProfessor> Tccs { get; private set; } = new List<TccProfessor>();
 
 		[NotMapped]
 		public List<Disciplina> Disciplinas
@@ -28,24 +36,30 @@ namespace SmartSchool.Dominio.Professores
 
 		public Professor() { }
 
-        public static Professor Criar(ProfessorDto professorDto)
-        {
-			ValidacaoFabrica.Validar(professorDto, new ProfessorValidacao());
+		public static Professor Criar(ProfessorDto professorDto) => Criar(professorDto.Nome, professorDto.Matricula, professorDto.Disciplinas);
 
+		public static Result<Professor> Criar(string nome, int matricula, List<Guid> disciplinas, DisponibilidadeTcc disponibilidadeTcc = DisponibilidadeTcc.Indisponível)
+		{
 			var professor = new Professor()
-            {
-                ID = Guid.NewGuid(),
-                Nome = professorDto.Nome,
-                Matricula = professorDto.Matricula
-            };
+			{
+				ID = Guid.NewGuid(),
+				Nome = nome,
+				Matricula = matricula,
+				Ativo = true,
+				DisponibilidadeTcc = disponibilidadeTcc
+			};
 
-			professor.AtualizarDisciplinas(professorDto.Disciplinas);
+			professor.AtualizarDisciplinas(disciplinas);
 
-			return professor;
-        }
+			ValidacaoFabrica.Validar(professor, new ProfessorValidacao());
 
-        public void AlterarNome(string nome) => this.Nome = nome;
-        public void AlterarMatricula(int matricula) => this.Matricula = matricula;
+			return Result<Professor>.Success(professor);
+		}
+
+		public void AlterarNome(string nome) => this.Nome = nome;
+		public void AlterarMatricula(int matricula) => this.Matricula = matricula;
+		public void AlterarAtivo(bool ativo) => this.Ativo = ativo;
+		public void AlterarDisponibilidadeTcc(DisponibilidadeTcc disponibilidadeTcc) => this.DisponibilidadeTcc = disponibilidadeTcc;
 		public void AtualizarDisciplinas(List<Guid> novasDisciplinas)
 		{
 			// Verifica se foram incluídas novas Disciplinas. Caso não, são removidas as atuais.
@@ -76,6 +90,6 @@ namespace SmartSchool.Dominio.Professores
 
 			this.ProfessoresDisciplinas.AddRange(listaTemp);
 		}
-	}	
+	}
 }
 

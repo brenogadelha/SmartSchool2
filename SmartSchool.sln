@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31229.75
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32811.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartSchool.API", "SmartSchool.API\SmartSchool.API.csproj", "{378A5145-8F97-4D53-A6BF-6D65AB74DE84}"
 EndProject
@@ -19,13 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartSchool.Aplicacao", "Sm
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testes", "Testes", "{D45AFC35-1906-486C-A30E-AC8751DE3E90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSchool.Testes.API", "SmartSchool.Testes.API\SmartSchool.Testes.API.csproj", "{251B5195-DB27-48A5-B0A7-7BC7F7DAD80E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartSchool.Testes.Integracao", "SmartSchool.Testes.API\SmartSchool.Testes.Integracao.csproj", "{251B5195-DB27-48A5-B0A7-7BC7F7DAD80E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSchool.Testes.Integracao", "SmartSchool.Testes.Integracao\SmartSchool.Testes.Integracao.csproj", "{4F82D443-1EEE-4B22-895C-3E6D368032AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartSchool.Testes.Compartilhado", "SmartSchool.Testes.Compartilhado\SmartSchool.Testes.Compartilhado.csproj", "{17933430-C048-4D33-9B20-68E7C434D7DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSchool.Testes.Compartilhado", "SmartSchool.Testes.Compartilhado\SmartSchool.Testes.Compartilhado.csproj", "{17933430-C048-4D33-9B20-68E7C434D7DC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartSchool.Testes.Unidade", "SmartSchool.Testes.Unidade\SmartSchool.Testes.Unidade.csproj", "{8B0ED49C-B4EE-4AFA-9C7C-5CE7D317B00F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartSchool.Testes.Unidade", "SmartSchool.Testes.Unidade\SmartSchool.Testes.Unidade.csproj", "{8B0ED49C-B4EE-4AFA-9C7C-5CE7D317B00F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,10 +63,6 @@ Global
 		{251B5195-DB27-48A5-B0A7-7BC7F7DAD80E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{251B5195-DB27-48A5-B0A7-7BC7F7DAD80E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{251B5195-DB27-48A5-B0A7-7BC7F7DAD80E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4F82D443-1EEE-4B22-895C-3E6D368032AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F82D443-1EEE-4B22-895C-3E6D368032AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F82D443-1EEE-4B22-895C-3E6D368032AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4F82D443-1EEE-4B22-895C-3E6D368032AA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{17933430-C048-4D33-9B20-68E7C434D7DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{17933430-C048-4D33-9B20-68E7C434D7DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17933430-C048-4D33-9B20-68E7C434D7DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -83,7 +77,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{251B5195-DB27-48A5-B0A7-7BC7F7DAD80E} = {D45AFC35-1906-486C-A30E-AC8751DE3E90}
-		{4F82D443-1EEE-4B22-895C-3E6D368032AA} = {D45AFC35-1906-486C-A30E-AC8751DE3E90}
 		{17933430-C048-4D33-9B20-68E7C434D7DC} = {D45AFC35-1906-486C-A30E-AC8751DE3E90}
 		{8B0ED49C-B4EE-4AFA-9C7C-5CE7D317B00F} = {D45AFC35-1906-486C-A30E-AC8751DE3E90}
 	EndGlobalSection

@@ -11,6 +11,6 @@ namespace SmartSchool.Dominio.Disciplinas.Especificacao
 
 		public BuscaDeDisciplinaPorNomeEspecificacao(string nome) => this._nome = nome;
 
-		public override Expression<Func<Disciplina, bool>> ExpressaoEspecificacao => x => x.Nome == this._nome;
+		public override Expression<Func<Disciplina, bool>> ExpressaoEspecificacao => x => x.Nome == this._nome && x.Ativo == true;
 	}
 }

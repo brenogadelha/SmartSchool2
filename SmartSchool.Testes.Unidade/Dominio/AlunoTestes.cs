@@ -13,6 +13,9 @@ namespace SmartSchool.Testes.Unidade.Dominio
 	public class AlunoTestes : TesteUnidade
 	{
 		private readonly AlunoDtoBuilder _alunoDtoBuilder;
+		private const string maisDe32 = "Lorem ipsum dolor sit amet, consectetur";
+		private const string maisDe128 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Vivamus ut sagittis purus. Morbi lectus ante Lorem ipsum dolor sit amet, consectetur";
+
 
 		public AlunoTestes()
 		{
@@ -21,7 +24,7 @@ namespace SmartSchool.Testes.Unidade.Dominio
 				DisciplinaId = Guid.NewGuid(),
 				Periodo = 1,
 				SemestreId = Guid.NewGuid(),
-				StatusDisciplina = StatusDisciplinaEnum.Cursando
+				StatusDisciplina = StatusDisciplina.Cursando
 			};
 
 			List<AlunoDisciplinaDto> alunosDisciplinas = new List<AlunoDisciplinaDto>();
@@ -101,6 +104,8 @@ namespace SmartSchool.Testes.Unidade.Dominio
 			new object[] { "Estevao", "Pulante", "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(1), DateTime.Now, DateTime.Now.AddYears(4), "Data de Nascimento deve ser anterior a hoje." },
 			new object[] { "Estevao", "Pulante", "11075252091", null, "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), DateTime.Now, DateTime.Now.AddYears(4), "Email de Aluno deve ser informado." },
 			new object[] { "", "Pulante", "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), DateTime.Now, DateTime.Now.AddYears(4), "Nome de Aluno deve ser informado." },
+			new object[] { maisDe32, "Pulante", "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), DateTime.Now, DateTime.Now.AddYears(4), "Nome do Aluno não pode passar de 32 caracteres." },
+			new object[] { "Estevao", maisDe128, "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), DateTime.Now, DateTime.Now.AddYears(4), "Sobrenome do Aluno não pode passar de 128 caracteres." },
 			new object[] { "Estevao", null, "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403",  DateTime.Now.AddDays(-5000), DateTime.Now, DateTime.Now.AddYears(4), "Sobrenome de Aluno deve ser informado." },
 			new object[] { "Estevao", "Pulante", "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", null, DateTime.Now, DateTime.Now.AddYears(4), "Data de Nascimento deve ser informada." },
 			new object[] { "Estevao com o nome maior que 32 caracteres para teste de validação", "Pulante", "11075252091", "estevao.pulanterussao@unicarioca.com.br", "Rio de Janeiro", "2131313233", "21974440403", DateTime.Now.AddDays(-5000), DateTime.Now, DateTime.Now.AddYears(4), "Nome do Aluno não pode passar de 32 caracteres." },
@@ -118,7 +123,7 @@ namespace SmartSchool.Testes.Unidade.Dominio
 				DisciplinaId = Guid.NewGuid(),
 				Periodo = 1,
 				SemestreId = Guid.NewGuid(),
-				StatusDisciplina = StatusDisciplinaEnum.Cursando
+				StatusDisciplina = StatusDisciplina.Cursando
 			};
 
 			List<AlunoDisciplinaDto> alunosDisciplinas = new List<AlunoDisciplinaDto>();

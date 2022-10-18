@@ -20,6 +20,10 @@ namespace SmartSchool.Dados.Modulos.Usuarios
 					.HasColumnName("CURS_NM_CURSO")
 					.HasMaxLength(80)
 					.IsRequired();
+
+			builder.Property(b => b.Ativo)
+				   .HasColumnName("CURS_IN_ATIVO")
+				   .IsRequired();
 		}
 	}
 }

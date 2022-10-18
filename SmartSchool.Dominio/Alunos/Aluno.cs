@@ -2,9 +2,10 @@
 using SmartSchool.Comum.Dominio;
 using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Alunos.Validacao;
+using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Cursos;
-using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dominio.Semestres;
+using SmartSchool.Dominio.Tccs;
 using SmartSchool.Dto.Alunos;
 using System;
 using System.Collections.Generic;
@@ -42,36 +43,48 @@ namespace SmartSchool.Dominio.Alunos
 			get => this.AlunosDisciplinas.Select(u => u.DisciplinaID).ToList();
 		}
 
+		[JsonIgnore]
 		public List<SemestreAlunoDisciplina> SemestresDisciplinas { get; private set; } = new List<SemestreAlunoDisciplina>();
+
+		[JsonIgnore]
+		public List<TccAlunoProfessor> TccsProfessores { get; private set; } = new List<TccAlunoProfessor>();
 
 		public Aluno() { }
 		public static Aluno Criar(AlunoDto alunoDto)
 		{
-			ValidacaoFabrica.Validar(alunoDto, new AlunoValidacao());
+			return Criar(alunoDto.Nome, alunoDto.Sobrenome, alunoDto.Telefone, alunoDto.DataInicio, alunoDto.DataFim,
+				alunoDto.DataNascimento, alunoDto.Matricula, alunoDto.Celular, alunoDto.Cidade, alunoDto.Cpf,
+				alunoDto.Email, alunoDto.Endereco, alunoDto.CursoId, alunoDto.AlunosDisciplinas);
+		}
 
+		public static Result<Aluno> Criar(string nome, string sobrenome, string telefone, DateTime dataInicio, DateTime dataFim, DateTime dataNascimento,
+			int matricula, string celular, string cidade, string cpf, string email, string endereco, Guid cursoId, List<AlunoDisciplinaDto> alunosDisciplinas)
+		{
 			var aluno = new Aluno()
 			{
 				ID = Guid.NewGuid(),
-				Nome = alunoDto.Nome,
-				Sobrenome = alunoDto.Sobrenome,
-				Telefone = alunoDto.Telefone,
-				DataInicio = alunoDto.DataInicio,
-				DataFim = alunoDto.DataFim,
+				Nome = nome,
+				Sobrenome = sobrenome,
+				Telefone = telefone,
+				DataInicio = dataInicio,
+				DataFim = dataFim,
 				Ativo = true,
-				DataNascimento = alunoDto.DataNascimento,
-				Matricula = alunoDto.Matricula,
-				CursoId = alunoDto.CursoId,
-				Celular = alunoDto.Celular,
-				Cidade = alunoDto.Cidade,
-				Cpf = alunoDto.Cpf,
-				Email = alunoDto.Email,
-				Endereco = alunoDto.Endereco
+				DataNascimento = dataNascimento,
+				Matricula = matricula,
+				CursoId = cursoId,
+				Celular = celular,
+				Cidade = cidade,
+				Cpf = cpf,
+				Email = email,
+				Endereco = endereco
 			};
 
-			if(alunoDto.AlunosDisciplinas != null)
-			aluno.AtualizarDisciplinas(alunoDto.AlunosDisciplinas.Select(ad => ad.DisciplinaId).ToList());
+			if (alunosDisciplinas != null)
+				aluno.AtualizarDisciplinas(alunosDisciplinas.Select(ad => ad.DisciplinaId).ToList());
 
-			return aluno;
+			ValidacaoFabrica.Validar(aluno, new AlunoValidacao());
+
+			return Result<Aluno>.Success(aluno);
 		}
 
 		public void AlterarNome(string nome) => this.Nome = nome;
@@ -86,6 +99,7 @@ namespace SmartSchool.Dominio.Alunos
 		public void AlterarDataNascimento(DateTime dataNascimento) => this.DataNascimento = dataNascimento;
 		public void AlterarDataInicio(DateTime dataInicio) => this.DataInicio = dataInicio;
 		public void AlterarDataFim(DateTime dataFim) => this.DataFim = dataFim;
+		public void AlterarCursoId(Guid cursoId) => this.CursoId = cursoId;
 
 		public void AtualizarDisciplinas(List<Guid> novasDisciplinas)
 		{

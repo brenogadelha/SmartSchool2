@@ -10,7 +10,6 @@ namespace SmartSchool.Testes.Unidade.Dominio
 {
 	public class DisciplinaTestes : TesteUnidade
 	{
-
 		public DisciplinaTestes() { }
 
 		[Fact(DisplayName = "Criação e Alteração de Disciplina com Sucesso")]
@@ -23,7 +22,7 @@ namespace SmartSchool.Testes.Unidade.Dominio
 			disciplina.Should().NotBeNull();
 			disciplina.ID.Should().NotBe(Guid.Empty);
 			disciplina.Nome.Should().Be(disciplinaDto.Nome);
-			disciplina.Periodo.Should().Be(disciplinaDto.Periodo);
+			disciplina.Periodo.Should().Be((PeriodoDisciplinaEnum)disciplinaDto.Periodo);
 
 			// Alteração
 
@@ -31,7 +30,7 @@ namespace SmartSchool.Testes.Unidade.Dominio
 			disciplina.AlterarPeriodo(2);
 
 			disciplina.Nome.Should().Be("Cálculo II");
-			disciplina.Periodo.Should().Be(2);
+			disciplina.Periodo.Should().Be((PeriodoDisciplinaEnum)2);
 		}
 
 		public static IEnumerable<object[]> DadosPraTestesException =>

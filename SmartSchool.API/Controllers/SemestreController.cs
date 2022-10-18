@@ -1,22 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SmartSchool.Aplicacao.Semestres.Interface;
+﻿using MediatR;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
+using SmartSchool.API.Componentes;
+using SmartSchool.Aplicacao.Semestres.Adicionar;
+using SmartSchool.Aplicacao.Semestres.Alterar;
+using SmartSchool.Aplicacao.Semestres.Listar;
+using SmartSchool.Aplicacao.Semestres.ObterPorId;
+using SmartSchool.Aplicacao.Semestres.Remover;
 using SmartSchool.Dto.Dtos.TratamentoErros;
 using SmartSchool.Dto.Semestres;
 using System;
 using System.Collections.Generic;
-using System.Net;
+using System.Threading.Tasks;
 
 namespace SmartSchool.API.Controllers
 {
-	[Route("api/[controller]")]
-	[ApiController]
+	[Produces("application/json")]
+	[Route("api/Semestres")]
+	[EnableCors("PoliticaSmartSchool")]
 	public class SemestreController : Controller
 	{
-		private readonly ISemestreServico _semestreServico;
+		private readonly IMediator _mediator;
 
-		public SemestreController(ISemestreServico semestreServico)
+		public SemestreController(IMediator mediator)
 		{
-			this._semestreServico = semestreServico;
+			this._mediator = mediator;
 		}
 
 		/// <summary>
@@ -25,10 +33,15 @@ namespace SmartSchool.API.Controllers
 		/// <returns>Lista de todos os Semestre</returns>
 		/// <response code="200">Lista de Semestre</response> 
 		/// <response code="500">Erro inesperado</response>
-		[ProducesResponseType(200, Type = typeof(IEnumerable<AlterarObterSemestreDto>))]
+		[ProducesResponseType(200, Type = typeof(IEnumerable<ObterSemestreDto>))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[HttpGet]
-		public OkObjectResult ObterTodos() => Ok(_semestreServico.Obter());
+		public async Task<IActionResult> ObterTodos()
+		{
+			var response = await _mediator.Send(new ListarSemestresQuery());
+
+			return this.ProcessResult(response);
+		}
 
 		/// <summary>
 		/// Obtém dados do Semestresespecífico por ID
@@ -41,24 +54,31 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[HttpGet("{id}")]
-		public OkObjectResult ObterPorId(Guid id) => Ok(this._semestreServico.ObterPorId(id));
+		public async Task<IActionResult> ObterPorId([FromRoute(Name = "id")] Guid id)
+		{
+			var response = await _mediator.Send(new ObterSemestreQuery { Id = id });
+
+			return this.ProcessResult(response);
+		}
 
 		/// <summary>
 		/// Cria um novo Semestre
 		/// </summary>
 		/// <returns>Http status 201(Created)</returns>
-		/// <response code="201">Semestre criado com sucesso</response>
+		/// <response code="200">Semestre criado com sucesso</response>
 		/// <response code="400">Dados inconsistentes para criação do Semestre</response>
+		/// <response code="422">Erro de Negócio</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPost]
-		[ProducesResponseType(201)]
+		[ProducesResponseType(200)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(422, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult CriarSemestre([FromBody] SemestreDto semestreDto)
+		public async Task<IActionResult> CriarSemestre([FromBody] AdicionarSemestreCommand semestreDto)
 		{
-			this._semestreServico.CriarSemestre(semestreDto);
+			var response = await _mediator.Send(semestreDto);
 
-			return this.StatusCode((int)HttpStatusCode.Created);
+			return this.ProcessResult(response);
 		}
 
 		/// <summary>
@@ -68,25 +88,26 @@ namespace SmartSchool.API.Controllers
 		/// <response code="204">Semestre alterado com Sucesso</response>
 		/// <response code="400">Dados para alteração de Semestre inconsistentes.</response>
 		/// <response code="404">Semestre inexistente</response>
+		/// <response code="422">Erro de Negócio</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPut("{id}")]
 		[ProducesResponseType(204)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(422, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult AlterarSemestre(Guid id, [FromBody] AlterarObterSemestreDto semestreDto)
+		public async Task<IActionResult> AlterarSemestre([FromRoute(Name = "id")] Guid id, [FromBody] AlterarSemestreCommand semestreDto)
 		{
 			if (semestreDto == null)
 				throw new ArgumentNullException(null, "Objeto Semestre nulo (não foi informado).");
 
 			if (id.Equals(Guid.Empty))
 				throw new ArgumentNullException(null, "Identificador de Semestre é inválido ou nulo");
-
 			semestreDto.ID = id;
 
-			this._semestreServico.AlterarSemestre(id, semestreDto);
+			var response = await _mediator.Send(semestreDto);
 
-			return this.StatusCode((int)HttpStatusCode.Created);
+			return this.ProcessResult(response);
 		}
 
 		/// <summary>
@@ -101,10 +122,10 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult ExcluirSemestre(Guid id)
+		public async Task<IActionResult> RemoverSemestre([FromRoute(Name = "id")] Guid id)
 		{
-			this._semestreServico.Remover(id);
-			return this.StatusCode(204);
+			var response = await this._mediator.Send(new RemoverSemestreCommand { ID = id });
+			return this.ProcessResult(response);
 		}
 	}
 }

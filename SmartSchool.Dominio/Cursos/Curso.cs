@@ -1,6 +1,7 @@
 ﻿using SmartSchool.Comum.Dominio;
 using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Alunos;
+using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Cursos.Validacao;
 using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dto.Curso;
@@ -15,8 +16,8 @@ namespace SmartSchool.Dominio.Cursos
 	public class Curso : IEntidade
 	{
 		public Guid ID { get; private set; }
-
 		public string Nome { get; private set; }
+		public bool Ativo { get; set; }
 
 		[JsonIgnore]
 		public List<CursoDisciplina> CursosDisciplinas { get; private set; } = new List<CursoDisciplina>();
@@ -30,22 +31,25 @@ namespace SmartSchool.Dominio.Cursos
 		[JsonIgnore]
 		public List<Aluno> Alunos { get; private set; } = new List<Aluno>();
 
-		public static Curso Criar(CursoDto cursoDto)
+		public static Curso Criar(CursoDto cursoDto) => Criar(cursoDto.Nome, cursoDto.DisciplinasId);
+		public static Result<Curso> Criar(string nome, List<Guid> idsDisciplinas)
 		{
-			ValidacaoFabrica.Validar(cursoDto, new CursoValidacao());
-
 			var curso = new Curso()
 			{
 				ID = Guid.NewGuid(),
-				Nome = cursoDto.Nome
+				Nome = nome,
+				Ativo = true
 			};
 
-			curso.AtualizarDisciplinas(cursoDto.DisciplinasId);
+			curso.AtualizarDisciplinas(idsDisciplinas);
 
-			return curso;
+			ValidacaoFabrica.Validar(curso, new CursoValidacao());
+
+			return Result<Curso>.Success(curso);
 		}
 
 		public void AlterarNome(string nome) => this.Nome = nome;
+		public void AlterarAtivo(bool ativo) => this.Ativo = ativo;
 
 		public void AtualizarDisciplinas(List<Guid> novasDisciplinas)
 		{

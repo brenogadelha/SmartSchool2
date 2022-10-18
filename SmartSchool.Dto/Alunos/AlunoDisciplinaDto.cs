@@ -11,6 +11,6 @@ namespace SmartSchool.Dto.Alunos
 		public Guid DisciplinaId { get; set; }
 		//public Guid AlunoId { get; set; }
 		public Guid SemestreId { get; set; }
-		public StatusDisciplinaEnum StatusDisciplina { get; set; }
+		public StatusDisciplina StatusDisciplina { get; set; }
 	}
 }

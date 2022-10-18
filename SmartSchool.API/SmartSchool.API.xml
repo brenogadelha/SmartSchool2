@@ -47,31 +47,22 @@
             <response code="404">Aluno inexistente</response>
             <response code="500">Erro inesperado</response> 
         </member>
-        <member name="M:SmartSchool.API.Controllers.AlunoController.CriarAluno(SmartSchool.Dto.Alunos.AlunoDto)">
+        <member name="M:SmartSchool.API.Controllers.AlunoController.CriarAluno(SmartSchool.Aplicacao.Alunos.AdicionarAluno.AdicionarAlunoCommand)">
             <summary>
             Cria um novo Aluno
             </summary>
             <returns>Http status 201(Created)</returns>
-            <response code="201">Aluno criado com sucesso</response>
+            <response code="200">Aluno criado com sucesso</response>
             <response code="400">Dados inconsistentes para criação do Aluno</response>
             <response code="500">Erro inesperado</response> 
         </member>
-        <member name="M:SmartSchool.API.Controllers.AlunoController.AlterarAluno(System.Guid,SmartSchool.Dto.Alunos.AlterarAlunoDto,System.Nullable{System.Boolean})">
+        <member name="M:SmartSchool.API.Controllers.AlunoController.AlterarAluno(System.Guid,SmartSchool.Aplicacao.Alunos.AlterarAluno.AlterarAlunoCommand)">
             <summary>
             Efetua alteração de Aluno
             </summary>
             <returns>Http status 204(No Content)</returns>
             <response code="201">Aluno alterado com Sucesso</response>
             <response code="400">Dados para alteração de Aluno inconsistentes.</response>
-            <response code="404">Aluno inexistente</response>
-            <response code="500">Erro inesperado</response> 
-        </member>
-        <member name="M:SmartSchool.API.Controllers.AlunoController.RemoverAluno(System.Guid)">
-            <summary>
-            Exclui um Aluno específico
-            </summary>
-            <response code="204">Aluno excluído com Sucesso</response>
-            <response code="400">Dados para exclusão do Aluno inconsistentes.</response>
             <response code="404">Aluno inexistente</response>
             <response code="500">Erro inesperado</response> 
         </member>

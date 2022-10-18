@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using SmartSchool.Comum.Configuracao;
 using SmartSchool.Comum.Infra;
+using SmartSchool.Comum.Infra.Opcoes;
 using SmartSchool.Dados.Contextos;
 using SmartSchool.Testes.Compartilhado.ScriptsEstaticos;
 using System;
@@ -18,7 +21,12 @@ namespace SmartSchool.Testes.Compartilhado
 
         static GerenciaBancoDeDados()
         {
-            StringDeConexão = AppSettings.Data.DefaultConnectionString;
+			var configuration = ConfiguracaoFabrica.Criar();
+
+			var dataOpcoes = configuration.GetSection("Data").Get<DataOpcoes>();
+			AppSettings.SetarOpcoes(dataOpcoes);
+
+			StringDeConexão = AppSettings.Data.DefaultConnectionString;
             GerenciaBancoDeDados.NomeBancoDeDados = InfoStringConexao.Parse(StringDeConexão).NomeBancoDeDados;
         }
 

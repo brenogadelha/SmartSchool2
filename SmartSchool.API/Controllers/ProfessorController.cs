@@ -1,24 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SmartSchool.Aplicacao.Professores.Interface;
+﻿using MediatR;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
+using SmartSchool.API.Componentes;
+using SmartSchool.Aplicacao.Professores.Adicionar;
+using SmartSchool.Aplicacao.Professores.Alterar;
+using SmartSchool.Aplicacao.Professores.Listar;
+using SmartSchool.Aplicacao.Professores.ObterPorId;
+using SmartSchool.Aplicacao.Professores.Remover;
+using SmartSchool.Comum.Dominio.Enums;
 using SmartSchool.Dto.Dtos.Professores;
 using SmartSchool.Dto.Dtos.TratamentoErros;
-using SmartSchool.Dto.Professores;
 using System;
 using System.Collections.Generic;
-using System.Net;
+using System.Threading.Tasks;
 
 namespace SmartSchool.API.Controllers
 {
-	[Route("api/[controller]")]
-	[ApiController]
+	[Produces("application/json")]
+	[Route("api/Professores")]
+	[EnableCors("PoliticaSmartSchool")]
 	public class ProfessorController : ControllerBase
 	{
-		private readonly IProfessorServico _professorServico;
+		private readonly IMediator _mediator;
 
-		public ProfessorController(IProfessorServico professorServico)
-		{
-			this._professorServico = professorServico;
-		}
+		public ProfessorController(IMediator mediator) => this._mediator = mediator;
 
 		/// <summary>
 		/// Obtem listagem de todos os Professores cadastrados
@@ -29,9 +34,11 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(200, Type = typeof(IEnumerable<ObterProfessorDto>))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[HttpGet]
-		public OkObjectResult ObterTodos()
+		public async Task<IActionResult> ObterTodos()
 		{
-			return Ok(_professorServico.Obter());
+			var response = await _mediator.Send(new ListarProfessoresQuery());
+
+			return this.ProcessResult(response);
 		}
 
 		/// <summary>
@@ -45,45 +52,49 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[HttpGet("{id}")]
-		public OkObjectResult ObterPorId(Guid id)
+		public async Task<IActionResult> ObterPorId([FromRoute(Name = "id")] Guid id)
 		{
-			var professor = this._professorServico.ObterPorId(id);
+			var response = await _mediator.Send(new ObterProfessorQuery { Id = id });
 
-			return Ok(professor);
+			return this.ProcessResult(response);
 		}
 
 		/// <summary>
 		/// Cria um novo Professor
 		/// </summary>
 		/// <returns>Http status 201(Created)</returns>
-		/// <response code="201">Professor criado com sucesso</response>
+		/// <response code="200">Professor criado com sucesso</response>
 		/// <response code="400">Dados inconsistentes para criação do Professor</response>
+		/// <response code="422">Erro de Negócio</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPost]
-		[ProducesResponseType(201)]
+		[ProducesResponseType(200)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(422, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult CriarProfessor([FromBody] ProfessorDto professorDto)
+		public async Task<IActionResult> CriarProfessor([FromBody] AdicionarProfessorCommand professorDto)
 		{
-			this._professorServico.CriarProfessor(professorDto);
+			var response = await _mediator.Send(professorDto);
 
-			return this.StatusCode((int)HttpStatusCode.Created);
+			return this.ProcessResult(response);
 		}
 
 		/// <summary>
 		/// Efetua alteração de Professor
 		/// </summary>
 		/// <returns>Http status 204(No Content)</returns>
-		/// <response code="201">Professor alterado com Sucesso</response>
+		/// <response code="204">Professor alterado com Sucesso</response>
 		/// <response code="400">Dados para alteração de Professor inconsistentes.</response>
 		/// <response code="404">Professor inexistente</response>
+		/// <response code="422">Erro de Negócio</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPut("{id}")]
-		[ProducesResponseType(201)]
+		[ProducesResponseType(204)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(422, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult AlterarProfessor(Guid id, AlterarProfessorDto professorDto, [FromQuery(Name = "atualizarDisciplinas")] bool? atualizarDisciplinas = null)
+		public async Task<IActionResult> AlterarProfessor([FromRoute(Name = "id")] Guid id, [FromBody] AlterarProfessorCommand professorDto)
 		{
 			if (professorDto == null)
 				throw new ArgumentNullException(null, "Objeto Professor nulo (não foi informado).");
@@ -93,9 +104,34 @@ namespace SmartSchool.API.Controllers
 
 			professorDto.ID = id;
 
-			this._professorServico.AlterarProfessor(id, professorDto, atualizarDisciplinas);
+			var response = await _mediator.Send(professorDto);
 
-			return this.StatusCode((int)HttpStatusCode.Created);
+			return this.ProcessResult(response);
+		}
+
+		/// <summary>
+		/// Efetua alteração de Disponibilidade do Professor para o TCC
+		/// </summary>
+		/// <returns>Http status 200(No Content)</returns>
+		/// <response code="200">Disponibilidade para o TCC alterado com Sucesso</response>
+		/// <response code="400">Dados para alteração de Disponibilidade do TCC inconsistentes.</response>
+		/// <response code="404">Professor inexistente</response>
+		/// <response code="500">Erro inesperado</response> 
+		[HttpPatch("{professor-id}/tccs/{disponibilidade-tcc}")]
+		[ProducesResponseType(200)]
+		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
+		public async Task<IActionResult> AlterarDisponibilidadeTccProfessor([FromRoute(Name = "professor-id")] Guid id, [FromRoute(Name = "disponibilidade-tcc")] DisponibilidadeTcc disponibilidadeTcc)
+		{
+			if (id.Equals(Guid.Empty))
+				throw new ArgumentNullException(null, "Identificador do Professor é inválido ou nulo");
+
+			var alterarDisponibilidadeTccProfessor = new AlterarDisponibilidadeTccProfessorCommand { ID = id, DisponibilidadeTcc = disponibilidadeTcc };
+
+			var response = await _mediator.Send(alterarDisponibilidadeTccProfessor);
+
+			return this.ProcessResult(response);
 		}
 
 		/// <summary>
@@ -110,11 +146,10 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult ExcluirProfessor(Guid id)
+		public async Task<IActionResult> RemoverProfessor([FromRoute(Name = "id")] Guid id)
 		{
-			this._professorServico.Remover(id);
-			return this.StatusCode(204);
+			var response = await this._mediator.Send(new RemoverProfessorCommand { ID = id });
+			return this.ProcessResult(response);
 		}
-		//    }
 	}
 }

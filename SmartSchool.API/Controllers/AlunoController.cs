@@ -1,23 +1,33 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SmartSchool.Aplicacao.Alunos.Interface;
-using SmartSchool.Dto.Alunos;
+﻿using MediatR;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
+using SmartSchool.API.Componentes;
+using SmartSchool.Aplicacao.Alunos.Adicionar;
+using SmartSchool.Aplicacao.Alunos.Alterar;
+using SmartSchool.Aplicacao.Alunos.Listar;
+using SmartSchool.Aplicacao.Alunos.ObterHistorico;
+using SmartSchool.Aplicacao.Alunos.ObterPorId;
+using SmartSchool.Aplicacao.Alunos.ObterPorMatricula;
+using SmartSchool.Aplicacao.Alunos.ObterPorNome;
+using SmartSchool.Aplicacao.Alunos.RemoverAluno;
 using SmartSchool.Dto.Alunos.Obter;
 using SmartSchool.Dto.Dtos.TratamentoErros;
 using System;
 using System.Collections.Generic;
-using System.Net;
+using System.Threading.Tasks;
 
 namespace SmartSchool.API.Controllers
 {
-	[Route("api/[controller]")]
-	[ApiController]
+	[Produces("application/json")]
+	[Route("api/Alunos")]
+	[EnableCors("PoliticaSmartSchool")]
 	public class AlunoController : Controller
 	{
-		private readonly IAlunoServico _alunoServico;
+		private readonly IMediator _mediator;
 
-		public AlunoController(IAlunoServico alunoServico)
+		public AlunoController(IMediator mediator)
 		{
-			this._alunoServico = alunoServico;
+			this._mediator = mediator;
 		}
 
 		/// <summary>
@@ -29,7 +39,12 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(200, Type = typeof(IEnumerable<ObterAlunoDto>))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[HttpGet]
-		public OkObjectResult ObterTodos() => Ok(_alunoServico.Obter());
+		public async Task<IActionResult> ObterTodos()
+		{
+			var response = await _mediator.Send(new ListarAlunosQuery());
+
+			return this.ProcessResult(response);
+		}
 
 		/// <summary>
 		/// Obtém dados de um Aluno específico por ID
@@ -42,10 +57,11 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[HttpGet("{id}")]
-		public OkObjectResult ObterPorId(Guid id)
+		public async Task<IActionResult> ObterPorId([FromRoute(Name = "id")] Guid id)
 		{
-			var aluno = this._alunoServico.ObterPorId(id);
-			return Ok(aluno);
+			var response = await _mediator.Send(new ObterAlunoQuery { Id = id });
+
+			return this.ProcessResult(response);
 		}
 
 		/// <summary>
@@ -58,11 +74,12 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(200, Type = typeof(ObterAlunoDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		[HttpGet("{matricula}/id")]
-		public OkObjectResult ObterPorMatricula(int matricula)
+		[HttpGet("matricula/{codigo}")]
+		public async Task<IActionResult> ObterPorMatricula([FromRoute(Name = "codigo")] int matricula)
 		{
-			var aluno = this._alunoServico.ObterPorMatricula(matricula);
-			return Ok(aluno);
+			var response = await _mediator.Send(new ObterAlunoMatriculaQuery { Matricula = matricula });
+
+			return this.ProcessResult(response);
 		}
 
 		/// <summary>
@@ -75,7 +92,12 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(200, Type = typeof(IEnumerable<ObterAlunoDto>))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-		public OkObjectResult ObterPorNomeSobrenomeParcial([FromRoute(Name = "parte-identificador")] string busca) => this.Ok(this._alunoServico.ObterPorNomeSobrenomeParcial(busca));
+		public async Task<IActionResult> ObterPorNomeSobrenomeParcial([FromRoute(Name = "parte-identificador")] string busca)
+		{
+			var response = await _mediator.Send(new ObterAlunoNomeQuery { Busca = busca });
+
+			return this.ProcessResult(response);
+		}
 
 		/// <summary>
 		/// Obtém dados do Histórico de um Aluno específico por ID
@@ -89,53 +111,61 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		[ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-		public OkObjectResult ObterHistoricoPorIdAluno([FromRoute(Name = "aluno-id")] Guid id, [FromQuery(Name = "periodo")] int? periodo = null) => this.Ok(this._alunoServico.ObterHistoricoPorIdAluno(id, periodo));
+		public async Task<IActionResult> ObterHistoricoPorIdAluno([FromRoute(Name = "aluno-id")] Guid id, [FromQuery(Name = "periodo")] int? periodo = null)
+		{
+			var response = await _mediator.Send(new ObterHistoricoAlunoQuery { Id = id, Periodo = periodo });
 
+			return this.ProcessResult(response);
+		}
 
 		/// <summary>
 		/// Cria um novo Aluno
 		/// </summary>
 		/// <returns>Http status 201(Created)</returns>
-		/// <response code="201">Aluno criado com sucesso</response>
+		/// <response code="200">Aluno criado com sucesso</response>
 		/// <response code="400">Dados inconsistentes para criação do Aluno</response>
+		/// <response code="422">Erro de Negócio</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPost]
-		[ProducesResponseType(201)]
+		[ProducesResponseType(200)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(422, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult CriarAluno([FromBody] AlunoDto aluno)
+		public async Task<IActionResult> CriarAluno([FromBody] AdicionarAlunoCommand aluno)
 		{
-			this._alunoServico.CriarAluno(aluno);
+			var response = await _mediator.Send(aluno);
 
-			return this.StatusCode((int)HttpStatusCode.Created);
+			return this.ProcessResult(response);
 		}
 
 		/// <summary>
 		/// Efetua alteração de Aluno
 		/// </summary>
 		/// <returns>Http status 204(No Content)</returns>
-		/// <response code="201">Aluno alterado com Sucesso</response>
+		/// <response code="204">Aluno alterado com Sucesso</response>
 		/// <response code="400">Dados para alteração de Aluno inconsistentes.</response>
 		/// <response code="404">Aluno inexistente</response>
+		/// <response code="422">Erro de Negócio</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPut("{id}")]
-		[ProducesResponseType(201)]
+		[ProducesResponseType(204)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(422, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult AlterarAluno(Guid id, [FromBody] AlterarAlunoDto alunoDto, [FromQuery(Name = "atualizarDisciplinas")] bool? atualizarDisciplinas = null)
+		public async Task<IActionResult> AlterarAluno([FromRoute(Name = "id")] Guid id, [FromBody] AlterarAlunoCommand aluno)
 		{
-			if (alunoDto == null)
+			if (aluno == null)
 				throw new ArgumentNullException(null, "Objeto Aluno nulo (não foi informado).");
 
 			if (id.Equals(Guid.Empty))
 				throw new ArgumentNullException(null, "Identificador do Aluno é inválido ou nulo");
 
-			alunoDto.ID = id;
+			aluno.ID = id;
 
-			this._alunoServico.AlterarAluno(id, alunoDto, atualizarDisciplinas);
+			var response = await _mediator.Send(aluno);
 
-			return this.StatusCode((int)HttpStatusCode.Created);
+			return this.ProcessResult(response);
 		}
 
 		/// <summary>
@@ -150,10 +180,10 @@ namespace SmartSchool.API.Controllers
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
-		public StatusCodeResult RemoverAluno(Guid id)
+		public async Task<IActionResult> RemoverAluno([FromRoute(Name = "id")] Guid id)
 		{
-			this._alunoServico.Remover(id);
-			return this.StatusCode(204);
+			var response = await this._mediator.Send(new RemoverAlunoCommand { ID = id });
+			return this.ProcessResult(response);
 		}
 	}
 }
