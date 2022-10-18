@@ -27,7 +27,8 @@ namespace SmartSchool.Aplicacao.Cursos.Adicionar
 		public async Task<IResult> Handle(AdicionarCursoCommand request, CancellationToken cancellationToken)
 		{
 			if (await this._cursoServicoDominio.VerificarExisteCursoComMesmoNome(request.Nome, null))
-				throw new ErroNegocioException($"Já existe um Curso com o mesmo nome '{request.Nome}'.");
+				//throw new ErroNegocioException($"Já existe um Curso com o mesmo nome '{request.Nome}'.");
+				return Result.UnprocessableEntity($"Já existe um Curso com o mesmo nome '{request.Nome}'.");
 
 			foreach (var disciplinaId in request.DisciplinasId)
 				await this._disciplinaServicoDominio.ObterAsync(disciplinaId);

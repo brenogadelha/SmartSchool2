@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentAssertions;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using SmartSchool.Aplicacao.Disciplinas.Adicionar;
@@ -8,8 +9,10 @@ using SmartSchool.Aplicacao.Disciplinas.Remover;
 using SmartSchool.Comum.Especificao;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
+using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dominio.Disciplinas.Servicos;
+using SmartSchool.Dto.Curso;
 using System;
 using Xunit;
 
@@ -41,8 +44,11 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 
 			this._disciplinaRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Disciplina>>())).ReturnsAsync(new Disciplina());
 
-			var exception = Assert.ThrowsAsync<ErroNegocioException>(() => this._mediator.Send(disciplinaDto));
-			Assert.Equal($"Já existe uma Disciplina com o mesmo nome '{disciplinaDto.Nome}'.", exception.Result.Message);
+			var retorno = this._mediator.Send(disciplinaDto);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"Já existe uma Disciplina com o mesmo nome '{disciplinaDto.Nome}'.");
 
 			this._disciplinaRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Disciplina>(), It.IsAny<bool>()), Times.Never);
 		}

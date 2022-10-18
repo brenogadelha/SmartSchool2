@@ -25,7 +25,7 @@ namespace SmartSchool.Aplicacao.Disciplinas.Adicionar
 		public async Task<IResult> Handle(AdicionarDisciplinaCommand request, CancellationToken cancellationToken)
 		{
 			if (await this._disciplinaServicoDominio.VerificarExisteDisciplinaComMesmoNome(request.Nome, null))
-				throw new ErroNegocioException($"Já existe uma Disciplina com o mesmo nome '{request.Nome}'.");
+				return Result.UnprocessableEntity($"Já existe uma Disciplina com o mesmo nome '{request.Nome}'.");
 
 			var disciplina = Disciplina.Criar(request.Nome, request.Periodo);
 

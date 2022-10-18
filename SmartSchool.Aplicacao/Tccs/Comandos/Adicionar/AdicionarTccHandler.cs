@@ -27,7 +27,7 @@ namespace SmartSchool.Aplicacao.Tccs.Adicionar
 		public async Task<IResult> Handle(AdicionarTccCommand request, CancellationToken cancellationToken)
 		{
 			if (await this._tccServicoDominio.VerificarExisteTccComMesmoTema(request.Tema, null))
-				throw new ErroNegocioException($"Já existe um Tcc com o mesmo Tema '{request.Tema}'.");
+				return Result.UnprocessableEntity($"Já existe um Tcc com o mesmo Tema '{request.Tema}'.");
 
 			// Verifica se professores existem
 			foreach (var professorId in request.Professores)

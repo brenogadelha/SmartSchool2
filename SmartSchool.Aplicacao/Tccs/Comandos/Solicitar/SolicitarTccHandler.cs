@@ -38,7 +38,7 @@ namespace SmartSchool.Aplicacao.Tccs.Solicitar
 			await this._professorServicoDominio.ObterAsync(request.ProfessorId);
 
 			if (request.AlunosIds.Count > 3)
-				throw new ErroNegocioException("O grupo para o TCC deve ser formado por no máximo 3 alunos.");
+				return Result.UnprocessableEntity("O grupo para o TCC deve ser formado por no máximo 3 alunos.");
 
 			foreach (var alunoId in request.AlunosIds.ToList())
 			{

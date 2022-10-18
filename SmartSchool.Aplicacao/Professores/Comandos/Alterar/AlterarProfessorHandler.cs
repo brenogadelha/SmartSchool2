@@ -32,7 +32,7 @@ namespace SmartSchool.Aplicacao.Disciplinas.Alterar
 			ValidacaoFabrica.Validar(request, new AlterarProfessorValidacao());
 
 			if (await this._professorServicoDominio.VerificarExisteProfessorComMesmaMatricula(request.Matricula, request.ID))
-				throw new ErroNegocioException($"Já existe um Professor com a mesma matricula '{request.Matricula}'.");
+				return Result.UnprocessableEntity($"Já existe um Professor com a mesma matricula '{request.Matricula}'.");
 
 			var professor = await this._professorServicoDominio.ObterAsync(request.ID);
 

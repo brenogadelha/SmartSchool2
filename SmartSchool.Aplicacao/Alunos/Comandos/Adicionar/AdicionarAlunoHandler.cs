@@ -36,10 +36,10 @@ namespace SmartSchool.Aplicacao.Alunos.Adicionar
 		{
 
 			if (await this._alunoServicoDominio.VerificarExisteAlunoComMesmoCpfCnpj(request.Cpf, null))
-				throw new ErroNegocioException($"Já existe um Aluno com o mesmo CPF '{request.Cpf}'.");
+				return Result.UnprocessableEntity($"Já existe um Aluno com o mesmo CPF '{request.Cpf}'.");
 
 			if (await this._alunoServicoDominio.VerificarExisteAlunoComMesmoEmail(request.Email, null))
-				throw new ErroNegocioException($"Já existe um Aluno com o mesmo email '{request.Email}'.");
+				return Result.UnprocessableEntity($"Já existe um Aluno com o mesmo email '{request.Email}'.");
 
 			// Verifica se o Curso existe
 			await this._cursoServicoDominio.ObterAsync(request.CursoId);

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentAssertions;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using SmartSchool.Aplicacao.Professores.Adicionar;
@@ -8,6 +9,7 @@ using SmartSchool.Aplicacao.Professores.Remover;
 using SmartSchool.Comum.Especificao;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
+using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Disciplinas;
 using SmartSchool.Dominio.Disciplinas.Servicos;
 using SmartSchool.Dominio.Professores;
@@ -67,8 +69,11 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 
 			this._professorRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Professor>>())).ReturnsAsync(new Professor());
 
-			var exception = Assert.ThrowsAsync<ErroNegocioException>(() => this._mediator.Send(professorDto));
-			Assert.Equal($"Já existe um Professor com a mesma matricula '{professorDto.Matricula}'.", exception.Result.Message);
+			var retorno = this._mediator.Send(professorDto);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"Já existe um Professor com a mesma matricula '{professorDto.Matricula}'.");
 
 			this._professorRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Professor>(), It.IsAny<bool>()), Times.Never);
 		}

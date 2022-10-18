@@ -27,7 +27,7 @@ namespace SmartSchool.Aplicacao.Disciplinas.Alterar
 			ValidacaoFabrica.Validar(request, new AlterarDisciplinaValidacao());
 
 			if (await this._disciplinaServicoDominio.VerificarExisteDisciplinaComMesmoNome(request.Nome, request.ID))
-				throw new ErroNegocioException($"Já existe uma Disciplina com o mesmo nome '{request.Nome}'.");
+				return Result.UnprocessableEntity($"Já existe uma Disciplina com o mesmo nome '{request.Nome}'.");
 
 			var disciplina = await this._disciplinaServicoDominio.ObterAsync(request.ID);
 

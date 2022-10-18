@@ -27,7 +27,7 @@ namespace SmartSchool.Aplicacao.Professores.Adicionar
 		public async Task<IResult> Handle(AdicionarProfessorCommand request, CancellationToken cancellationToken)
 		{
 			if (await this._professorServicoDominio.VerificarExisteProfessorComMesmaMatricula(request.Matricula, null))
-				throw new ErroNegocioException($"Já existe um Professor com a mesma matricula '{request.Matricula}'.");
+				return Result.UnprocessableEntity($"Já existe um Professor com a mesma matricula '{request.Matricula}'.");
 
 			if (request.Disciplinas != null)
 			{

@@ -67,10 +67,12 @@ namespace SmartSchool.API.Controllers
 		/// <returns>Http status 201(Created)</returns>
 		/// <response code="200">Semestre criado com sucesso</response>
 		/// <response code="400">Dados inconsistentes para criação do Semestre</response>
+		/// <response code="422">Erro de Negócio</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPost]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(422, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		public async Task<IActionResult> CriarSemestre([FromBody] AdicionarSemestreCommand semestreDto)
 		{
@@ -86,11 +88,13 @@ namespace SmartSchool.API.Controllers
 		/// <response code="204">Semestre alterado com Sucesso</response>
 		/// <response code="400">Dados para alteração de Semestre inconsistentes.</response>
 		/// <response code="404">Semestre inexistente</response>
+		/// <response code="422">Erro de Negócio</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPut("{id}")]
 		[ProducesResponseType(204)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(422, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		public async Task<IActionResult> AlterarSemestre([FromRoute(Name = "id")] Guid id, [FromBody] AlterarSemestreCommand semestreDto)
 		{

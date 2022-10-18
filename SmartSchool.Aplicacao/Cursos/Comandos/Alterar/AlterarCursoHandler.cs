@@ -30,11 +30,9 @@ namespace SmartSchool.Aplicacao.Cursos.Alterar
 			ValidacaoFabrica.Validar(request, new AlterarCursoValidacao());
 
 			if (await this._cursoServicoDominio.VerificarExisteCursoComMesmoNome(request.Nome, request.ID))
-				throw new ErroNegocioException($"Já existe um Curso com o mesmo nome '{request.Nome}'.");
+				return Result.UnprocessableEntity($"Já existe um Curso com o mesmo nome '{request.Nome}'.");
 
 			var curso = await this._cursoServicoDominio.ObterAsync(request.ID);
-
-			//ValidacaoFabrica.Validar(cursoDto, new CursoValidacao());
 
 			foreach (var disciplinaId in request.DisciplinasId)
 				await this._disciplinaServicoDominio.ObterAsync(disciplinaId);

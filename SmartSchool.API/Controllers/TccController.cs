@@ -107,10 +107,12 @@ namespace SmartSchool.API.Controllers
 		/// <returns>Http status 201(Created)</returns>
 		/// <response code="200">Tcc criado com sucesso</response>
 		/// <response code="400">Dados inconsistentes para criação do Tcc</response>
+		/// <response code="422">Erro de Negócio</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPost]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(422, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		public async Task<IActionResult> CriarTcc([FromBody] AdicionarTccCommand tccDto)
 		{
@@ -126,11 +128,13 @@ namespace SmartSchool.API.Controllers
 		/// <response code="204">Tcc alterado com Sucesso</response>
 		/// <response code="400">Dados para alteração de Tcc inconsistentes.</response>
 		/// <response code="404">Tcc inexistente</response>
+		/// <response code="422">Erro de Negócio</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPut("{id}")]
 		[ProducesResponseType(204)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(422, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
 		public async Task<IActionResult> AlterarTcc([FromRoute(Name = "id")] Guid id, [FromBody] AlterarTccCommand tccDto)
 		{
@@ -155,7 +159,7 @@ namespace SmartSchool.API.Controllers
 		/// <response code="400">Dados para aprovação de Tcc inconsistentes.</response>
 		/// <response code="401">Não autorizado</response>
 		/// <response code="404">Tcc inexistente</response>
-		/// <response code="422">Erro nas regras de negócio.</response>
+		/// <response code="422">Erro de negócio.</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPut("{professor-id}/professores/{aluno-id}/alunos/aprovar")]
 		[ProducesResponseType(204)]
@@ -196,7 +200,7 @@ namespace SmartSchool.API.Controllers
 		/// <response code="400">Dados para solicitação de Tcc inconsistentes.</response>
 		/// <response code="401">Não autorizado</response>
 		/// <response code="404">Tcc inexistente</response>
-		/// <response code="422">Erro nas regras de negócio.</response>
+		/// <response code="422">Erro de negócio.</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPut("solicitar")]
 		[ProducesResponseType(204)]

@@ -1,17 +1,21 @@
-﻿using MediatR;
+﻿using FluentAssertions;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using SmartSchool.Aplicacao.Tccs.Adicionar;
 using SmartSchool.Aplicacao.Tccs.Alterar;
+using SmartSchool.Aplicacao.Tccs.Aprovar;
 using SmartSchool.Aplicacao.Tccs.ObterPorAluno;
 using SmartSchool.Aplicacao.Tccs.ObterPorId;
 using SmartSchool.Aplicacao.Tccs.Remover;
+using SmartSchool.Aplicacao.Tccs.Solicitar;
+using SmartSchool.Comum.Dominio.Enums;
 using SmartSchool.Comum.Especificao;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
-using SmartSchool.Dados.Modulos.Alunos;
-using SmartSchool.Dominio.Alunos.Servicos;
 using SmartSchool.Dominio.Alunos;
+using SmartSchool.Dominio.Alunos.Servicos;
+using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Professores;
 using SmartSchool.Dominio.Professores.Servicos;
 using SmartSchool.Dominio.Tccs;
@@ -19,9 +23,6 @@ using SmartSchool.Dominio.Tccs.Servicos;
 using System;
 using System.Collections.Generic;
 using Xunit;
-using SmartSchool.Aplicacao.Tccs.Solicitar;
-using SmartSchool.Aplicacao.Tccs.Aprovar;
-using SmartSchool.Comum.Dominio.Enums;
 
 namespace SmartSchool.Testes.Unidade.Aplicacao
 {
@@ -66,8 +67,11 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 
 			this._tccRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Tcc>>())).ReturnsAsync(new Tcc());
 
-			var exception = Assert.ThrowsAsync<ErroNegocioException>(() => this._mediator.Send(tccCommand));
-			Assert.Equal($"Já existe um Tcc com o mesmo Tema '{tccCommand.Tema}'.", exception.Result.Message);
+			var retorno = this._mediator.Send(tccCommand);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"Já existe um Tcc com o mesmo Tema '{tccCommand.Tema}'.");
 
 			this._tccRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Tcc>(), It.IsAny<bool>()), Times.Never);
 		}
@@ -100,8 +104,11 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 
 			this._tccRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Tcc>>())).ReturnsAsync(new Tcc());
 
-			var exception = Assert.ThrowsAsync<ErroNegocioException>(() => this._mediator.Send(tccCommand));
-			Assert.Equal($"Já existe um Tcc com o mesmo Tema '{tccCommand.Tema}'.", exception.Result.Message);
+			var retorno = this._mediator.Send(tccCommand);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"Já existe um Tcc com o mesmo Tema '{tccCommand.Tema}'.");
 
 			this._tccRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Tcc>(), It.IsAny<bool>()), Times.Never);
 		}
@@ -178,8 +185,11 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 
 			this._professorRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Professor>>())).ReturnsAsync(new Professor());
 
-			var exception = Assert.ThrowsAsync<ErroNegocioException>(() => this._mediator.Send(new SolicitarTccCommand { AlunosIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }, TccId = Guid.NewGuid(), ProfessorId = Guid.NewGuid() }));
-			Assert.Equal("O grupo para o TCC deve ser formado por no máximo 3 alunos.", exception.Result.Message);
+			var retorno = this._mediator.Send(new SolicitarTccCommand { AlunosIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }, TccId = Guid.NewGuid(), ProfessorId = Guid.NewGuid() });
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe("O grupo para o TCC deve ser formado por no máximo 3 alunos.");
 
 			this._tccRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Tcc>(), It.IsAny<bool>()), Times.Never);
 		}
@@ -200,8 +210,11 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		{
 			this._tccAlunoProfessorRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<TccAlunoProfessor>>())).ReturnsAsync(new TccAlunoProfessor());
 
-			var exception = Assert.ThrowsAsync<ErroNegocioException>(() => this._mediator.Send(new AprovarTccCommand { ProfessorId = Guid.NewGuid(), AlunoId = Guid.NewGuid(), StatusTcc = TccStatus.Negado }));
-			Assert.Equal("Em caso de negação, é necessário informar o motivo.", exception.Result.Message);
+			var retorno = this._mediator.Send(new AprovarTccCommand { ProfessorId = Guid.NewGuid(), AlunoId = Guid.NewGuid(), StatusTcc = TccStatus.Negado });
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe("Em caso de negação, é necessário informar o motivo.");
 
 			this._tccRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Tcc>(), It.IsAny<bool>()), Times.Never);
 		}

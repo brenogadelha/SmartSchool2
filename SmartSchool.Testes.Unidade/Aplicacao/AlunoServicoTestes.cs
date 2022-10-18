@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentAssertions;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using SmartSchool.Aplicacao.Alunos.ObterPorId;
@@ -9,6 +10,7 @@ using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
 using SmartSchool.Dominio.Alunos;
 using SmartSchool.Dominio.Alunos.Servicos;
+using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Cursos;
 using SmartSchool.Dominio.Cursos.Servicos;
 using SmartSchool.Dominio.Disciplinas;
@@ -87,8 +89,11 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 
 			this._alunoRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Aluno>>())).ReturnsAsync(new Aluno());
 
-			var exception = Assert.ThrowsAsync<ErroNegocioException>(() => this._mediator.Send(aluno));
-			Assert.Equal($"Já existe um Aluno com o mesmo CPF '{aluno.Cpf}'.", exception.Result.Message);
+			var retorno = this._mediator.Send(aluno);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"Já existe um Aluno com o mesmo CPF '{aluno.Cpf}'.");
 
 			this._alunoRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Aluno>(), It.IsAny<bool>()), Times.Never);
 		}
@@ -100,8 +105,11 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 
 			this._alunoRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Aluno>>())).ReturnsAsync(null).ReturnsAsync(new Aluno());
 
-			var exception = Assert.ThrowsAsync<ErroNegocioException>(() => this._mediator.Send(aluno));
-			Assert.Equal($"Já existe um Aluno com o mesmo email '{aluno.Email}'.", exception.Result.Message);
+			var retorno = this._mediator.Send(aluno);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"Já existe um Aluno com o mesmo email '{aluno.Email}'.");
 
 			this._alunoRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Aluno>(), It.IsAny<bool>()), Times.Never);
 		}

@@ -27,7 +27,7 @@ namespace SmartSchool.Aplicacao.Tccs.Aprovar
 				throw new RecursoInexistenteException("Não foi encontrada solicitação de TCC para o Aluno informado.");
 
 			if (request.StatusTcc == TccStatus.Negado && string.IsNullOrEmpty(request.RespostaSolicitacao))
-				throw new ErroNegocioException("Em caso de negação, é necessário informar o motivo.");
+				return Result.UnprocessableEntity("Em caso de negação, é necessário informar o motivo.");
 
 			solicitacaoTcc.AlterarStatus(request.StatusTcc);
 			solicitacaoTcc.AlterarRespostaSolicitacao(request.RespostaSolicitacao);

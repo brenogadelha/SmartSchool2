@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentAssertions;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using SmartSchool.Aplicacao.Cursos.Adicionar;
@@ -8,6 +9,8 @@ using SmartSchool.Aplicacao.Cursos.Remover;
 using SmartSchool.Comum.Especificao;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
+using SmartSchool.Dominio.Alunos;
+using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Cursos;
 using SmartSchool.Dominio.Cursos.Servicos;
 using SmartSchool.Dominio.Disciplinas;
@@ -52,8 +55,11 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 
 			this._cursoRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Curso>>())).ReturnsAsync(new Curso());
 
-			var exception = Assert.ThrowsAsync<ErroNegocioException>(() => this._mediator.Send(cursoDto));
-			Assert.Equal($"Já existe um Curso com o mesmo nome '{cursoDto.Nome}'.", exception.Result.Message);
+			var retorno = this._mediator.Send(cursoDto);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"Já existe um Curso com o mesmo nome '{cursoDto.Nome}'.");
 
 			this._cursoRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Curso>(), It.IsAny<bool>()), Times.Never);
 		}
