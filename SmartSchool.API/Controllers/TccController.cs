@@ -161,7 +161,7 @@ namespace SmartSchool.API.Controllers
 		/// <response code="404">Tema de Tcc inexistente</response>
 		/// <response code="422">Erro de negócio.</response>
 		/// <response code="500">Erro inesperado</response> 
-		[HttpPut("{professor-id}/professores/{aluno-id}/alunos/aprovar")]
+		[HttpPut("professores/{professor-id}/alunos/{aluno-id}/aprovar")]
 		[ProducesResponseType(204)]
 		[ProducesResponseType(401, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
