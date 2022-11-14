@@ -49,8 +49,8 @@ namespace SmartSchool.Testes.API.Controllers.Professores
 
 			this._disciplina = Disciplina.Criar(disciplinaDto1);
 
-			this._professor = Professor.Criar("Estevão jose", 2017100150, new List<Guid> { this._disciplina.ID });
-			this._professor2 = Professor.Criar("Luis Roberto", 2017100155, new List<Guid> { this._disciplina.ID });
+			this._professor = Professor.Criar("Estevão jose", 2017100150, "estevaojose@unicarioca.com.br", new List<Guid> { this._disciplina.ID });
+			this._professor2 = Professor.Criar("Luis Roberto", 2017100155, "luisroberto@unicarioca.com.br", new List<Guid> { this._disciplina.ID });
 
 			this._contextos.SmartContexto.Disciplinas.Add(this._disciplina);
 			this._contextos.SmartContexto.Professores.Add(this._professor);

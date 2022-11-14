@@ -23,8 +23,8 @@ namespace SmartSchool.Testes.API.Controllers.Disciplinas
 
 			this._disciplina = Disciplina.Criar(disciplinaDto);
 
-			var professor = Professor.Criar("José Paulo", 123, new List<Guid> { this._disciplina.ID });
-			var professor2 = Professor.Criar("Paulo Roberto", 124, new List<Guid> { this._disciplina.ID });
+			var professor = Professor.Criar("José Paulo", 123, "josepaulo@unicarioca.com.br", new List<Guid> { this._disciplina.ID });
+			var professor2 = Professor.Criar("Paulo Roberto", 124, "pauloroberto@unicarioca.com.br", new List<Guid> { this._disciplina.ID });
 
 			this._contextos.SmartContexto.Disciplinas.Add(this._disciplina);
 			this._contextos.SmartContexto.Professores.Add(professor);

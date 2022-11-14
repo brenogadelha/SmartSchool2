@@ -19,6 +19,7 @@ namespace SmartSchool.Dominio.Professores
 		public Guid ID { get; private set; }
 		public int Matricula { get; private set; }
 		public string Nome { get; private set; }
+		public string Email { get; private set; }
 		public bool Ativo { get; set; }
 		public DisponibilidadeTcc DisponibilidadeTcc { get; set; }
 
@@ -36,14 +37,15 @@ namespace SmartSchool.Dominio.Professores
 
 		public Professor() { }
 
-		public static Professor Criar(ProfessorDto professorDto) => Criar(professorDto.Nome, professorDto.Matricula, professorDto.Disciplinas);
+		public static Professor Criar(ProfessorDto professorDto) => Criar(professorDto.Nome, professorDto.Matricula, professorDto.Email, professorDto.Disciplinas);
 
-		public static Result<Professor> Criar(string nome, int matricula, List<Guid> disciplinas, DisponibilidadeTcc disponibilidadeTcc = DisponibilidadeTcc.Indisponível)
+		public static Result<Professor> Criar(string nome, int matricula, string email, List<Guid> disciplinas, DisponibilidadeTcc disponibilidadeTcc = DisponibilidadeTcc.Indisponível)
 		{
 			var professor = new Professor()
 			{
 				ID = Guid.NewGuid(),
 				Nome = nome,
+				Email = email,
 				Matricula = matricula,
 				Ativo = true,
 				DisponibilidadeTcc = disponibilidadeTcc
@@ -57,6 +59,7 @@ namespace SmartSchool.Dominio.Professores
 		}
 
 		public void AlterarNome(string nome) => this.Nome = nome;
+		public void AlterarEmail(string email) => this.Email = email;
 		public void AlterarMatricula(int matricula) => this.Matricula = matricula;
 		public void AlterarAtivo(bool ativo) => this.Ativo = ativo;
 		public void AlterarDisponibilidadeTcc(DisponibilidadeTcc disponibilidadeTcc) => this.DisponibilidadeTcc = disponibilidadeTcc;

@@ -24,7 +24,7 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 
 			// Criação de Professor
 			this._disciplina = Disciplina.Criar("Linguagens Formais e Automatos", 4);
-			this._professor = Professor.Criar("Paulo Augusto", 1, new List<Guid> { this._disciplina.ID }, DisponibilidadeTcc.Disponível);
+			this._professor = Professor.Criar("Paulo Augusto", 1, "pauloaugusto@unicarioca.com.br", new List<Guid> { this._disciplina.ID }, DisponibilidadeTcc.Disponível);
 
 			this._tcc = Tcc.Criar("Robótica", "descrição tema", new List<Guid> { this._professor.ID });
 

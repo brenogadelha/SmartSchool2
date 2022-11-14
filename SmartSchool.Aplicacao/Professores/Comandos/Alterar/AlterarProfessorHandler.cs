@@ -38,6 +38,7 @@ namespace SmartSchool.Aplicacao.Disciplinas.Alterar
 
 			professor.AlterarNome(request.Nome);
 			professor.AlterarMatricula(request.Matricula);
+			professor.AlterarEmail(request.Email);
 
 			if (request.Disciplinas != null && request.Disciplinas.Any())
 			{

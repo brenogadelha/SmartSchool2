@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using SmartSchool.Comum.Repositorio;
-using SmartSchool.Comum.TratamentoErros;
 using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Disciplinas.Servicos;
 using SmartSchool.Dominio.Professores;
@@ -35,7 +34,7 @@ namespace SmartSchool.Aplicacao.Professores.Adicionar
 					await this._disciplinaServicoDominio.ObterAsync(disciplina);
 			}
 
-			var professor = Professor.Criar(request.Nome, request.Matricula, request.Disciplinas);
+			var professor = Professor.Criar(request.Nome, request.Matricula, request.Email, request.Disciplinas);
 
 			await this._professorRepositorio.Adicionar(professor);
 
