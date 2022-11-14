@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using SmartSchool.Aplicacao.Tccs.Listar;
-using SmartSchool.Comum.Dominio.Enums;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Dados.Comum;
 using SmartSchool.Dados.Contextos;
@@ -67,6 +66,8 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 			resultTccsObtidos.Value.Where(x => x.Tema == "Inteligência Artificial").Count().Should().Be(1);
 			resultTccsObtidos.Value.Where(x => x.Tema == "Automação e Visualização de Dados").Count().Should().Be(1);
 			resultTccsObtidos.Value.Where(x => x.Tema == "Metodologia Ágil").Count().Should().Be(1);
+			resultTccsObtidos.Value.Where(x => x.EmailProfessor == "pauloroberto@unicarioca.com.br").Count().Should().Be(3);
+			resultTccsObtidos.Value.Where(x => x.Professor == "Paulo Roberto").Count().Should().Be(3);
 		}
 	}
 }
