@@ -128,7 +128,7 @@ namespace SmartSchool.API
 			//});
 
 			app.UseHsts();
-			app.UseCors("PoliticaGameficacao");
+			app.UseCors("PoliticaSmartSchool");
 			app.UseMvc();
 		}
 	}

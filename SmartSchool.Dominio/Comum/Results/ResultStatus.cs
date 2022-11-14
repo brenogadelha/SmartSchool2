@@ -47,7 +47,7 @@
         /// <summary>
         /// 403 Forbidden
         /// Utilizado quando o usuário está autenticação mas não tem permissão para executar uma consulta ou operação.
-        /// Ex: Um funcionário do parceiro tenta fazer uma requisição num recurso gerencial da Icatu.
+        /// Ex: Um terceiro tenta fazer uma requisição num recurso gerencial.
         /// </summary>
         Forbidden,
 
