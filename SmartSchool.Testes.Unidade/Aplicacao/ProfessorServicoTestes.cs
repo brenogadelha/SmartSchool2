@@ -97,6 +97,48 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 			this._professorRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Professor>(), It.IsAny<bool>()), Times.Never);
 		}
 
+		[Fact(DisplayName = "Erro Ao Alterar Professor - Já Existe Professor com esta Matricula")]
+		public void ErroAoAlterarProfessor_JaExisteMesmaMatricula()
+		{
+			var disciplinas = new List<Guid>();
+			disciplinas.Add(Guid.NewGuid());
+
+			var professor = Professor.Criar("José", 2017100120, "joseroberto@unicarioca.com.br", disciplinas);
+
+			var professorDto = new AlterarProfessorCommand() { ID = Guid.NewGuid(), Matricula = 2017100120, Nome = "Paulo Roberto", Email = "joseroberto@unicarioca.com.br", Disciplinas = disciplinas };
+
+			this._professorRepositorioMock.Setup(x => x.ObterAsync(It.IsAny<IEspecificavel<Professor>>())).ReturnsAsync(professor);
+
+			var retorno = this._mediator.Send(professorDto);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"Já existe um Professor com a mesma matricula '{professorDto.Matricula}'.");
+
+			this._professorRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Professor>(), It.IsAny<bool>()), Times.Never);
+		}
+
+		[Fact(DisplayName = "Erro Ao Alterar Professor - Já Existe Professor com este Email")]
+		public void ErroAoAlterarProfessor_JaExisteMesmoEmail()
+		{
+			var disciplinas = new List<Guid>();
+			disciplinas.Add(Guid.NewGuid());
+
+			var professor = Professor.Criar("José", 2017100120, "joseroberto@unicarioca.com.br", disciplinas);
+
+			var professorDto = new AlterarProfessorCommand() { ID = Guid.NewGuid(), Matricula = 2017100150, Nome = "Paulo Roberto", Email = "joseroberto@unicarioca.com.br", Disciplinas = disciplinas };
+
+			this._professorRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Professor>>())).ReturnsAsync(null).ReturnsAsync(professor);
+
+			var retorno = this._mediator.Send(professorDto);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"Já existe um Professor com o mesmo email '{professorDto.Email}'.");
+
+			this._professorRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Professor>(), It.IsAny<bool>()), Times.Never);
+		}
+
 		[Fact(DisplayName = "Erro Ao Alterar Professor - Id nulo ou inválido")]
 		public void ErroAoAlterarProfessor_IdProfessorNuloInvalido()
 		{

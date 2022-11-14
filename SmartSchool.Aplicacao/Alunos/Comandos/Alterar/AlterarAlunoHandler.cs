@@ -36,15 +36,18 @@ namespace SmartSchool.Aplicacao.Alunos.Alterar
 
 		public async Task<IResult> Handle(AlterarAlunoCommand request, CancellationToken cancellationToken)
 		{
-			var aluno = await this._alunoServicoDominio.ObterPorIdAsync(request.ID);
-
-			ValidacaoFabrica.Validar(request, new AlunoValidacaoRequestAlteracao());
-
 			if (await this._alunoServicoDominio.VerificarExisteAlunoComMesmoCpfCnpj(request.Cpf, request.ID))
 				return Result.UnprocessableEntity($"Já existe um Aluno com o mesmo CPF '{request.Cpf}'.");
 
 			if (await this._alunoServicoDominio.VerificarExisteAlunoComMesmoEmail(request.Email, request.ID))
 				return Result.UnprocessableEntity($"Já existe um Aluno com o mesmo email '{request.Email}'.");
+
+			if (await this._alunoServicoDominio.VerificarExisteAlunoComMesmaMatricula(request.Matricula, request.ID))
+				return Result.UnprocessableEntity($"Já existe um Aluno com a mesma matricula '{request.Matricula}'.");
+
+			ValidacaoFabrica.Validar(request, new AlunoValidacaoRequestAlteracao());			
+
+			var aluno = await this._alunoServicoDominio.ObterPorIdAsync(request.ID);
 
 			// Verifica se o Curso existe
 			await this._cursoServicoDominio.ObterAsync(request.CursoId);

@@ -114,10 +114,78 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 			this._alunoRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Aluno>(), It.IsAny<bool>()), Times.Never);
 		}
 
+		[Fact(DisplayName = "Erro Ao Criar Aluno - Já Existe Aluno com esta Matricula")]
+		public void ErroAoCriarAluno_JaExisteMesmaMatricula()
+		{
+			var aluno = this._alunoDtoBuilder.InstanciarCommand();
+
+			this._alunoRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Aluno>>())).ReturnsAsync(null).ReturnsAsync(null).ReturnsAsync(new Aluno());
+
+			var retorno = this._mediator.Send(aluno);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"Já existe um Aluno com a mesma matricula '{aluno.Matricula}'.");
+
+			this._alunoRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Aluno>(), It.IsAny<bool>()), Times.Never);
+		}
+
+		[Fact(DisplayName = "Erro Ao Alterar Aluno - Já Existe Aluno com este Cpf")]
+		public void ErroAoAlterarAluno_JaExisteMesmoCpf()
+		{
+			var aluno = this._alunoDtoBuilder.InstanciarCommandAlteracao();
+			aluno.DataFim = DateTime.Now.AddYears(4);
+
+			this._alunoRepositorioMock.Setup(x => x.ObterAsync(It.IsAny<IEspecificavel<Aluno>>())).ReturnsAsync(new Aluno());
+
+			var retorno = this._mediator.Send(aluno);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"Já existe um Aluno com o mesmo CPF '{aluno.Cpf}'.");
+
+			this._alunoRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Aluno>(), It.IsAny<bool>()), Times.Never);
+		}
+
+		[Fact(DisplayName = "Erro Ao Alterar Aluno - Já Existe Aluno com este Email")]
+		public void ErroAoAlterarAluno_JaExisteMesmoEmail()
+		{
+			var aluno = this._alunoDtoBuilder.InstanciarCommandAlteracao();
+			aluno.DataFim = DateTime.Now.AddYears(4);
+
+			this._alunoRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Aluno>>())).ReturnsAsync(null).ReturnsAsync(new Aluno());
+
+			var retorno = this._mediator.Send(aluno);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"Já existe um Aluno com o mesmo email '{aluno.Email}'.");
+
+			this._alunoRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Aluno>(), It.IsAny<bool>()), Times.Never);
+		}
+
+		[Fact(DisplayName = "Erro Ao Alterar Aluno - Já Existe Aluno com esta Matricula")]
+		public void ErroAoAlterarAluno_JaExisteMesmaMatricula()
+		{
+			var aluno = this._alunoDtoBuilder.InstanciarCommandAlteracao();
+			aluno.DataFim = DateTime.Now.AddYears(4);
+
+			this._alunoRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Aluno>>())).ReturnsAsync(null).ReturnsAsync(null).ReturnsAsync(new Aluno());
+
+			var retorno = this._mediator.Send(aluno);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"Já existe um Aluno com a mesma matricula '{aluno.Matricula}'.");
+
+			this._alunoRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Aluno>(), It.IsAny<bool>()), Times.Never);
+		}
+
 		[Fact(DisplayName = "Erro Ao Alterar Aluno - Id nulo ou inválido")]
 		public void ErroAoAlterarAluno_IdUsuarioNuloInvalido()
 		{
 			var aluno = this._alunoDtoBuilder.ComId(Guid.Empty).InstanciarCommandAlteracao();
+			aluno.DataFim = DateTime.Now.AddYears(4);
 
 			var exception = Assert.ThrowsAsync<ArgumentNullException>(() => this._mediator.Send(aluno));
 			Assert.Equal("Id nulo do Aluno (não foi informado).", exception.Result.Message);
@@ -129,6 +197,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		public void ErroAoAlterarAluno_AlunoNaoExiste()
 		{
 			var aluno = this._alunoDtoBuilder.ComId(Guid.NewGuid()).InstanciarCommandAlteracao();
+			aluno.DataFim = DateTime.Now.AddYears(4);
 
 			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(aluno));
 			Assert.Equal($"Aluno com ID '{aluno.ID}' não existe.", exception.Result.Message);
