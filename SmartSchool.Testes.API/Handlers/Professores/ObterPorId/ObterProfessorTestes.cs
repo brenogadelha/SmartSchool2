@@ -5,10 +5,8 @@ using SmartSchool.Aplicacao.Professores.ObterPorId;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Dados.Comum;
 using SmartSchool.Dados.Contextos;
-using SmartSchool.Dados.Modulos.Disciplinas;
 using SmartSchool.Dados.Modulos.Professores;
 using SmartSchool.Dominio.Comum.Results;
-using SmartSchool.Dominio.Disciplinas.Servicos;
 using SmartSchool.Dominio.Professores;
 using SmartSchool.Dominio.Professores.Servicos;
 using SmartSchool.Dto.Dtos.Professores;
@@ -54,6 +52,7 @@ namespace SmartSchool.Testes.API.Controllers.Professores
 			resultProfessorObtidoPorId.Value.ID.Should().NotBe(Guid.Empty);
 			resultProfessorObtidoPorId.Value.Nome.Should().Be(professor.Nome);
 			resultProfessorObtidoPorId.Value.Matricula.Should().Be(professor.Matricula);
+			resultProfessorObtidoPorId.Value.Email.Should().Be(professor.Email);
 		}
 	}
 }

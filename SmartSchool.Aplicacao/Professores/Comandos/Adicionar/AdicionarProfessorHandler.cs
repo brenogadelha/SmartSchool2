@@ -28,6 +28,9 @@ namespace SmartSchool.Aplicacao.Professores.Adicionar
 			if (await this._professorServicoDominio.VerificarExisteProfessorComMesmaMatricula(request.Matricula, null))
 				return Result.UnprocessableEntity($"Já existe um Professor com a mesma matricula '{request.Matricula}'.");
 
+			if (await this._professorServicoDominio.VerificarExisteProfessorComMesmoEmail(request.Email, null))
+				return Result.UnprocessableEntity($"Já existe um Professor com o mesmo email '{request.Email}'.");
+
 			if (request.Disciplinas != null)
 			{
 				foreach (var disciplina in request.Disciplinas)

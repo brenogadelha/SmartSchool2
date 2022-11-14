@@ -62,7 +62,7 @@ namespace SmartSchool.Testes.API.Controllers.Professores
 		{
 			var professor = this._professorBuilder.ObterProfessor();
 
-			var professorDto = new AlterarProfessorCommand() { Matricula = 2017100180, Nome = "Ruan Vojda", Disciplinas = new List<Guid>() { this._disciplina.ID, this._disciplina2.ID }, ID = professor.ID };
+			var professorDto = new AlterarProfessorCommand() { Matricula = 2017100180, Nome = "Ruan Vojda", Email = "ruanvoj@unicarioca.com.br", Disciplinas = new List<Guid>() { this._disciplina.ID, this._disciplina2.ID }, ID = professor.ID };
 
 			var retorno = await this._mediator.Send(professorDto);
 

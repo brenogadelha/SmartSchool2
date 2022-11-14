@@ -65,7 +65,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 			var disciplinas = new List<Guid>();
 			disciplinas.Add(Guid.NewGuid());
 
-			var professorDto = new AdicionarProfessorCommand() { Matricula = 2017100150, Nome = "Paulo Roberto", Disciplinas = disciplinas };
+			var professorDto = new AdicionarProfessorCommand() { Matricula = 2017100150, Nome = "Paulo Roberto", Email = "pauloroberto@unicarioca.com.br", Disciplinas = disciplinas };
 
 			this._professorRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Professor>>())).ReturnsAsync(new Professor());
 
@@ -78,11 +78,29 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 			this._professorRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Professor>(), It.IsAny<bool>()), Times.Never);
 		}
 
+		[Fact(DisplayName = "Erro Ao Criar Professor - Já Existe Professor com este Email")]
+		public void ErroAoCriarProfessor_JaExisteMesmoEmail()
+		{
+			var disciplinas = new List<Guid>();
+			disciplinas.Add(Guid.NewGuid());
+
+			var professorDto = new AdicionarProfessorCommand() { Matricula = 2017100150, Nome = "Paulo Roberto", Email = "pauloroberto@unicarioca.com.br", Disciplinas = disciplinas };
+
+			this._professorRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Professor>>())).ReturnsAsync(null).ReturnsAsync(new Professor());
+
+			var retorno = this._mediator.Send(professorDto);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"Já existe um Professor com o mesmo email '{professorDto.Email}'.");
+
+			this._professorRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Professor>(), It.IsAny<bool>()), Times.Never);
+		}
 
 		[Fact(DisplayName = "Erro Ao Alterar Professor - Id nulo ou inválido")]
 		public void ErroAoAlterarProfessor_IdProfessorNuloInvalido()
 		{
-			var professorDto = new AlterarProfessorCommand() { Matricula = 2017100150, Nome = "Paulo Roberto", Disciplinas = new List<Guid>() { _disciplina1.ID, _disciplina2.ID, _disciplina3.ID }, ID = Guid.Empty };
+			var professorDto = new AlterarProfessorCommand() { Matricula = 2017100150, Nome = "Paulo Roberto", Email = "pauloroberto@unicarioca.com.br", Disciplinas = new List<Guid>() { _disciplina1.ID, _disciplina2.ID, _disciplina3.ID }, ID = Guid.Empty };
 
 			var exception = Assert.ThrowsAsync<ArgumentNullException>(() => this._mediator.Send(professorDto));
 			Assert.Equal("Id nulo do Professor (não foi informado).", exception.Result.Message);
@@ -94,7 +112,7 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 		public void ErroAoAlterarProfessor_ProfessorNaoExiste()
 		{
 			var professorId = Guid.NewGuid();
-			var professorDto = new AlterarProfessorCommand() { Matricula = 2017100150, Nome = "Paulo Roberto", Disciplinas = new List<Guid>() { _disciplina1.ID, _disciplina2.ID, _disciplina3.ID }, ID = professorId };
+			var professorDto = new AlterarProfessorCommand() { Matricula = 2017100150, Nome = "Paulo Roberto", Email = "pauloroberto@unicarioca.com.br", Disciplinas = new List<Guid>() { _disciplina1.ID, _disciplina2.ID, _disciplina3.ID }, ID = professorId };
 
 			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(professorDto));
 			Assert.Equal($"Professor com ID '{professorId}' não existe.", exception.Result.Message);
