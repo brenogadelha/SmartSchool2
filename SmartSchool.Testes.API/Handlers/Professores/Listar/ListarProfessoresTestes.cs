@@ -5,13 +5,10 @@ using SmartSchool.Aplicacao.Professores.Listar;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Dados.Comum;
 using SmartSchool.Dados.Contextos;
-using SmartSchool.Dados.Modulos.Disciplinas;
 using SmartSchool.Dados.Modulos.Professores;
 using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Disciplinas;
-using SmartSchool.Dominio.Disciplinas.Servicos;
 using SmartSchool.Dominio.Professores;
-using SmartSchool.Dominio.Professores.Servicos;
 using SmartSchool.Dto.Disciplinas;
 using SmartSchool.Dto.Dtos.Professores;
 using System;
@@ -49,8 +46,8 @@ namespace SmartSchool.Testes.API.Controllers.Professores
 
 			this._disciplina = Disciplina.Criar(disciplinaDto1);
 
-			this._professor = Professor.Criar("Estevão jose", 2017100150, new List<Guid> { this._disciplina.ID });
-			this._professor2 = Professor.Criar("Luis Roberto", 2017100155, new List<Guid> { this._disciplina.ID });
+			this._professor = Professor.Criar("Estevão jose", 2017100151, "estevaojose@unicarioca.com.br", new List<Guid> { this._disciplina.ID });
+			this._professor2 = Professor.Criar("Luis Roberto", 2017100155, "luisroberto@unicarioca.com.br", new List<Guid> { this._disciplina.ID });
 
 			this._contextos.SmartContexto.Disciplinas.Add(this._disciplina);
 			this._contextos.SmartContexto.Professores.Add(this._professor);
@@ -70,8 +67,8 @@ namespace SmartSchool.Testes.API.Controllers.Professores
 			resultProfessores.Value.Should().NotBeNull();
 			resultProfessores.Value.Count().Should().Be(3);
 			resultProfessores.Value.Where(x => x.Nome == "Estevão jose").Count().Should().Be(1);
-			resultProfessores.Value.Where(x => x.Nome == "Luis Roberto").Count().Should().Be(1);
-			resultProfessores.Value.Where(x => x.Nome == "Paulo Roberto").Count().Should().Be(1);
+			resultProfessores.Value.Where(x => x.Matricula == 2017100151).Count().Should().Be(1);
+			resultProfessores.Value.Where(x => x.Email == "estevaojose@unicarioca.com.br").Count().Should().Be(1);
 		}
 	}
 }

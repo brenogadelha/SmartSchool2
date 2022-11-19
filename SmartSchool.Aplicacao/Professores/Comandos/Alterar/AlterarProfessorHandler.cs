@@ -2,7 +2,6 @@
 using SmartSchool.Aplicacao.Professores.Alterar;
 using SmartSchool.Aplicacao.Professores.Alterar.Validacao;
 using SmartSchool.Comum.Repositorio;
-using SmartSchool.Comum.TratamentoErros;
 using SmartSchool.Comum.Validacao;
 using SmartSchool.Dominio.Comum.Results;
 using SmartSchool.Dominio.Disciplinas.Servicos;
@@ -34,10 +33,14 @@ namespace SmartSchool.Aplicacao.Disciplinas.Alterar
 			if (await this._professorServicoDominio.VerificarExisteProfessorComMesmaMatricula(request.Matricula, request.ID))
 				return Result.UnprocessableEntity($"Já existe um Professor com a mesma matricula '{request.Matricula}'.");
 
+			if (await this._professorServicoDominio.VerificarExisteProfessorComMesmoEmail(request.Email, request.ID))
+				return Result.UnprocessableEntity($"Já existe um Professor com o mesmo email '{request.Email}'.");
+
 			var professor = await this._professorServicoDominio.ObterAsync(request.ID);
 
 			professor.AlterarNome(request.Nome);
 			professor.AlterarMatricula(request.Matricula);
+			professor.AlterarEmail(request.Email);
 
 			if (request.Disciplinas != null && request.Disciplinas.Any())
 			{

@@ -41,6 +41,9 @@ namespace SmartSchool.Aplicacao.Alunos.Adicionar
 			if (await this._alunoServicoDominio.VerificarExisteAlunoComMesmoEmail(request.Email, null))
 				return Result.UnprocessableEntity($"Já existe um Aluno com o mesmo email '{request.Email}'.");
 
+			if (await this._alunoServicoDominio.VerificarExisteAlunoComMesmaMatricula(request.Matricula, null))
+				return Result.UnprocessableEntity($"Já existe um Aluno com a mesma matricula '{request.Matricula}'.");
+
 			// Verifica se o Curso existe
 			await this._cursoServicoDominio.ObterAsync(request.CursoId);
 

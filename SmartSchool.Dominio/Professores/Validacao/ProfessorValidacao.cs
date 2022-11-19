@@ -12,6 +12,9 @@ namespace SmartSchool.Dominio.Professores.Validacao
 			this.RuleFor(x => x.Matricula).NotEmpty()
 				.WithMessage("Matrícula de Professor deve ser informada.");
 
+			this.RuleFor(x => x.Email).NotEmpty()
+				.WithMessage("Email do Professor deve ser informado.");
+
 			this.RuleFor(p => p.Nome)
 				.MaximumLength(160).WithMessage("Nome do Professor não pode passar de 160 caracteres.");
 

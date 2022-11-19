@@ -9,6 +9,7 @@ namespace SmartSchool.Aplicacao.Professores.Adicionar
     {
 		public int Matricula { get; set; }
 		public string Nome { get; set; }
+		public string Email { get; set; }
 		public List<Guid> Disciplinas { get; set; }
 	}
 }

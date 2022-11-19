@@ -68,6 +68,7 @@ namespace SmartSchool.Testes.API.Controllers.Disciplinas
 			resultDisciplinas.Value.Should().NotBeNull();
 			resultDisciplinas.Value.Count().Should().Be(4);
 			resultDisciplinas.Value.Where(x => x.Nome == "Cálculo I").Count().Should().Be(1);
+			resultDisciplinas.Value.Where(x => x.Periodo == 2).Count().Should().Be(1);
 			resultDisciplinas.Value.Where(x => x.Nome == "Cálculo II").Count().Should().Be(1);
 			resultDisciplinas.Value.Where(x => x.Nome == "Cálculo III").Count().Should().Be(1);
 			resultDisciplinas.Value.Where(x => x.Nome == disciplina.Nome).Count().Should().Be(1);

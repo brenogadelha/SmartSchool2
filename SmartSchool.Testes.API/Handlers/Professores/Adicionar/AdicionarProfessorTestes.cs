@@ -61,7 +61,7 @@ namespace SmartSchool.Testes.API.Controllers.Professores
 		[Fact(DisplayName = "Adiciona Professor")]
 		public async void DeveCriarProfessor()
 		{
-			var professorDto = new AdicionarProfessorCommand() { Matricula = 2017100150, Nome = "Paulo Roberrto", Disciplinas = new List<Guid>() { this._disciplina.ID, this._disciplina2.ID, this._disciplina3.ID } };
+			var professorDto = new AdicionarProfessorCommand() { Matricula = 2017100150, Nome = "Paulo Roberrto", Email = "pauloroberto@unicarioca.com.br", Disciplinas = new List<Guid>() { this._disciplina.ID, this._disciplina2.ID, this._disciplina3.ID } };
 
 			var retorno = await this._mediator.Send(professorDto);
 

@@ -61,6 +61,7 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 			resultTccObtidoPorAluno.Value.Should().NotBeNull();
 			resultTccObtidoPorAluno.Value.Tema.Should().Be("Inteligência Artificial");
 			resultTccObtidoPorAluno.Value.NomeProfessor.Should().Be("Paulo Roberto");
+			resultTccObtidoPorAluno.Value.EmailProfessor.Should().Be("pauloroberto@unicarioca.com.br");
 			resultTccObtidoPorAluno.Value.Status.Should().Be(TccStatus.Solicitado.Descricao());
 			resultTccObtidoPorAluno.Value.DataSolicitacao.ToString().Should().Contain(DateTime.Now.ToString("dd/MM/yyyy"));
 		}

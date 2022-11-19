@@ -34,6 +34,7 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 
 		private readonly Curso _curso;
 		private readonly Aluno _aluno;
+		private readonly Tcc _tcc;
 
 		public ListarTccsPorProfessorTestes()
 		{
@@ -50,6 +51,7 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 
 			this._alunoDtoBuilder = AlunoDtoBuilder.Novo
 				.ComCidade("Rio de Janeiro")
+				.ComMatricula(2017100130)
 				.ComCpfCnpj("48340829033")
 				.ComCursoId(this._curso.ID)
 				.ComEndereco("Rua molina 423, Rio Comprido")
@@ -57,7 +59,7 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 				.ComDataNascimento(DateTime.Now.AddDays(-5000))
 				.ComDataInicio(DateTime.Now.AddDays(-20))
 				.ComDataFim(DateTime.Now.AddYears(4))
-				.ComEmail("estevao.pulante@unicarioca.com.br")
+				.ComEmail("estevao.pulante2@unicarioca.com.br")
 				.ComNome("Eduardo")
 				.ComSobrenome("Pulante")
 				.ComTelefone("2131593159")
@@ -65,14 +67,14 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 
 			this._aluno = Aluno.Criar(this._alunoDtoBuilder.Instanciar());
 
-			var tcc = Tcc.Criar("Inteligência Artificial", "descrição tema", new List<Guid> { this._professorBuilder.ObterProfessor().ID });
+			this._tcc = Tcc.Criar("Inteligência Artificial", "descrição tema", new List<Guid> { this._professorBuilder.ObterProfessor().ID });
 
-			var tccAlunoProfessor = TccAlunoProfessor.Criar(tcc.Value.ID, this._professorBuilder.ObterProfessor().ID, this._alunoBuilder.ObterAluno().ID, "solicitacao");
-			var tccAlunoProfessor2 = TccAlunoProfessor.Criar(tcc.Value.ID, this._professorBuilder.ObterProfessor().ID, this._aluno.ID, "solicitacao");
+			var tccAlunoProfessor = TccAlunoProfessor.Criar(this._tcc.ID, this._professorBuilder.ObterProfessor().ID, this._alunoBuilder.ObterAluno().ID, "solicitacao");
+			var tccAlunoProfessor2 = TccAlunoProfessor.Criar(this._tcc.ID, this._professorBuilder.ObterProfessor().ID, this._aluno.ID, "solicitacao");
 
 			this._contextos.SmartContexto.Cursos.Add(this._curso);
 			this._contextos.SmartContexto.Alunos.Add(this._aluno);
-			this._contextos.SmartContexto.Tccs.Add(tcc);
+			this._contextos.SmartContexto.Tccs.Add(this._tcc);
 			this._contextos.SmartContexto.TccAlunosProfessores.Add(tccAlunoProfessor);
 			this._contextos.SmartContexto.TccAlunosProfessores.Add(tccAlunoProfessor2);
 			this._contextos.SmartContexto.SaveChangesAsync();
@@ -93,8 +95,16 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 			resultSolicitacoesObtidasPorProfessor.Value.Should().NotBeNull();
 			resultSolicitacoesObtidasPorProfessor.Value.Count().Should().Be(2);
 			resultSolicitacoesObtidasPorProfessor.Value.Where(sp => sp.NomeAluno == this._aluno.Nome).Count().Should().Be(1);
+			resultSolicitacoesObtidasPorProfessor.Value.Where(sp => sp.MatriculaAluno == this._aluno.Matricula).Count().Should().Be(1);
+			resultSolicitacoesObtidasPorProfessor.Value.Where(sp => sp.Solicitacao == "solicitacao").Count().Should().Be(2);
+			resultSolicitacoesObtidasPorProfessor.Value.Where(sp => sp.ProfessorID == this._professorBuilder.ObterProfessor().ID).Count().Should().Be(2);
+			resultSolicitacoesObtidasPorProfessor.Value.Where(sp => sp.TccID == this._tcc.ID).Count().Should().Be(2);
+			resultSolicitacoesObtidasPorProfessor.Value.Where(sp => sp.Tema == this._tcc.Tema).Count().Should().Be(2);
+			resultSolicitacoesObtidasPorProfessor.Value.Where(sp => sp.AlunoID == this._aluno.ID).Count().Should().Be(1);
+			resultSolicitacoesObtidasPorProfessor.Value.Where(sp => sp.DataSolicitacao.ToString("dd/MM/yyyy") == DateTime.Now.ToString("dd/MM/yyyy")).Count().Should().Be(2);
 			resultSolicitacoesObtidasPorProfessor.Value.Where(sp => sp.NomeAluno == this._alunoBuilder.ObterAluno().Nome).Count().Should().Be(1);
 			resultSolicitacoesObtidasPorProfessor.Value.Where(sp => sp.Status == "Solicitado").Count().Should().Be(2);
+			resultSolicitacoesObtidasPorProfessor.Value.Where(sp => sp.EmailAluno == this._aluno.Email).Count().Should().Be(1);
 		}
 	}
 }

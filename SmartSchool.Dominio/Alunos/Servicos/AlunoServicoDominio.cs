@@ -58,5 +58,14 @@ namespace SmartSchool.Dominio.Alunos.Servicos
 
 			return false;
 		}
+
+		public async Task<bool> VerificarExisteAlunoComMesmaMatricula(int matricula, Guid? idAtual)
+		{
+			var alunoComMesmaMatricula = await this._alunoRepositorio.ObterAsync(new BuscaDeAlunoPorMatriculaEspecificacao(matricula));
+			if (alunoComMesmaMatricula != null && (!idAtual.HasValue || idAtual.HasValue && alunoComMesmaMatricula.ID != idAtual))
+				return true;
+
+			return false;
+		}
 	}
 }

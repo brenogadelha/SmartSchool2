@@ -49,17 +49,20 @@ namespace SmartSchool.Ioc.Modulos
 			this.CreateMap<Tcc, ObterTccDto>()
 				.ForMember(destino => destino.Professores, opt => opt.MapFrom(origem => origem.TccProfessores.Select(tp => tp.Professor)));
 			this.CreateMap<Tcc, ObterTccsDto>()
-				.ForMember(destino => destino.Professor, opt => opt.MapFrom(origem => origem.TccProfessores.FirstOrDefault().Professor.Nome));
+				.ForMember(destino => destino.Professor, opt => opt.MapFrom(origem => origem.TccProfessores.FirstOrDefault().Professor.Nome))
+				.ForMember(destino => destino.EmailProfessor, opt => opt.MapFrom(origem => origem.TccProfessores.FirstOrDefault().Professor.Email));
 
 			this.CreateMap<TccAlunoProfessor, ObterSolicitacoesTccsDto>()
 				.ForMember(destino => destino.Tema, opt => opt.MapFrom(origem => origem.ProfessorTcc.Tcc.Tema))
 				.ForMember(destino => destino.Status, opt => opt.MapFrom(origem => origem.Status.Descricao()))
 				.ForMember(destino => destino.NomeAluno, opt => opt.MapFrom(origem => origem.Aluno.Nome))
+				.ForMember(destino => destino.EmailAluno, opt => opt.MapFrom(origem => origem.Aluno.Email))
 				.ForMember(destino => destino.MatriculaAluno, opt => opt.MapFrom(origem => origem.Aluno.Matricula));
 
 			this.CreateMap<TccAlunoProfessor, ObterStatusSolicitacaoTccDto>()
 				.ForMember(destino => destino.NomeProfessor, opt => opt.MapFrom(origem => origem.ProfessorTcc.Professor.Nome))
 				.ForMember(destino => destino.Tema, opt => opt.MapFrom(origem => origem.ProfessorTcc.Tcc.Tema))
+				.ForMember(destino => destino.EmailProfessor, opt => opt.MapFrom(origem => origem.ProfessorTcc.Professor.Email))
 				.ForMember(destino => destino.Status, opt => opt.MapFrom(origem => origem.Status.Descricao()));
 		}
 	}

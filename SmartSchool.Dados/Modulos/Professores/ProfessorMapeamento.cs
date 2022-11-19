@@ -21,6 +21,11 @@ namespace SmartSchool.Dados.Modulos.Usuarios
 					.HasMaxLength(160)
 					.IsRequired();
 
+			builder.Property(b => b.Email)
+					.HasColumnName("PROF_TXT_EMAIL")
+					.HasMaxLength(256)
+					.IsRequired();
+
 			builder.Property(b => b.Matricula)
 					.HasColumnName("PROF_COD_PROFESSOR")
 					.ValueGeneratedNever()

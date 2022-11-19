@@ -46,8 +46,8 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 			// Criação de Professores
 			this._disciplina = Disciplina.Criar("Cálculo I", 1);
 
-			this._professor1 = Professor.Criar("José", 1, new List<Guid> { this._disciplina.ID });
-			this._professor2 = Professor.Criar("Paulo Augusto", 1, new List<Guid> { this._disciplina.ID });
+			this._professor1 = Professor.Criar("José", 1, "josepaulo@unicarioca.com.br", new List<Guid> { this._disciplina.ID });
+			this._professor2 = Professor.Criar("Paulo Augusto", 1, "pauloaugusto@unicarioca.com.br", new List<Guid> { this._disciplina.ID });
 
 			this._contextos.SmartContexto.Disciplinas.Add(_disciplina);
 			this._contextos.SmartContexto.Professores.Add(_professor1);

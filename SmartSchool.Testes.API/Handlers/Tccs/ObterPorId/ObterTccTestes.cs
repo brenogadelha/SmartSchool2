@@ -55,6 +55,8 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 			resultTccObtidoPorId.Value.Tema.Should().Be(tcc.Tema);
 			resultTccObtidoPorId.Value.Descricao.Should().Be(tcc.Descricao);
 			resultTccObtidoPorId.Value.Professores.Where(x => x.Nome == "Paulo Augusto").Count().Should().Be(1);
+			resultTccObtidoPorId.Value.Professores.Where(x => x.Matricula == 1).Count().Should().Be(1);
+			resultTccObtidoPorId.Value.Professores.Where(x => x.Email == "pauloaugusto@unicarioca.com.br").Count().Should().Be(1);
 		}
 	}
 }

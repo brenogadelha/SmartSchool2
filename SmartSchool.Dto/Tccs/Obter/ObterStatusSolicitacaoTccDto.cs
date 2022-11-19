@@ -8,6 +8,7 @@ namespace SmartSchool.Dto.Tccs
 		public DateTime DataSolicitacao { get; set; }
 		public string RespostaSolicitacao { get; private set; }
 		public string NomeProfessor { get; private set; }
+		public string EmailProfessor { get; private set; }
 		public string Status { get; private set; }
 	}
 }

@@ -36,5 +36,14 @@ namespace SmartSchool.Dominio.Professores.Servicos
 
 			return false;
 		}
+
+		public async Task<bool> VerificarExisteProfessorComMesmoEmail(string email, Guid? idAtual)
+		{
+			var professorComMesmoEmail = await this._professorRepositorio.ObterAsync(new BuscaDeProfessorPorEmailEspecificacao(email));
+			if (professorComMesmoEmail != null && (!idAtual.HasValue || idAtual.HasValue && professorComMesmoEmail.ID != idAtual))
+				return true;
+
+			return false;
+		}
 	}
 }

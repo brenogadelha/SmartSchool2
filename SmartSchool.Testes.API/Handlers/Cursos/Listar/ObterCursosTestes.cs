@@ -83,6 +83,7 @@ namespace SmartSchool.Testes.API.Controllers.Cursos
 			resultCursosObtidos.Value.Where(x => x.Nome == "Ciência da Computação").Count().Should().Be(1);
 			resultCursosObtidos.Value.Where(x => x.Nome == "Análise de Sistemas").Count().Should().Be(1);
 			resultCursosObtidos.Value.Where(x => x.Nome == "Redes").Count().Should().Be(1);
+			resultCursosObtidos.Value.Select(x => x.Disciplinas).Count().Should().Be(4);
 		}
 	}
 }

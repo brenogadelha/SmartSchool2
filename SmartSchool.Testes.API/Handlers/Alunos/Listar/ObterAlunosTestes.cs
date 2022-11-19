@@ -57,7 +57,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 
 			var aluno2Dto = AlunoDtoBuilder.Novo
 				.ComCelular("21912388899")
-				.ComEndereco("Rua molina 423, Rio Comprido")
+				.ComEndereco("Rua molina 421, Rio Comprido")
 				.ComCidade("Espirito Santo")
 				.ComCursoId(this._aluno.CursoId)
 				.ComAlunosDisciplinas(new List<AlunoDisciplinaDto> { new AlunoDisciplinaDto { DisciplinaId = this._aluno.AlunosDisciplinas.FirstOrDefault().DisciplinaID,
@@ -77,7 +77,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 				.ComCursoId(this._aluno.CursoId)
 				.ComAlunosDisciplinas(new List<AlunoDisciplinaDto> { new AlunoDisciplinaDto { DisciplinaId = this._aluno.AlunosDisciplinas.FirstOrDefault().DisciplinaID,
 					SemestreId = this._aluno.SemestresDisciplinas.FirstOrDefault().SemestreID, Periodo = 2, StatusDisciplina = Comum.Dominio.Enums.StatusDisciplina.Cursando } })
-				.ComEndereco("Rua molina 423, Rio Comprido")
+				.ComEndereco("Rua molina 422, Rio Comprido")
 				.ComCidade("Minas Gerais")
 				.ComCpfCnpj("84012584057")
 				.ComDataNascimento(DateTime.Now.AddYears(-40))
@@ -103,7 +103,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 				.ComEmail("estevao.mineiro@unicarioca.com.br")
 				.ComNome("Jordan")
 				.ComSobrenome("Cartman")
-				.ComTelefone("2131593353")
+				.ComTelefone("2131593354")
 				.ComId(Guid.NewGuid()).Instanciar();
 
 			var aluno2 = Aluno.Criar(aluno2Dto);
@@ -116,7 +116,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 			this._contextos.SmartContexto.SaveChangesAsync();
 		}
 
-		[Fact(DisplayName = "Obtém Alunos por nome total/parcial")]
+		[Fact(DisplayName = "Obtém lista de Alunos")]
 		public async void DeveObterAlunosPorNome()
 		{
 			var requestAlunos = await this._mediator.Send(new ListarAlunosQuery());
@@ -128,6 +128,17 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 			resultAlunosObtidos.Value.Where(x => x.Nome == "Jordania").Count().Should().Be(1);
 			resultAlunosObtidos.Value.Where(x => x.Nome == "Estevann").Count().Should().Be(1);
 			resultAlunosObtidos.Value.Where(x => x.Nome == "Estevão").Count().Should().Be(1);
+			resultAlunosObtidos.Value.Where(x => x.Celular == "21912399997").Count().Should().Be(1);
+			resultAlunosObtidos.Value.Where(x => x.Telefone == "2131593354").Count().Should().Be(1);
+			resultAlunosObtidos.Value.Where(x => x.Curso == "Engenharia da Computação").Count().Should().Be(4);
+			resultAlunosObtidos.Value.Where(x => x.Endereco == "Rua molina 422, Rio Comprido").Count().Should().Be(1);
+			resultAlunosObtidos.Value.Where(x => x.Email == "estevao.mineiro@unicarioca.com.br").Count().Should().Be(1);
+			resultAlunosObtidos.Value.Where(x => x.Ativo == true).Count().Should().Be(4);
+			resultAlunosObtidos.Value.Where(x => x.Cidade == "Minas Gerais").Count().Should().Be(2);
+			resultAlunosObtidos.Value.Where(x => x.Cpf == "78755724019").Count().Should().Be(1);
+			resultAlunosObtidos.Value.Where(x => x.DataInicio.ToString("dd/MM/yyyy") == DateTime.Now.AddDays(-20).ToString("dd/MM/yyyy")).Count().Should().Be(2);
+			resultAlunosObtidos.Value.Where(x => x.DataFim.ToString("dd/MM/yyyy") == DateTime.Now.AddYears(4).ToString("dd/MM/yyyy")).Count().Should().Be(3);
+			resultAlunosObtidos.Value.Where(x => x.DataNascimento.ToString("dd/MM/yyyy") == DateTime.Now.AddYears(-50).ToString("dd/MM/yyyy")).Count().Should().Be(1);
 		}
 	}
 }
