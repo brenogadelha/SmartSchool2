@@ -170,6 +170,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 			historicoAluno.Value.Should().NotBeNull();
 			historicoAluno.Value.Count().Should().Be(3);
 			historicoAluno.Value.Where(ha => ha.NomeDisciplina == "Cálculo I").Count().Should().Be(1);
+			historicoAluno.Value.Select(ha => ha.SemestreID).Should().NotBeNull();
 			historicoAluno.Value.Where(ha => ha.Periodo == 2).Count().Should().Be(2);
 			historicoAluno.Value.Where(ha => ha.StatusDisciplinaDescricao == "Cursando").Count().Should().Be(3);
 

@@ -63,10 +63,10 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 
 			resultTccsObtidos.Value.Should().NotBeNull();
 			resultTccsObtidos.Value.Count().Should().Be(3);
+			resultTccsObtidos.Value.Select(x => x.Id).Should().NotBeNull();
 			resultTccsObtidos.Value.Where(x => x.Tema == "Inteligência Artificial").Count().Should().Be(1);
 			resultTccsObtidos.Value.Where(x => x.Tema == "Automação e Visualização de Dados").Count().Should().Be(1);
 			resultTccsObtidos.Value.Where(x => x.Tema == "Metodologia Ágil").Count().Should().Be(1);
-			resultTccsObtidos.Value.Where(x => x.EmailProfessor == "pauloroberto@unicarioca.com.br").Count().Should().Be(3);
 			resultTccsObtidos.Value.Where(x => x.Professor == "Paulo Roberto").Count().Should().Be(3);
 		}
 	}

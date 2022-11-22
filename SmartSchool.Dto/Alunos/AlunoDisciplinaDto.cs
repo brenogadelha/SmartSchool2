@@ -9,7 +9,6 @@ namespace SmartSchool.Dto.Alunos
 	{
 		public int Periodo { get; set; }
 		public Guid DisciplinaId { get; set; }
-		//public Guid AlunoId { get; set; }
 		public Guid SemestreId { get; set; }
 		public StatusDisciplina StatusDisciplina { get; set; }
 	}

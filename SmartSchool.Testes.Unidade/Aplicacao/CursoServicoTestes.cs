@@ -64,6 +64,25 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 			this._cursoRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Curso>(), It.IsAny<bool>()), Times.Never);
 		}
 
+		[Fact(DisplayName = "Erro Ao Alterar Curso - Já existe curso com o mesmo nome")]
+		public void ErroAoAlterarCurso_JaExisteMesmoNome()
+		{
+			var disciplinas = new List<Guid>();
+			disciplinas.Add(Guid.NewGuid());
+
+			var cursoDto = new AlterarCursoCommand() { Nome = "Engenharia da Computação", DisciplinasId = disciplinas, ID = Guid.NewGuid() };
+
+			this._cursoRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Curso>>())).ReturnsAsync(new Curso());
+
+			var retorno = this._mediator.Send(cursoDto);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"Já existe um Curso com o mesmo nome '{cursoDto.Nome}'.");
+
+			this._cursoRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Curso>(), It.IsAny<bool>()), Times.Never);
+		}
+
 		[Fact(DisplayName = "Erro Ao Alterar Curso - Id nulo ou inválido")]
 		public void ErroAoAlterarCurso_IdNuloInvalido()
 		{

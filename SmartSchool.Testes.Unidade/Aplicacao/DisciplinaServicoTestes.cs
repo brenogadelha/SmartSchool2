@@ -53,6 +53,22 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 			this._disciplinaRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Disciplina>(), It.IsAny<bool>()), Times.Never);
 		}
 
+		[Fact(DisplayName = "Erro Ao Alterar Disciplina - Já existe Disciplina com o mesmo nome")]
+		public void ErroAoAlterarDisciplina_JaExisteMesmoNome()
+		{
+			var disciplinaDto = new AlterarDisciplinaCommand() { Nome = "Linguagens Formais e Automatos", Periodo = 1, ID = Guid.NewGuid() };
+
+			this._disciplinaRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Disciplina>>())).ReturnsAsync(new Disciplina());
+
+			var retorno = this._mediator.Send(disciplinaDto);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"Já existe uma Disciplina com o mesmo nome '{disciplinaDto.Nome}'.");
+
+			this._disciplinaRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Disciplina>(), It.IsAny<bool>()), Times.Never);
+		}
+
 		[Fact(DisplayName = "Erro Ao Alterar Disciplina - Id nulo ou inválido")]
 		public void ErroAoAlterarDisciplina_IdNuloInvalido()
 		{
