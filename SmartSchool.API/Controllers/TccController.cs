@@ -5,6 +5,7 @@ using SmartSchool.API.Componentes;
 using SmartSchool.Aplicacao.Tccs.Adicionar;
 using SmartSchool.Aplicacao.Tccs.Alterar;
 using SmartSchool.Aplicacao.Tccs.Aprovar;
+using SmartSchool.Aplicacao.Tccs.Desvincular;
 using SmartSchool.Aplicacao.Tccs.Listar;
 using SmartSchool.Aplicacao.Tccs.ListarPorProfessor;
 using SmartSchool.Aplicacao.Tccs.ObterPorAluno;
@@ -155,14 +156,14 @@ namespace SmartSchool.API.Controllers
 		/// Aprova Tema de Tcc solicitado pelo Aluno
 		/// </summary>
 		/// <returns>Http status 204(No Content)</returns>
-		/// <response code="204">Tema para o Tcc aprovado com Sucesso</response>
+		/// <response code="200">Tema para o Tcc aprovado com Sucesso</response>
 		/// <response code="400">Dados para aprovação de Tcc inconsistentes.</response>
 		/// <response code="401">Não autorizado</response>
 		/// <response code="404">Tema de Tcc inexistente</response>
 		/// <response code="422">Erro de negócio.</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPut("professores/{professor-id}/alunos/{aluno-id}/aprovar")]
-		[ProducesResponseType(204)]
+		[ProducesResponseType(200)]
 		[ProducesResponseType(401, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(422, Type = typeof(TratamentoErroDto))]
@@ -177,12 +178,12 @@ namespace SmartSchool.API.Controllers
 		/// <summary>
 		/// Exclui um Tema de Tcc específico
 		/// </summary>
-		/// <response code="204">Tema de Tcc excluído com Sucesso</response>
+		/// <response code="200">Tema de Tcc excluído com Sucesso</response>
 		/// <response code="400">Dados para exclusão do Tcc inconsistentes.</response>
 		/// <response code="404">Tema de Tcc inexistente</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpDelete("{id}")]
-		[ProducesResponseType(204)]
+		[ProducesResponseType(200)]
 		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
@@ -193,17 +194,35 @@ namespace SmartSchool.API.Controllers
 		}
 
 		/// <summary>
+		/// Desvincula aluno de um tema já aceito
+		/// </summary>
+		/// <response code="200">Tema de Tcc desvinculado com Sucesso</response>
+		/// <response code="400">Dados para desvinculação do Tcc inconsistentes.</response>
+		/// <response code="404">Tema de Tcc inexistente</response>
+		/// <response code="500">Erro inesperado</response> 
+		[HttpDelete("alunos/{id}")]
+		[ProducesResponseType(200)]
+		[ProducesResponseType(400, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
+		[ProducesResponseType(500, Type = typeof(TratamentoErroDto))]
+		public async Task<IActionResult> DesvincularAluno([FromRoute(Name = "id")] Guid id)
+		{
+			var response = await this._mediator.Send(new DesvincularTccCommand { ID = id });
+			return this.ProcessResult(response);
+		}
+
+		/// <summary>
 		/// Solicita Tema para o Tcc
 		/// </summary>
 		/// <returns>Http status 204(No Content)</returns>
-		/// <response code="204">Tema para o Tcc solicitado com Sucesso</response>
+		/// <response code="200">Tema para o Tcc solicitado com Sucesso</response>
 		/// <response code="400">Dados para solicitação de Tema para o Tcc inconsistentes.</response>
 		/// <response code="401">Não autorizado</response>
 		/// <response code="404">Tcc inexistente</response>
 		/// <response code="422">Erro de negócio.</response>
 		/// <response code="500">Erro inesperado</response> 
 		[HttpPut("solicitar")]
-		[ProducesResponseType(204)]
+		[ProducesResponseType(200)]
 		[ProducesResponseType(401, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(404, Type = typeof(TratamentoErroDto))]
 		[ProducesResponseType(422, Type = typeof(TratamentoErroDto))]
