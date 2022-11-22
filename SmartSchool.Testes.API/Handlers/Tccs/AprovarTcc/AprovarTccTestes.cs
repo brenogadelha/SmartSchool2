@@ -41,7 +41,7 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 
 			this._contextos.SmartContexto.Tccs.Add(tcc);
 			this._contextos.SmartContexto.TccAlunosProfessores.Add(tccAlunoProfessor);
-			this._contextos.SmartContexto.SaveChangesAsync();
+			this._contextos.SmartContexto.SaveChanges();
 
 			this._mediator = serviceProvider.GetRequiredService<IMediator>();
 		}

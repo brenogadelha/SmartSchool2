@@ -6,6 +6,7 @@ using Moq;
 using SmartSchool.Aplicacao.Tccs.Adicionar;
 using SmartSchool.Aplicacao.Tccs.Alterar;
 using SmartSchool.Aplicacao.Tccs.Aprovar;
+using SmartSchool.Aplicacao.Tccs.Desvincular;
 using SmartSchool.Aplicacao.Tccs.ObterPorAluno;
 using SmartSchool.Aplicacao.Tccs.ObterPorId;
 using SmartSchool.Aplicacao.Tccs.Remover;
@@ -180,6 +181,16 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 			Guid id = Guid.NewGuid();
 			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(new RemoverTccCommand { ID = id }));
 			Assert.Equal($"Tcc com ID '{id}' não existe.", exception.Result.Message);
+
+			this._tccRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Tcc>(), It.IsAny<bool>()), Times.Never);
+		}
+
+		[Fact(DisplayName = "Erro Ao Desvincular Tcc do Aluno - Não existe")]
+		public void ErroAoDesvincularTcc_NaoExiste()
+		{
+			Guid id = Guid.NewGuid();
+			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(new DesvincularTccCommand { ID = id }));
+			Assert.Equal("Não existe TCC para o aluno informado.", exception.Result.Message);
 
 			this._tccRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Tcc>(), It.IsAny<bool>()), Times.Never);
 		}
