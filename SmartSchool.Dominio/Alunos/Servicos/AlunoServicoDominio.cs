@@ -20,7 +20,7 @@ namespace SmartSchool.Dominio.Alunos.Servicos
 			if (idAluno.Equals(Guid.Empty))
 				throw new ArgumentNullException(null, "Id nulo do Aluno (não foi informado).");
 
-			var aluno = await this._alunoRepositorio.ObterAsync(new BuscaDeAlunoPorIdEspecificacao(idAluno).IncluiInformacoesDeHistorico().IncluiInformacoesDeDisciplina().IncluiInformacoesDeCurso());
+			var aluno = await this._alunoRepositorio.ObterAsync(new BuscaDeAlunoPorIdEspecificacao(idAluno).IncluiInformacoesDeTcc().IncluiInformacoesDeHistorico().IncluiInformacoesDeDisciplina().IncluiInformacoesDeCurso());
 
 			if (aluno == null)
 				throw new RecursoInexistenteException($"Aluno com ID '{idAluno}' não existe.");

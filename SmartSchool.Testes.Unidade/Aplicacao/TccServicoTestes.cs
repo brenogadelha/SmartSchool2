@@ -1,10 +1,12 @@
 ﻿using FluentAssertions;
+using FluentAssertions.Execution;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using SmartSchool.Aplicacao.Tccs.Adicionar;
 using SmartSchool.Aplicacao.Tccs.Alterar;
 using SmartSchool.Aplicacao.Tccs.Aprovar;
+using SmartSchool.Aplicacao.Tccs.Desvincular;
 using SmartSchool.Aplicacao.Tccs.ObterPorAluno;
 using SmartSchool.Aplicacao.Tccs.ObterPorId;
 using SmartSchool.Aplicacao.Tccs.Remover;
@@ -20,6 +22,7 @@ using SmartSchool.Dominio.Professores;
 using SmartSchool.Dominio.Professores.Servicos;
 using SmartSchool.Dominio.Tccs;
 using SmartSchool.Dominio.Tccs.Servicos;
+using SmartSchool.Testes.Compartilhado.Builders;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -103,12 +106,44 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 			var tccCommand = new AlterarTccCommand() { Tema = "Visualização de Dados e Automação", Descricao = "descrição tema", Professores = professores };
 
 			this._tccRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Tcc>>())).ReturnsAsync(new Tcc());
+			this._tccAlunoProfessorRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<TccAlunoProfessor>>())).ReturnsAsync(new TccAlunoProfessor());
 
 			var retorno = this._mediator.Send(tccCommand);
 
 			retorno.Should().NotBeNull();
 			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
 			retorno.Result.Errors.Should().AllBe($"Já existe um Tcc com o mesmo Tema '{tccCommand.Tema}'.");
+
+			this._tccRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Tcc>(), It.IsAny<bool>()), Times.Never);
+		}
+
+		[Fact(DisplayName = "Erro Ao Alterar Tcc - Já possui aluno vinculado")]
+		public void ErroAoAlterarTcc_JaPossuiAlunoVinculado()
+		{
+			var tcc = Tcc.Criar("NOVO TEMA", "Descrição", new List<Guid> { Guid.NewGuid() });
+
+			var tccProfessor = TccProfessor.Criar(Guid.NewGuid(), tcc.Value.ID);
+
+			var tccAlunoProfessor = TccAlunoProfessor.Criar(tcc.Value.ID, Guid.NewGuid(), Guid.NewGuid(), "solicitacao");
+
+			tccProfessor.Alunos.Add(tccAlunoProfessor);
+
+			tcc.Value.TccProfessores.Add(tccProfessor);
+
+			var professores = new List<Guid>();
+			professores.Add(Guid.NewGuid());
+
+			var tccCommand = new AlterarTccCommand() { Tema = "Visualização de Dados e Automação", Descricao = "descrição tema", Professores = professores, ID = Guid.NewGuid() };
+
+			this._tccRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Tcc>>())).ReturnsAsync(null).ReturnsAsync(tcc);
+			this._professorRepositorioMock.Setup(x => x.ObterAsync(It.IsAny<IEspecificavel<Professor>>())).ReturnsAsync(new Professor());
+			this._tccAlunoProfessorRepositorioMock.Setup(x => x.Procurar(It.IsAny<IEspecificavel<TccAlunoProfessor>>())).ReturnsAsync(new List<TccAlunoProfessor> { tccAlunoProfessor });
+
+			var retorno = this._mediator.Send(tccCommand);
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe("Não foi possível alterar o tema pois já possui aluno(s) vinculado(s).");
 
 			this._tccRepositorioMock.Verify(x => x.Adicionar(It.IsAny<Tcc>(), It.IsAny<bool>()), Times.Never);
 		}
@@ -146,6 +181,16 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 			Guid id = Guid.NewGuid();
 			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(new RemoverTccCommand { ID = id }));
 			Assert.Equal($"Tcc com ID '{id}' não existe.", exception.Result.Message);
+
+			this._tccRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Tcc>(), It.IsAny<bool>()), Times.Never);
+		}
+
+		[Fact(DisplayName = "Erro Ao Desvincular Tcc do Aluno - Não existe")]
+		public void ErroAoDesvincularTcc_NaoExiste()
+		{
+			Guid id = Guid.NewGuid();
+			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(new DesvincularTccCommand { ID = id }));
+			Assert.Equal("Não existe TCC para o aluno informado.", exception.Result.Message);
 
 			this._tccRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Tcc>(), It.IsAny<bool>()), Times.Never);
 		}
@@ -194,11 +239,50 @@ namespace SmartSchool.Testes.Unidade.Aplicacao
 			this._tccRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Tcc>(), It.IsAny<bool>()), Times.Never);
 		}
 
+		[Fact(DisplayName = "Erro Ao solicitar Tcc - Aluno já possui tema em andamento")]
+		public void ErroAoSolicitarTcc_AlunoJaPossuiTema()
+		{
+			var alunoDto = AlunoDtoBuilder.Novo
+				.ComCidade("Rio de Janeiro")
+				.ComCpfCnpj("48340829033")
+				.ComCursoId(Guid.NewGuid())
+				.ComAlunosDisciplinas(new List<Dto.Alunos.AlunoDisciplinaDto>())
+				.ComEndereco("Rua molina 423, Rio Comprido")
+				.ComCelular("99999999")
+				.ComDataNascimento(DateTime.Now.AddDays(-5000))
+				.ComDataInicio(DateTime.Now.AddDays(-20))
+				.ComDataFim(DateTime.Now.AddYears(4))
+				.ComEmail("estevao.pulante@unicarioca.com.br")
+				.ComNome("Estevão")
+				.ComSobrenome("Pulante")
+				.ComTelefone("2131593159")
+				.ComId(Guid.NewGuid()).Instanciar();
+
+			var aluno = Aluno.Criar(alunoDto);
+
+			var alunoTccProfessor = TccAlunoProfessor.Criar(Guid.NewGuid(), Guid.NewGuid(), aluno.ID, "solicitacao");
+
+			alunoTccProfessor.AlterarStatus(TccStatus.Aceito);
+
+			aluno.TccsProfessores.Add(alunoTccProfessor);
+
+			this._tccRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Tcc>>())).ReturnsAsync(new Tcc());
+
+			this._professorRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<Professor>>())).ReturnsAsync(new Professor());
+			this._alunoRepositorioMock.Setup(x => x.ObterAsync(It.IsAny<IEspecificavel<Aluno>>())).ReturnsAsync(aluno);
+
+			var retorno = this._mediator.Send(new SolicitarTccCommand { AlunosIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() }, TccId = Guid.NewGuid(), ProfessorId = Guid.NewGuid() });
+
+			retorno.Should().NotBeNull();
+			retorno.Result.Status.Should().Be(Result.UnprocessableEntity().Status);
+			retorno.Result.Errors.Should().AllBe($"O aluno '{aluno.Nome}' já possui um tema em andamento.");
+
+			this._tccRepositorioMock.Verify(x => x.Atualizar(It.IsAny<Tcc>(), It.IsAny<bool>()), Times.Never);
+		}
+
 		[Fact(DisplayName = "Erro Ao Aprovar Tcc - Solicitação não encontrada")]
 		public void ErroAoAprovarTcc_NaoEncontrado()
 		{
-			//this._tccAlunoProfessorRepositorioMock.SetupSequence(x => x.ObterAsync(It.IsAny<IEspecificavel<TccAlunoProfessor>>())).ReturnsAsync(new TccAlunoProfessor());
-
 			var exception = Assert.ThrowsAsync<RecursoInexistenteException>(() => this._mediator.Send(new AprovarTccCommand { ProfessorId = Guid.NewGuid(), AlunoId = Guid.NewGuid(), StatusTcc = TccStatus.Aceito }));
 			Assert.Equal("Não foi encontrada solicitação de TCC para o Aluno informado.", exception.Result.Message);
 
