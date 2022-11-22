@@ -194,7 +194,7 @@ namespace SmartSchool.API.Controllers
 		}
 
 		/// <summary>
-		/// Desvincula aluno de um tema já aceito
+		/// Desvincula aluno de um tema
 		/// </summary>
 		/// <response code="200">Tema de Tcc desvinculado com Sucesso</response>
 		/// <response code="400">Dados para desvinculação do Tcc inconsistentes.</response>
