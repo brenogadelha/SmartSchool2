@@ -70,6 +70,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 				.ComNome("Estevann")
 				.ComSobrenome("Pulante")
 				.ComTelefone("2131592222")
+				.ComMatricula(2017100150)
 				.ComId(Guid.NewGuid()).Instanciar();
 
 			var aluno3Dto = AlunoDtoBuilder.Novo
@@ -87,6 +88,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 				.ComNome("Jordania")
 				.ComSobrenome("Mineiro")
 				.ComTelefone("2131593353")
+				.ComMatricula(2017100151)
 				.ComId(Guid.NewGuid()).Instanciar();
 
 			var aluno4Dto = AlunoDtoBuilder.Novo
@@ -104,6 +106,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 				.ComNome("Jordan")
 				.ComSobrenome("Cartman")
 				.ComTelefone("2131593354")
+				.ComMatricula(2017100152)
 				.ComId(Guid.NewGuid()).Instanciar();
 
 			var aluno2 = Aluno.Criar(aluno2Dto);
@@ -128,6 +131,7 @@ namespace SmartSchool.Testes.API.Controllers.Alunos
 			resultAlunosObtidos.Value.Where(x => x.Nome == "Jordania").Count().Should().Be(1);
 			resultAlunosObtidos.Value.Where(x => x.Nome == "Estevann").Count().Should().Be(1);
 			resultAlunosObtidos.Value.Where(x => x.Nome == "Estevão").Count().Should().Be(1);
+			resultAlunosObtidos.Value.Where(x => x.Matricula == 2017100150).Count().Should().Be(1);
 			resultAlunosObtidos.Value.Where(x => x.Celular == "21912399997").Count().Should().Be(1);
 			resultAlunosObtidos.Value.Where(x => x.Telefone == "2131593354").Count().Should().Be(1);
 			resultAlunosObtidos.Value.Where(x => x.Curso == "Engenharia da Computação").Count().Should().Be(4);

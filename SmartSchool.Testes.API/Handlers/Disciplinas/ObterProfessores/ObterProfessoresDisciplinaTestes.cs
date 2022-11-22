@@ -48,10 +48,9 @@ namespace SmartSchool.Testes.API.Controllers.Disciplinas
 
 			resultDisciplinas.Value.Should().NotBeNull();
 			resultDisciplinas.Value.Count().Should().Be(2);
+			resultDisciplinas.Value.Select(x => x.ID).Should().NotBeNull();
 			resultDisciplinas.Value.Where(x => x.Nome == "José Paulo").Count().Should().Be(1);
 			resultDisciplinas.Value.Where(x => x.Nome == "Paulo Roberto").Count().Should().Be(1);
-			resultDisciplinas.Value.Where(x => x.Matricula == 123).Count().Should().Be(1);
-			resultDisciplinas.Value.Where(x => x.Matricula == 124).Count().Should().Be(1);
 		}
 	}
 }
