@@ -8,12 +8,9 @@ using SmartSchool.Dados.Contextos;
 using SmartSchool.Dados.Modulos.Professores;
 using SmartSchool.Dados.Modulos.Tccs;
 using SmartSchool.Dominio.Comum.Results;
-using SmartSchool.Dominio.Disciplinas;
-using SmartSchool.Dominio.Professores;
 using SmartSchool.Dominio.Professores.Servicos;
 using SmartSchool.Dominio.Tccs;
 using SmartSchool.Dominio.Tccs.Servicos;
-using SmartSchool.Testes.API.Controllers.Disciplinas;
 using SmartSchool.Testes.API.Controllers.Professores;
 using System;
 using System.Collections.Generic;
@@ -36,12 +33,13 @@ namespace SmartSchool.Testes.API.Controllers.Tccs
 			this._professorBuilder = new ProfessorBuilder();
 
 			var tccRepositorio = new TccRepositorio(this._contextos);
+			var tccAlunoProfessorRepositorio = new TccAlunoProfessorRepositorio(this._contextos);
 			var professorRepositorio = new ProfessorRepositorio(this._contextos);
 
 			var tccDominio = new TccServicoDominio(tccRepositorio);
 			var professorDominio = new ProfessorServicoDominio(professorRepositorio);
 
-			var serviceProvider = GetServiceProviderComMediatR((typeof(IRepositorio<Tcc>), tccRepositorio),
+			var serviceProvider = GetServiceProviderComMediatR((typeof(IRepositorio<Tcc>), tccRepositorio), (typeof(IRepositorio<TccAlunoProfessor>), tccAlunoProfessorRepositorio),
 				(typeof(ITccServicoDominio), tccDominio), (typeof(IProfessorServicoDominio), professorDominio));
 
 			this._mediator = serviceProvider.GetRequiredService<IMediator>();

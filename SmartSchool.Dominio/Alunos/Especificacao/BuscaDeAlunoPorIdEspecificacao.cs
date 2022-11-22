@@ -18,6 +18,14 @@ namespace SmartSchool.Dominio.Alunos.Especificacao
 			return this;
 		}
 
+		public BuscaDeAlunoPorIdEspecificacao IncluiInformacoesDeTcc()
+		{
+			this.ObjetosInclusaoTipo.Add(x => x.TccsProfessores);
+			this.ObjetosInclusaoStrings.Add("TccsProfessores.ProfessorTcc.Tcc");
+
+			return this;
+		}
+
 		public BuscaDeAlunoPorIdEspecificacao IncluiInformacoesDeDisciplina()
 		{
 			this.ObjetosInclusaoTipo.Add(x => x.AlunosDisciplinas);

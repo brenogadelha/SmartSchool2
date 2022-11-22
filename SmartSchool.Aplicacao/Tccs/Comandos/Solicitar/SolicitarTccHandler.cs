@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SmartSchool.Comum.Dominio.Enums;
 using SmartSchool.Comum.Repositorio;
 using SmartSchool.Comum.TratamentoErros;
 using SmartSchool.Dominio.Alunos;
@@ -45,8 +46,14 @@ namespace SmartSchool.Aplicacao.Tccs.Solicitar
 				var aluno = await this._AlunoServicoDominio.ObterPorIdAsync(alunoId);
 
 				// Caso haja alguma solicitação em andamento, a mesma é desconsiderada após nova solicitação
-				if (aluno.TccsProfessores.Any())
+				if (aluno.TccsProfessores.Any(t => t.Status == TccStatus.Solicitado || t.Status == TccStatus.Negado))
 					aluno.TccsProfessores.Clear();
+				else
+				{
+					if (aluno.TccsProfessores.Any(t => t.Status == TccStatus.Aceito))
+						return Result.UnprocessableEntity($"O aluno '{aluno.Nome}' já possui um tema em andamento.");
+				}
+
 
 				aluno.TccsProfessores.Add(TccAlunoProfessor.Criar(request.TccId, request.ProfessorId, alunoId, request.Solicitacao));
 
